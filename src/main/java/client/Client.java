@@ -1,8 +1,6 @@
 package client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -11,9 +9,8 @@ import java.util.HashMap;
 
 import data.Data;
 
-public class Client implements Runnable {
+public class Client extends Thread {
     private Socket socket;
-    private BufferedReader in;
     private ObjectInputStream ois;
     private PrintWriter out;
     private HashMap<String, Data> dataObjectList;
@@ -25,15 +22,16 @@ public class Client implements Runnable {
             System.out.println("Création de la connection TCP avec le serveur...");
             this.socket = new Socket(ip, port);
             this.out = new PrintWriter(this.socket.getOutputStream());
-            this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.ois = new ObjectInputStream(this.socket.getInputStream());
             expectedDataIndex = "";
             this.isConnected = true;
             System.out.println("...succès");
         } catch (UnknownHostException e) {
-            System.out.println("[Client/ERREUR] : L'adresse IP de l'hôte ne peut être déterminée");
+            System.out.println("[ERREUR] : L'adresse IP de l'hôte ne peut être déterminée");
+            System.out.println("La connexion au serveur a échoué");
         } catch (IOException e) {
-            System.out.println("[Client/ERREUR] : Numero de PORT INDISPONIBLE ou IP INCONNUE");
+            System.out.println("[ERREUR] : Numero de PORT INDISPONIBLE ou IP INCONNUE");
+            System.out.println("...la connexion au serveur a échoué");
         }
     }
 
@@ -73,6 +71,13 @@ public class Client implements Runnable {
      */
     public void setExpectedDataIndex(String expectedDataIndex) {
         this.expectedDataIndex = expectedDataIndex;
+    }
+
+    /**
+     * @return : true si le client est connecté au serveur, false sinon
+     */
+    public boolean isConnected() {
+        return isConnected;
     }
 
 }

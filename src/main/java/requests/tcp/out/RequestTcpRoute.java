@@ -4,6 +4,8 @@ import requests.tcp.RequestTcp;
 
 public class RequestTcpRoute implements RequestTcp {
 
+    public RequestTcpRoute() {}
+
     @Override
     public String commandBuilder(String[] args) {
         if (args.length < 3) {

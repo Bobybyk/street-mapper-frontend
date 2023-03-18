@@ -12,6 +12,11 @@ public class App {
         return "Hello world.";
     }
     public static void main(String[] args) {
-        new Console(new Client("localhost", 12345));
+        Client client = new Client("localhost", 12345);
+        if (client.isConnected()) {
+            new Console(client).start();
+        } else {
+            new Console(null).start();
+        }
     }
 }

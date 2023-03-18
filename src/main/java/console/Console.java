@@ -6,18 +6,23 @@ import java.util.Scanner;
 
 import client.Client;
 import requests.tcp.RequestTcp;
+import requests.tcp.out.RequestTcpRoute;
 
-public class Console implements Runnable {
+public class Console extends Thread {
     private Client client;
     private Scanner sc;
     private LinkedList<String> requestList;
     private HashMap<String, RequestTcp> commandListAsk;
+    private boolean isRunning;
     
     public Console(Client client) {
         this.client = client;
         this.sc = new Scanner(System.in);
         this.requestList = new LinkedList<String>();
+        this.commandListAsk = new HashMap<String, RequestTcp>();
         requestList.add("ROUTE");
+        commandListAsk.put("ROUTE", new RequestTcpRoute());
+        isRunning = true;
     }
 
     /**
@@ -33,7 +38,7 @@ public class Console implements Runnable {
      * @return : les données segmentées
      */
     private String[] segmentsRequest(String request) {
-        String[] args = request.split(" ");
+        String[] args = request.split(";");
 		return args;
 	}
 
@@ -44,7 +49,7 @@ public class Console implements Runnable {
         String[] segmentedRequest = segmentsRequest(request);
         if(!requestExists(segmentedRequest[0])) {
             System.out.println("Requête non définie dans le protocole");
-        } else {
+        } else if (client != null) {
             String buildedRequest = commandListAsk.get(segmentedRequest[0]).commandBuilder(segmentedRequest);
             if (buildedRequest.equals("undefined")) {
                 System.out.println("Requête non définie dans le protocole");
@@ -52,12 +57,25 @@ public class Console implements Runnable {
                 client.setExpectedDataIndex(segmentedRequest[0]);
                 client.sendRequest(buildedRequest);
             }
+        } else {
+            System.out.println("Client non défini");
         }
     }
-    
+
+    public static void layout() {
+        System.out.print("\u001B[31m");
+        System.out.print("map_debug> ");
+        System.out.print("\u001B[37m");
+    }
+
+
     @Override
     public void run() {
-        handleRequest(sc.nextLine());
+        while(isRunning) {
+            layout();
+            handleRequest(sc.nextLine());
+        }
+
     }
 
 }
