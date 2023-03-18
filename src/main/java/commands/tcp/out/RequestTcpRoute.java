@@ -1,6 +1,6 @@
-package requests.tcp.out;
+package commands.tcp.out;
 
-import requests.tcp.RequestTcp;
+import commands.tcp.RequestTcp;
 
 public class RequestTcpRoute implements RequestTcp {
 
@@ -11,7 +11,7 @@ public class RequestTcpRoute implements RequestTcp {
         if (args.length < 3) {
             return "undefined";
         }
-        return "ROUTE;" + args[1] + args[2];
+        return "ROUTE;" + args[1] + ";" + args[2];
     }
     
 }

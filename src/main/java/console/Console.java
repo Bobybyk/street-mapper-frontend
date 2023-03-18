@@ -5,24 +5,40 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import client.Client;
-import requests.tcp.RequestTcp;
-import requests.tcp.out.RequestTcpRoute;
+import commands.debug.CommandDebug;
+import commands.debug.CommandKill;
+import commands.tcp.RequestTcp;
+import commands.tcp.out.RequestTcpRoute;
 
 public class Console extends Thread {
     private Client client;
     private Scanner sc;
-    private LinkedList<String> requestList;
-    private HashMap<String, RequestTcp> commandListAsk;
+    private LinkedList<String> RequestListIndexes;
+    private HashMap<String, RequestTcp> requestList;
+    private HashMap<String, CommandDebug> commandList;
     private boolean isRunning;
     
     public Console(Client client) {
         this.client = client;
         this.sc = new Scanner(System.in);
-        this.requestList = new LinkedList<String>();
-        this.commandListAsk = new HashMap<String, RequestTcp>();
-        requestList.add("ROUTE");
-        commandListAsk.put("ROUTE", new RequestTcpRoute());
+        this.RequestListIndexes = new LinkedList<String>();
+        this.requestList = new HashMap<String, RequestTcp>();
+        commandList = new HashMap<String, CommandDebug>();
+        RequestListIndexes.add("ROUTE");
+        requestList.put("ROUTE", new RequestTcpRoute());
+        commandList.put("kill", new CommandKill());
         isRunning = true;
+
+        System.out.println("############################################");
+        System.out.println("##                                        ##");
+        System.out.println("##            Console de debug            ##");
+        System.out.println("##                                        ##");
+        System.out.println("##----------------------------------------##");
+        System.out.println("##                                        ##");
+        System.out.println("## kill : ferme le programme              ##");
+        System.out.println("## ROUTE <addr1> <addr2> : demande trajet ##");
+        System.out.println("##                                        ##");
+        System.out.println("############################################");
     }
 
     /**
@@ -30,35 +46,44 @@ public class Console extends Thread {
      * @return : true si la commande existe, false sinon
      */
     private boolean requestExists(String index) {
-        return requestList.contains(index);
+        return RequestListIndexes.contains(index);
+    }
+
+    private boolean commandExists(String index) {
+        return commandList.containsKey(index);
     }
 
     /**
-     * @param request : requête provenant de l'entrée standard
-     * @return : les données segmentées
+     * @param command : command provenant de l'entrée standard
+     * @return : la commande segmentées
      */
-    private String[] segmentsRequest(String request) {
-        String[] args = request.split(";");
+    private String[] segmentsCommand(String command) {
+        String[] args = command.split(" ");
 		return args;
 	}
 
     /**
-     * @param request : requête provenant de l'entrée standard
+     * @param command : commande provenant de l'entrée standard
      */
-    private void handleRequest(String request) {
-        String[] segmentedRequest = segmentsRequest(request);
-        if(!requestExists(segmentedRequest[0])) {
-            System.out.println("Requête non définie dans le protocole");
-        } else if (client != null) {
-            String buildedRequest = commandListAsk.get(segmentedRequest[0]).commandBuilder(segmentedRequest);
-            if (buildedRequest.equals("undefined")) {
-                System.out.println("Requête non définie dans le protocole");
+    private void handleCommand(String command) {
+        String[] segmentedCommand = segmentsCommand(command);
+        if(requestExists(segmentedCommand[0])) {
+            if (client != null) {
+                String buildedRequest = requestList.get(segmentedCommand[0]).commandBuilder(segmentedCommand);
+                if (buildedRequest.equals("undefined")) {
+                    System.out.println("Requête non définie dans le protocole");
+                } else {
+                    client.setExpectedDataIndex(segmentedCommand[0]);
+                    client.sendRequest(buildedRequest);
+                }
             } else {
-                client.setExpectedDataIndex(segmentedRequest[0]);
-                client.sendRequest(buildedRequest);
+                System.out.println("Aucune connexion au serveur");
             }
+        } 
+        else if (commandExists(segmentedCommand[0])) {
+            commandList.get(segmentedCommand[0]).execute(segmentedCommand);
         } else {
-            System.out.println("Client non défini");
+            System.out.println("Commande non définie dans le protocole");
         }
     }
 
@@ -73,7 +98,7 @@ public class Console extends Thread {
     public void run() {
         while(isRunning) {
             layout();
-            handleRequest(sc.nextLine());
+            handleCommand(sc.nextLine());
         }
 
     }

@@ -1,4 +1,4 @@
-package requests.tcp;
+package commands.tcp;
 
 public interface RequestTcp {
     
