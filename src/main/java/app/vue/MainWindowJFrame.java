@@ -15,7 +15,7 @@ public class MainWindowJFrame extends JFrame {
         setContentPane(new RootJPanel());
         setAlwaysOnTop(true);
         setTitle("Application de transport | GLA 2023");
-      //  setResizable(false);
+        setResizable(false);
         pack();
     }
 

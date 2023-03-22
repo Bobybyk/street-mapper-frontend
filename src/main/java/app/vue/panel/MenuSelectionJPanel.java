@@ -16,9 +16,9 @@ public class MenuSelectionJPanel extends JPanel {
         this.rootJPanel = rootJPanel;
         this.centerPanel = new JPanel();
         this.buttonSearchTrajet = BuilderJComposant.createJButton("Rercherche");
-        this.buttonHistory = BuilderJComposant.createJButton("Mes trajets");
+        this.buttonHistory = BuilderJComposant.createJButton("Historique");
         this.setPreferredSize(new Dimension(250, 500));
-        this.setBackground(new Color(245,255,250));
+        this.setBackground(new Color(100,166,74));
         this.add(buttonSearchTrajet, CENTER_ALIGNMENT);
         this.add(buttonHistory, CENTER_ALIGNMENT);
         actionListerner();
@@ -26,9 +26,7 @@ public class MenuSelectionJPanel extends JPanel {
 
     private void actionListerner() {
         buttonHistory.addActionListener(actionEvent -> {
-            HistoryTrajetJPanel panel = new HistoryTrajetJPanel();
-            JScrollPane paneScroll = new JScrollPane(panel,  JScrollPane.HORIZONTAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            rootJPanel.updateRootPanel(paneScroll);
+            rootJPanel.updateRootPanel(new HistoryTrajetJPanel());
         });
 
         buttonSearchTrajet.addActionListener(actionEvent -> {

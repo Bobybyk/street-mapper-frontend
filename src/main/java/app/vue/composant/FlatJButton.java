@@ -21,6 +21,7 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
         setContentAreaFilled(false);
         setBackground(new Color(195, 255, 104));
         setFont(BuilderJComposant.lemontRegularFont(20f));
+        setFocusPainted(false);
         addMouseListener(this);
         addMouseMotionListener(this);
     }
@@ -53,10 +54,12 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
+        setForeground(Color.white);
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
+        setForeground(Color.BLACK);
     }
 
     @Override
