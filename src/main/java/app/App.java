@@ -5,14 +5,22 @@ package app;
 
 import app.vue.MainWindowJFrame;
 
+import javax.swing.*;
+
 public class App {
 
     public String getGreeting() {
         return "Hello world.";
     }
+
     public static void main(String[] args) {
 
-        new MainWindowJFrame();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MainWindowJFrame();
+            }
+        });
+
         //System.out.println(new App().getGreeting());
     }
 }

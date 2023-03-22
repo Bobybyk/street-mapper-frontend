@@ -1,14 +1,14 @@
-package app.vue;
+package app.vue.panel;
 
 import javax.swing.*;
 
 public class RootJPanel extends JPanel {
 
 
-    private JPanel rootJPanel;
-    private MenuSelectionJPanel selectionJPanel;
+    private final JPanel rootJPanel;
+    private final MenuSelectionJPanel selectionJPanel;
 
-    RootJPanel(){
+    public RootJPanel(){
         rootJPanel = new JPanel();
         rootJPanel.add(new SearchTrajetJPanel());
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -17,7 +17,7 @@ public class RootJPanel extends JPanel {
         add(rootJPanel);
     }
 
-    public void updateRootPanel(JPanel rootJPanel){
+    public void updateRootPanel(JComponent rootJPanel){
         this.rootJPanel.removeAll();
         this.rootJPanel.add(rootJPanel);
         repaint();

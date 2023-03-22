@@ -1,7 +1,9 @@
 package app.vue;
 
+import app.vue.panel.RootJPanel;
+import app.vue.utils.BuilderJComposant;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class MainWindowJFrame extends JFrame {
 
@@ -11,7 +13,9 @@ public class MainWindowJFrame extends JFrame {
         setVisible(true);
         setLocationRelativeTo(null);
         setContentPane(new RootJPanel());
-        setResizable(false);
+        setAlwaysOnTop(true);
+        setTitle("Application de transport | GLA 2023");
+      //  setResizable(false);
         pack();
     }
 

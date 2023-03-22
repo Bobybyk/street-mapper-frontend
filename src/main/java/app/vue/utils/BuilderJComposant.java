@@ -1,33 +1,37 @@
 package app.vue.utils;
 
+import app.vue.composant.FlatJButton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.IOException;
 
 public class BuilderJComposant {
 
     public static JButton createJButton(String buttonName){
-        final JButton jButton = new JButton(buttonName);
-        jButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jButton.setBorderPainted(false);
-        jButton.setContentAreaFilled(false);
-        jButton.setFont(new Font("Serif",Font.BOLD,20));
-        jButton.addFocusListener(new FocusListener(){
-
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-                jButton.getGraphics().setPaintMode();
-                jButton.getGraphics().drawLine(10, 10, 15, 15);
-            }
-
-            @Override
-            public void focusLost(FocusEvent focusEvent) {
-                jButton.getGraphics().setXORMode(Color.red);
-                jButton.getGraphics().drawLine(10, 10, 15, 15);
-            }
-        });
-        return jButton;
+        return new FlatJButton(buttonName);
     }
 
+    public static Font lemontRegularFont(float value){
+        try {
+            final Font font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/LEMONMILK-Regular.otf")).deriveFont(value);
+            return font;
+        } catch (FontFormatException | IOException e) {
+            System.out.println("Erreur chargement des polices d'écritures");
+        }
+        return new Font(Font.SANS_SERIF,  Font.BOLD, 30);
+    }
+
+    public static Font lemonLightFont(float value){
+        try {
+            final Font font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/LEMONMILK-Light.otf")).deriveFont(value);
+            return font;
+        } catch (FontFormatException | IOException e) {
+            System.out.println("Erreur chargement des polices d'écritures");
+        }
+        return new Font(Font.SANS_SERIF,  Font.BOLD, 30);
+    }
 }
