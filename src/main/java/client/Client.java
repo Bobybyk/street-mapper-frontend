@@ -6,7 +6,8 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.HashMap;
+
+import data.Route;
 
 public class Client extends Thread {
     /**
@@ -22,10 +23,6 @@ public class Client extends Thread {
      */
     private PrintWriter out;
     /**
-     * liste des objets Data reçus par le serveur
-     */
-    private HashMap<String, Serializable> dataObjectList;
-    /**
      * index de la donnée attendue en lecture sur l'ObjectInputStream
      */
     private String expectedDataIndex;
@@ -33,6 +30,14 @@ public class Client extends Thread {
      * true si le client est connecté au serveur, false sinon
      */
     private boolean isConnected;
+    /**
+     * nombre de requêtes envoyées au serveur
+     */
+    private int sendedRequestCount;
+    /**
+     * données de trajet reçues du serveur
+     */
+    private static Route route;
 
     public Client(String ip, int port) {
         try {
@@ -52,27 +57,48 @@ public class Client extends Thread {
         }
     }
 
+    private Serializable readServerData() {
+        try {
+            return (Serializable) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des données");
+            kill();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des données");
+            kill();
+        }
+        return null;
+    }
+
+    private void handleReceivedData(Serializable data) {
+        switch (expectedDataIndex) {
+            case "route":
+                route = (Route) data;
+                break;
+            default:
+                System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
+                break;
+        }
+    }
+
     @Override
     public void run() {
         System.out.println("Début de l'écoute TCP");
         while(isConnected) {
-            if (!expectedDataIndex.isEmpty()) {
-                try {
-                    Serializable d = (Serializable) ois.readObject();
-                    expectedDataIndex = "";
-                } catch (ClassNotFoundException e) {
-                    System.out.println("Déconnecté !");
-                    isConnected = false;
-                } catch (IOException e) {
-                    System.out.println("Déconnecté !");
-                    isConnected = false;
-                }
+            Serializable data = readServerData();
+            if (data == null) {
+                System.out.println("Erreur lors de la récupération des données");
+                kill();
             }
-        }
-        try {
-            this.socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            else if (sendedRequestCount == 1) {
+                handleReceivedData(data);
+                sendedRequestCount--;
+            } else {
+                sendedRequestCount--;
+            }
+            expectedDataIndex = "";
         }
     }
 
@@ -102,6 +128,7 @@ public class Client extends Thread {
         try {
             this.socket.close();
             this.isConnected = false;
+            System.out.println("Client déconnecté !");
             return true;
         } catch (IOException e) {
             e.printStackTrace();

@@ -9,7 +9,6 @@ public class CommandKill implements CommandDebug {
         if (console.getClient() == null) {
             console.setRunning(false);
         } else if (console.getClient().kill()) {
-            System.out.println("Client déconnecté !");
             console.setRunning(false);
         } else {
             System.out.println("Impossible de fermer la connexion...");
