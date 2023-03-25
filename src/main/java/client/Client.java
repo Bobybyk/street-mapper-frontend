@@ -3,11 +3,10 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-
-import data.Data;
 
 public class Client extends Thread {
     /**
@@ -25,7 +24,7 @@ public class Client extends Thread {
     /**
      * liste des objets Data reçus par le serveur
      */
-    private HashMap<String, Data> dataObjectList;
+    private HashMap<String, Serializable> dataObjectList;
     /**
      * index de la donnée attendue en lecture sur l'ObjectInputStream
      */
@@ -59,7 +58,7 @@ public class Client extends Thread {
         while(isConnected) {
             if (expectedDataIndex != "") {
                 try {
-                    Data d = (Data) ois.readObject();
+                    Serializable d = (Serializable) ois.readObject();
                     expectedDataIndex = "";
                 } catch (ClassNotFoundException e) {
                     System.out.println("Déconnecté !");

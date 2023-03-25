@@ -22,7 +22,7 @@ public class Console extends Thread {
     /**
      * liste des index de commandes disponibles
      */
-    private LinkedList<String> RequestListIndexes;
+    private LinkedList<String> requestListIndexes;
     /**
      * liste des requêtes disponibles, triées par index
      */
@@ -39,10 +39,10 @@ public class Console extends Thread {
     public Console(Client client) {
         this.client = client;
         this.sc = new Scanner(System.in);
-        this.RequestListIndexes = new LinkedList<String>();
+        this.requestListIndexes = new LinkedList<String>();
         this.requestList = new HashMap<String, RequestTcp>();
         commandList = new HashMap<String, CommandDebug>();
-        RequestListIndexes.add("ROUTE");
+        requestListIndexes.add("ROUTE");
         requestList.put("ROUTE", new RequestTcpRoute());
         commandList.put("kill", new CommandKill());
         isRunning = true;
@@ -64,7 +64,7 @@ public class Console extends Thread {
      * @return : true si la commande existe, false sinon
      */
     private boolean requestExists(String index) {
-        return RequestListIndexes.contains(index);
+        return requestListIndexes.contains(index);
     }
 
     private boolean commandExists(String index) {

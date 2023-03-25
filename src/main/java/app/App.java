@@ -7,12 +7,17 @@ import client.Client;
 import console.Console;
 
 public class App {
+    /**
+     * The host to connect to.
+     */
+    private static final String HOST = "localhost";
+    /**
+     * The port to connect to.
+     */
+    private static final int PORT = 12345;
 
-    public String getGreeting() {
-        return "Hello world.";
-    }
     public static void main(String[] args) {
-        Client client = new Client("localhost", 12345);
+        Client client = new Client(HOST, PORT);
         if (client.isConnected()) {
             new Console(client).start();
         } else {

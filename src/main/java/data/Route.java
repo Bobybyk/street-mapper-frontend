@@ -1,5 +1,7 @@
 package data;
 
-public class Route implements Data {
+import java.io.Serializable;
+
+public class Route implements Serializable {
     
 }
