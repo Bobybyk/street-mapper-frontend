@@ -99,7 +99,7 @@ public class Console extends Thread {
             }
         } 
         else if (commandExists(segmentedCommand[0])) {
-            commandList.get(segmentedCommand[0]).execute(segmentedCommand);
+            commandList.get(segmentedCommand[0]).execute(segmentedCommand, this);
         } else {
             System.out.println("Commande non définie dans le protocole");
         }
@@ -120,7 +120,20 @@ public class Console extends Thread {
             layout();
             handleCommand(sc.nextLine());
         }
+    }
 
+    /**
+     * @return client
+     */
+    public Client getClient() {
+        return client;
+    }
+
+    /**
+     * @param b
+     */
+    public void setRunning(boolean b) {
+        isRunning = b;
     }
 
 }

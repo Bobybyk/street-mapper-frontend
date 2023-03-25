@@ -56,7 +56,7 @@ public class Client extends Thread {
     public void run() {
         System.out.println("Début de l'écoute TCP");
         while(isConnected) {
-            if (expectedDataIndex != "") {
+            if (!expectedDataIndex.isEmpty()) {
                 try {
                     Serializable d = (Serializable) ois.readObject();
                     expectedDataIndex = "";
@@ -96,6 +96,17 @@ public class Client extends Thread {
      */
     public boolean isConnected() {
         return isConnected;
+    }
+
+    public boolean kill() {
+        try {
+            this.socket.close();
+            this.isConnected = false;
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
