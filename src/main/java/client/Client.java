@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import data.DataList;
 import data.Route;
 
 public class Client extends Thread {
@@ -34,10 +35,6 @@ public class Client extends Thread {
      * nombre de requêtes envoyées au serveur
      */
     private int sendedRequestCount;
-    /**
-     * données de trajet reçues du serveur
-     */
-    private static Route route;
 
     public Client(String ip, int port) {
         try {
@@ -72,10 +69,10 @@ public class Client extends Thread {
         return null;
     }
 
-    private void handleReceivedData(Serializable data) {
+    private void handleReceivedData(Serializable serverData) {
         switch (expectedDataIndex) {
             case "route":
-                route = (Route) data;
+                DataList.route = (Route) serverData;
                 break;
             default:
                 System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
@@ -87,13 +84,13 @@ public class Client extends Thread {
     public void run() {
         System.out.println("Début de l'écoute TCP");
         while(isConnected) {
-            Serializable data = readServerData();
-            if (data == null) {
+            Serializable serverData = readServerData();
+            if (serverData == null) {
                 System.out.println("Erreur lors de la récupération des données");
                 kill();
             }
             else if (sendedRequestCount == 1) {
-                handleReceivedData(data);
+                handleReceivedData(serverData);
                 sendedRequestCount--;
             } else {
                 sendedRequestCount--;
