@@ -91,9 +91,8 @@ public class Console extends Thread {
                 if (buildedRequest.equals("undefined")) {
                     System.out.println("Requête non définie dans le protocole");
                 } else {
-                    client.setExpectedDataIndex(segmentedCommand[0]);
-                    client.incrementSendedRequestCount();
-                    client.sendRequest(buildedRequest);
+                    client.setNextExpectedDataIndex(segmentedCommand[0]);
+                    client.setNextRequest(buildedRequest);
                 }
             } else {
                 System.out.println("Aucune connexion au serveur");

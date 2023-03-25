@@ -28,13 +28,17 @@ public class Client extends Thread {
      */
     private String expectedDataIndex;
     /**
+     * index de la donnée pour la prochaine requête
+     */
+    private String nextExpectedDataIndex;
+    /**
+     * prochaine requête à envoyer au serveur
+     */
+    private String nextRequestToSend;
+    /**
      * true si le client est connecté au serveur, false sinon
      */
     private boolean isConnected;
-    /**
-     * nombre de requêtes envoyées au serveur
-     */
-    private int sendedRequestCount;
 
     public Client(String ip, int port) {
         try {
@@ -42,7 +46,6 @@ public class Client extends Thread {
             this.socket = new Socket(ip, port);
             this.out = new PrintWriter(this.socket.getOutputStream());
             this.ois = new ObjectInputStream(this.socket.getInputStream());
-            expectedDataIndex = "";
             this.isConnected = true;
             System.out.println("...succès");
         } catch (UnknownHostException e) {
@@ -79,7 +82,7 @@ public class Client extends Thread {
     private void handleReceivedData(Serializable serverData) {
         // TODO : vérifier la bonne conformité des données reçues
         switch (expectedDataIndex) {
-            case "route":
+            case "ROUTE":
                 DataList.route = (Route) serverData;
                 break;
             default:
@@ -97,29 +100,33 @@ public class Client extends Thread {
                 System.out.println("Erreur lors de la récupération des données");
                 kill();
             }
-            else if (sendedRequestCount == 1) {
-                handleReceivedData(serverData);
-                sendedRequestCount--;
-            } else {
-                sendedRequestCount--;
-            }
-            expectedDataIndex = "";
+            handleReceivedData(serverData);
+            sendRequest();
         }
     }
 
     /**
-     * @param request requête à envoyer au serveur
+     * envoie au serveur la dernière requête enregistrée
      */
-    public void sendRequest(String request) {
-        this.out.println(request);
-        this.out.flush();
+    public void sendRequest() {
+        if (nextRequestToSend != null && nextExpectedDataIndex != null) {
+            expectedDataIndex = nextExpectedDataIndex;
+            this.out.println(nextRequestToSend);
+            nextRequestToSend = null;
+            nextExpectedDataIndex = null;
+            this.out.flush();
+        }
+    }
+
+    public void setNextRequest(String request) {
+        this.nextExpectedDataIndex = request;
     }
 
     /**
      * @param expectedDataIndex index de la donnée attendue en lecture sur l'ObjectInputStream
      */
-    public void setExpectedDataIndex(String expectedDataIndex) {
-        this.expectedDataIndex = expectedDataIndex;
+    public void setNextExpectedDataIndex(String expectedDataIndex) {
+        this.nextExpectedDataIndex = expectedDataIndex;
     }
 
     /**
@@ -127,13 +134,6 @@ public class Client extends Thread {
      */
     public boolean isConnected() {
         return isConnected;
-    }
-
-    /**
-     * incrémente le nombre de requêtes envoyées au serveur
-     */
-    public void incrementSendedRequestCount() {
-        this.sendedRequestCount++;
     }
 
     /**
