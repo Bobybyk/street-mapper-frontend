@@ -119,11 +119,16 @@ public class Client extends Thread {
         }
     }
 
+    /**
+     * défini la prochaine requête à envoyer au serveur
+     * @param request prochaine requête à envoyer au serveur
+     */
     public void setNextRequest(String request) {
         this.nextExpectedDataIndex = request;
     }
 
     /**
+     * défini l'index de la prochaine donnée à envoyée qui sera attendu en lecture sur l'ObjectInputStream
      * @param expectedDataIndex index de la donnée attendue en lecture sur l'ObjectInputStream
      */
     public void setNextExpectedDataIndex(String expectedDataIndex) {
