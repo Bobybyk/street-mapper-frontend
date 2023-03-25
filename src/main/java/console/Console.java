@@ -6,8 +6,10 @@ import java.util.Scanner;
 
 import client.Client;
 import commands.debug.CommandDebug;
+import commands.debug.CommandIndexesList;
 import commands.debug.CommandKill;
 import commands.tcp.RequestTcp;
+import commands.tcp.RequestIndexesList;
 import commands.tcp.out.RequestTcpRoute;
 
 public class Console extends Thread {
@@ -42,9 +44,9 @@ public class Console extends Thread {
         this.requestListIndexes = new LinkedList<String>();
         this.requestList = new HashMap<String, RequestTcp>();
         commandList = new HashMap<String, CommandDebug>();
-        requestListIndexes.add("ROUTE");
-        requestList.put("ROUTE", new RequestTcpRoute());
-        commandList.put("kill", new CommandKill());
+        requestListIndexes.add(RequestIndexesList.ROUTE);
+        requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
+        commandList.put(CommandIndexesList.KILL, new CommandKill());
         isRunning = true;
 
         System.out.println("############################################");

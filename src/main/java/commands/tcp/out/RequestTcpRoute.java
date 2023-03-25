@@ -1,6 +1,7 @@
 package commands.tcp.out;
 
 import commands.tcp.RequestTcp;
+import commands.tcp.RequestIndexesList;
 
 public class RequestTcpRoute implements RequestTcp {
 
@@ -11,7 +12,7 @@ public class RequestTcpRoute implements RequestTcp {
         if (args.length < 3) {
             return "undefined";
         }
-        return "ROUTE;" + args[1] + ";" + args[2];
+        return RequestIndexesList.ROUTE+";" + args[1] + ";" + args[2];
     }
     
 }

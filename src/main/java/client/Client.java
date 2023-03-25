@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import commands.tcp.RequestIndexesList;
 import data.DataList;
 import data.Route;
 
@@ -82,7 +83,7 @@ public class Client extends Thread {
     private void handleReceivedData(Serializable serverData) {
         // TODO : vérifier la bonne conformité des données reçues
         switch (expectedDataIndex) {
-            case "ROUTE":
+            case RequestIndexesList.ROUTE:
                 DataList.route = (Route) serverData;
                 break;
             default:
