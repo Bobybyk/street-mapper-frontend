@@ -60,8 +60,8 @@ public class Console extends Thread {
     }
 
     /**
-     * @param index : index de la requête
-     * @return : true si la commande existe, false sinon
+     * @param index index de la requête
+     * @return true si la commande existe, false sinon
      */
     private boolean requestExists(String index) {
         return requestListIndexes.contains(index);
@@ -72,8 +72,8 @@ public class Console extends Thread {
     }
 
     /**
-     * @param command : command provenant de l'entrée standard
-     * @return : la commande segmentées
+     * @param command command provenant de l'entrée standard
+     * @return la commande segmentées
      */
     private String[] segmentsCommand(String command) {
         String[] args = command.split(" ");
@@ -81,7 +81,7 @@ public class Console extends Thread {
 	}
 
     /**
-     * @param command : commande provenant de l'entrée standard
+     * @param command commande provenant de l'entrée standard
      */
     private void handleCommand(String command) {
         String[] segmentedCommand = segmentsCommand(command);
@@ -92,6 +92,7 @@ public class Console extends Thread {
                     System.out.println("Requête non définie dans le protocole");
                 } else {
                     client.setExpectedDataIndex(segmentedCommand[0]);
+                    client.incrementSendedRequestCount();
                     client.sendRequest(buildedRequest);
                 }
             } else {

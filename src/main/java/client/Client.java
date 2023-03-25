@@ -54,6 +54,9 @@ public class Client extends Thread {
         }
     }
 
+    /**
+     * lit les données envoyées par le serveur et gère les erreurs
+     */
     private Serializable readServerData() {
         try {
             return (Serializable) ois.readObject();
@@ -69,7 +72,12 @@ public class Client extends Thread {
         return null;
     }
 
+    /**
+     * gère les données reçues du serveur
+     * @param serverData données envoyées par le serveur
+     */
     private void handleReceivedData(Serializable serverData) {
+        // TODO : vérifier la bonne conformité des données reçues
         switch (expectedDataIndex) {
             case "route":
                 DataList.route = (Route) serverData;
@@ -100,7 +108,7 @@ public class Client extends Thread {
     }
 
     /**
-     * @param request : requête à envoyer au serveur
+     * @param request requête à envoyer au serveur
      */
     public void sendRequest(String request) {
         this.out.println(request);
@@ -108,19 +116,29 @@ public class Client extends Thread {
     }
 
     /**
-     * @param expectedDataIndex : index de la donnée attendue en lecture sur l'ObjectInputStream
+     * @param expectedDataIndex index de la donnée attendue en lecture sur l'ObjectInputStream
      */
     public void setExpectedDataIndex(String expectedDataIndex) {
         this.expectedDataIndex = expectedDataIndex;
     }
 
     /**
-     * @return : true si le client est connecté au serveur, false sinon
+     * @return true si le client est connecté au serveur, false sinon
      */
     public boolean isConnected() {
         return isConnected;
     }
 
+    /**
+     * incrémente le nombre de requêtes envoyées au serveur
+     */
+    public void incrementSendedRequestCount() {
+        this.sendedRequestCount++;
+    }
+
+    /**
+     * @return : true si le client a réussi à se déconnecter du serveur, false sinon
+     */
     public boolean kill() {
         try {
             this.socket.close();
