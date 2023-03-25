@@ -11,11 +11,29 @@ import commands.tcp.RequestTcp;
 import commands.tcp.out.RequestTcpRoute;
 
 public class Console extends Thread {
+    /**
+     * objet contenant toutes les méthodes et paramètres nécessaires à la communication avec le serveur
+     */
     private Client client;
+    /**
+     * pour lire les entrées standard
+     */
     private Scanner sc;
+    /**
+     * liste des index de commandes disponibles
+     */
     private LinkedList<String> RequestListIndexes;
+    /**
+     * liste des requêtes disponibles, triées par index
+     */
     private HashMap<String, RequestTcp> requestList;
+    /**
+     * liste des commandes disponibles, triées par index
+     */
     private HashMap<String, CommandDebug> commandList;
+    /**
+     * true si la console est en cours d'exécution, false sinon
+     */
     private boolean isRunning;
     
     public Console(Client client) {
@@ -87,12 +105,14 @@ public class Console extends Thread {
         }
     }
 
+    /**
+     * affiche le layout de la console
+     */
     public static void layout() {
         System.out.print("\u001B[31m");
         System.out.print("map_debug> ");
         System.out.print("\u001B[37m");
     }
-
 
     @Override
     public void run() {

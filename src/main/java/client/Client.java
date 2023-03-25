@@ -10,11 +10,29 @@ import java.util.HashMap;
 import data.Data;
 
 public class Client extends Thread {
+    /**
+     * socket pour assurer la communication TCP avec le serveur
+     */
     private Socket socket;
+    /**
+     * pour lecture des objets émis par le serveur
+     */
     private ObjectInputStream ois;
+    /**
+     * pour écriture des requêtes TCP au serveur
+     */
     private PrintWriter out;
+    /**
+     * liste des objets Data reçus par le serveur
+     */
     private HashMap<String, Data> dataObjectList;
+    /**
+     * index de la donnée attendue en lecture sur l'ObjectInputStream
+     */
     private String expectedDataIndex;
+    /**
+     * true si le client est connecté au serveur, false sinon
+     */
     private boolean isConnected;
 
     public Client(String ip, int port) {
@@ -41,7 +59,8 @@ public class Client extends Thread {
         while(isConnected) {
             if (expectedDataIndex != "") {
                 try {
-                    dataObjectList.put(expectedDataIndex, (Data) ois.readObject());
+                    Data d = (Data) ois.readObject();
+                    expectedDataIndex = "";
                 } catch (ClassNotFoundException e) {
                     System.out.println("Déconnecté !");
                     isConnected = false;
