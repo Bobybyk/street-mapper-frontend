@@ -37,6 +37,10 @@ public class Client extends Thread {
      */
     private String nextRequestToSend;
     /**
+     * true si des données sont en vol, false sinon
+     */
+    private boolean isTravalingData;
+    /**
      * true si le client est connecté au serveur, false sinon
      */
     private boolean isConnected;
@@ -44,10 +48,10 @@ public class Client extends Thread {
     public Client(String ip, int port) {
         try {
             System.out.println("Création de la connection TCP avec le serveur...");
-            this.socket = new Socket(ip, port);
-            this.out = new PrintWriter(this.socket.getOutputStream());
-            this.ois = new ObjectInputStream(this.socket.getInputStream());
-            this.isConnected = true;
+            socket = new Socket(ip, port);
+            out = new PrintWriter(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());
+            isConnected = true;
             System.out.println("...succès");
         } catch (UnknownHostException e) {
             System.out.println("[ERREUR] : L'adresse IP de l'hôte ne peut être déterminée");
@@ -101,21 +105,23 @@ public class Client extends Thread {
                 System.out.println("Erreur lors de la récupération des données");
                 kill();
             }
+            isTravalingData = false;
             handleReceivedData(serverData);
             sendRequest();
         }
     }
 
     /**
-     * envoie au serveur la dernière requête enregistrée
+     * envoie au serveur la dernière requête enregistrée si aucunes données sont en transfert
      */
     public void sendRequest() {
-        if (nextRequestToSend != null && nextExpectedDataIndex != null) {
+        if (nextRequestToSend != null && nextExpectedDataIndex != null && !isTravalingData) {
             expectedDataIndex = nextExpectedDataIndex;
-            this.out.println(nextRequestToSend);
+            out.println(nextRequestToSend);
+            isTravalingData = true;
             nextRequestToSend = null;
             nextExpectedDataIndex = null;
-            this.out.flush();
+            out.flush();
         }
     }
 

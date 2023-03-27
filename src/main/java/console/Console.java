@@ -95,6 +95,7 @@ public class Console extends Thread {
                 } else {
                     client.setNextExpectedDataIndex(segmentedCommand[0]);
                     client.setNextRequest(buildedRequest);
+                    client.sendRequest();
                 }
             } else {
                 System.out.println("Aucune connexion au serveur");
