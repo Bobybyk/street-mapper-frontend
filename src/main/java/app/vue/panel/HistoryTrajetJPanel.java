@@ -1,6 +1,7 @@
 package app.vue.panel;
 
 import app.vue.composant.FlatJScrollPane;
+import app.vue.utils.BuilderJComposant;
 import map.Trajet;
 
 import javax.swing.*;
@@ -27,7 +28,9 @@ public class HistoryTrajetJPanel extends JPanel {
         setBackground(new Color(184, 223, 168));
         setPreferredSize(new Dimension(650, 500));
         for (int i = 0; i < 5; i++) panelTrajetHistorique.add(new ListTrajetPanel(new Trajet()));
-        add(new JLabel("<html> <h3>La liste des vos derniers trajets recherchées : </h3></html>"));
+        final JLabel jlabel = new JLabel("La liste des vos derniers trajets recherchées");
+        jlabel.setFont(BuilderJComposant.lemontRegularFont(22));
+        add(jlabel);
         add(paneScroll);
     }
 

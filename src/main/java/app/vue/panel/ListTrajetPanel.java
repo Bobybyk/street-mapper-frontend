@@ -19,7 +19,7 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
 
     ListTrajetPanel(Trajet trajet) {
         setBorder(BorderFactory.createLineBorder(new Color(100, 166, 74)));
-        setBackground(new Color(184, 223, 168));
+        setBackground(new Color(171 , 235, 198));
         final Dimension d = new Dimension(650, 150);
         setPreferredSize(d);
         setMaximumSize(d);
@@ -30,7 +30,7 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
                 "<ul>" +
                 trajetString +
                 "</html>");//trajet.getDepart() +" à " + trajet.getArrive() + " <html><br>test</html>");
-        htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));
+        this.htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));
         this.add(htmlJLabel);
         addMouseListener(this);
     }

@@ -17,11 +17,7 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
      * l'implementation graphique
      */
 
-    private Graphics graphics;
-
-
     public FlatJButton(String name){
-        this.graphics = super.getGraphics();
         setText(name);
         setPreferredSize(new Dimension(250, 100));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -32,6 +28,11 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
         setFocusPainted(false);
         addMouseListener(this);
         addMouseMotionListener(this);
+    }
+
+    public FlatJButton(String name, String path){
+        this(name);
+        this.setIcon(new ImageIcon(path));
     }
 
     @Override
@@ -62,7 +63,7 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
-        setForeground(Color.white);
+        setForeground(new Color(127,178,49));
     }
 
     @Override

@@ -11,8 +11,12 @@ import java.io.IOException;
 
 public class BuilderJComposant {
 
-    public static JButton createJButton(String buttonName){
+    public static FlatJButton createJButton(String buttonName){
         return new FlatJButton(buttonName);
+    }
+
+    public static FlatJButton createJButton(String buttonName, String path){
+        return new FlatJButton(buttonName, path);
     }
 
     public static Font lemontRegularFont(float value){

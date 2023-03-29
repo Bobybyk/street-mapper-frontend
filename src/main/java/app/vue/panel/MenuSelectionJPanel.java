@@ -1,5 +1,6 @@
 package app.vue.panel;
 
+import app.vue.composant.FlatJButton;
 import app.vue.utils.BuilderJComposant;
 
 import javax.swing.*;
@@ -13,17 +14,17 @@ public class MenuSelectionJPanel extends JPanel {
      *
      */
 
-    private final JButton buttonHistory, buttonSearchTrajet;
+    private final FlatJButton buttonHistory, buttonSearchTrajet;
     private final JPanel centerPanel;
     private final RootJPanel rootJPanel;
 
     MenuSelectionJPanel(RootJPanel rootJPanel){
         this.rootJPanel = rootJPanel;
         this.centerPanel = new JPanel();
-        this.buttonSearchTrajet = BuilderJComposant.createJButton("Rercherche");
-        this.buttonHistory = BuilderJComposant.createJButton("Historique");
+        this.buttonSearchTrajet = BuilderJComposant.createJButton("Rercherche", "src/main/resources/icon/recherche_icon.png");
+        this.buttonHistory = BuilderJComposant.createJButton("Historique","src/main/resources/icon/history_icon.png");
         this.setPreferredSize(new Dimension(250, 150));
-        this.setBackground(new Color(100,166,74));
+        this.setBackground(new Color(241, 242, 246));
         this.add(buttonSearchTrajet, CENTER_ALIGNMENT);
         this.add(buttonHistory, CENTER_ALIGNMENT);
         actionListerner();

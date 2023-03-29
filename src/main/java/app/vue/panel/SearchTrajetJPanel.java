@@ -26,6 +26,9 @@ public class SearchTrajetJPanel extends JPanel {
         this.stationArriveList = new JList<>(test);
         this.stationDepartList = new JList<>(test);
         this.valideJbutton = BuilderJComposant.createJButton("Valider");
+        stationDepartList.setFont(BuilderJComposant.lemontRegularFont(18));
+        stationArriveList.setFont(BuilderJComposant.lemontRegularFont(18));
+
         setPreferredSize(new Dimension(650, 500));
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
