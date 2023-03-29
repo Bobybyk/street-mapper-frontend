@@ -9,6 +9,10 @@ import java.awt.*;
 
 public class SearchTrajetJPanel extends JPanel {
 
+    /**
+     * SearchTrajetJPanel est un jpanel
+     * c'est ici qu'on affiche le resultat de recherche
+     */
     private final JList<String> stationDepartList;
     private final JList<String> stationArriveList;
     private final JButton valideJbutton;

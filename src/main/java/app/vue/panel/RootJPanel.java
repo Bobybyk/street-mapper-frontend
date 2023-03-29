@@ -4,6 +4,10 @@ import javax.swing.*;
 
 public class RootJPanel extends JPanel {
 
+    /**
+     * RootJPanel est la jpanel principal ou les elements vont être
+     * changé lors d'un événement de clique
+     */
 
     private final JPanel rootJPanel;
     private final MenuSelectionJPanel selectionJPanel;
@@ -11,10 +15,10 @@ public class RootJPanel extends JPanel {
     public RootJPanel() {
         rootJPanel = new JPanel();
         rootJPanel.add(new SearchTrajetJPanel());
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         selectionJPanel = new MenuSelectionJPanel(this);
-        add(selectionJPanel);
         add(rootJPanel);
+        add(selectionJPanel);
     }
 
     public void updateRootPanel(JComponent rootJPanel) {

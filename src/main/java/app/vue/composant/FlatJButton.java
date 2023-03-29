@@ -10,7 +10,15 @@ import java.awt.event.MouseMotionListener;
 
 public class FlatJButton extends JButton implements MouseListener, MouseMotionListener {
 
+
+    /**
+     * FlatJButton est une class Jbutton
+     * avec des parametres graphiques déjà fait pour facilité
+     * l'implementation graphique
+     */
+
     private Graphics graphics;
+
 
     public FlatJButton(String name){
         this.graphics = super.getGraphics();

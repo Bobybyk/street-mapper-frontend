@@ -9,10 +9,6 @@ import javax.swing.*;
 
 public class App {
 
-    public String getGreeting() {
-        return "Hello world.";
-    }
-
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -20,7 +16,5 @@ public class App {
                 new MainWindowJFrame();
             }
         });
-
-        //System.out.println(new App().getGreeting());
     }
 }

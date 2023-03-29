@@ -10,6 +10,11 @@ import java.awt.event.MouseListener;
 
 public class ListTrajetPanel extends JPanel implements MouseListener {
 
+    /**
+     * ListTrajetPanel est un jpanel
+     * Dans ce jpanel on affiche la liste des trajet disponible
+     *
+     */
     private JLabel htmlJLabel;
 
     ListTrajetPanel(Trajet trajet) {

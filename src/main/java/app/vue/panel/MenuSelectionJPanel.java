@@ -7,6 +7,11 @@ import java.awt.*;
 
 public class MenuSelectionJPanel extends JPanel {
 
+    /**
+     * MenuSelectionJPanel est un jpanel
+     * ou il y'aura les differents action de l'utilisateur
+     *
+     */
 
     private final JButton buttonHistory, buttonSearchTrajet;
     private final JPanel centerPanel;
@@ -17,7 +22,7 @@ public class MenuSelectionJPanel extends JPanel {
         this.centerPanel = new JPanel();
         this.buttonSearchTrajet = BuilderJComposant.createJButton("Rercherche");
         this.buttonHistory = BuilderJComposant.createJButton("Historique");
-        this.setPreferredSize(new Dimension(250, 500));
+        this.setPreferredSize(new Dimension(250, 150));
         this.setBackground(new Color(100,166,74));
         this.add(buttonSearchTrajet, CENTER_ALIGNMENT);
         this.add(buttonHistory, CENTER_ALIGNMENT);

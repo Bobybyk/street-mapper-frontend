@@ -1,24 +1,28 @@
 package app.vue.panel;
 
-import app.vue.utils.BuilderJComposant;
+import app.vue.composant.FlatJScrollPane;
 import map.Trajet;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class HistoryTrajetJPanel extends JPanel {
 
+
+    /**
+     *
+     * HistoryTrajetJPanel est un Jpanel pour avoir
+     * l'historique
+     *
+     */
     private JPanel panelTrajetHistorique;
     private JScrollPane paneScroll;
 
     HistoryTrajetJPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         panelTrajetHistorique = new JPanel();
-        paneScroll = new JScrollPane(panelTrajetHistorique);
-        paneScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        paneScroll.setViewportBorder(BorderFactory.createEmptyBorder());
+        paneScroll = new FlatJScrollPane(panelTrajetHistorique);
+
         panelTrajetHistorique.setLayout(new BoxLayout(panelTrajetHistorique, BoxLayout.Y_AXIS));
         setBackground(new Color(184, 223, 168));
         setPreferredSize(new Dimension(650, 500));
