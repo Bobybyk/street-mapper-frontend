@@ -19,6 +19,7 @@ public class App {
     public static void main(String[] args) {
         Client client = new Client(HOST, PORT);
         if (client.isConnected()) {
+            client.start();
             new Console(client).start();
         } else {
             new Console(null).start();

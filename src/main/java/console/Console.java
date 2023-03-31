@@ -89,13 +89,15 @@ public class Console extends Thread {
         String[] segmentedCommand = segmentsCommand(command);
         if(requestExists(segmentedCommand[0])) {
             if (client != null) {
-                String buildedRequest = requestList.get(segmentedCommand[0]).commandBuilder(segmentedCommand);
-                if (buildedRequest.equals("undefined")) {
-                    System.out.println("Requête non définie dans le protocole");
-                } else {
+                String buildedRequest;
+                try {
+                    buildedRequest = requestList.get(segmentedCommand[0]).commandBuilder(segmentedCommand);
                     client.setNextExpectedDataIndex(segmentedCommand[0]);
                     client.setNextRequest(buildedRequest);
                     client.sendRequest();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Arguments manquants pour la requête");
+                    e.printStackTrace();
                 }
             } else {
                 System.out.println("Aucune connexion au serveur");

@@ -8,10 +8,7 @@ public class RequestTcpRoute implements RequestTcp {
     public RequestTcpRoute() {}
 
     @Override
-    public String commandBuilder(String[] args) {
-        if (args.length < 3) {
-            return "undefined";
-        }
+    public String commandBuilder(String[] args) throws ArrayIndexOutOfBoundsException {
         return RequestIndexesList.ROUTE+";" + args[1] + ";" + args[2];
     }
     
