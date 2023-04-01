@@ -87,12 +87,13 @@ public class Console extends Thread {
      */
     private void handleCommand(String command) {
         String[] segmentedCommand = segmentsCommand(command);
-        if(requestExists(segmentedCommand[0])) {
+        String commandIndex = segmentedCommand[0];
+        if(requestExists(commandIndex)) {
             if (client != null) {
                 String buildedRequest;
                 try {
-                    buildedRequest = requestList.get(segmentedCommand[0]).commandBuilder(segmentedCommand);
-                    client.setNextRequest(buildedRequest, segmentedCommand[0]);
+                    buildedRequest = requestList.get(commandIndex).commandBuilder(segmentedCommand);
+                    client.setNextRequest(buildedRequest, commandIndex);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Arguments manquants pour la requête");
                     e.printStackTrace();
@@ -101,8 +102,8 @@ public class Console extends Thread {
                 System.out.println("Aucune connexion au serveur");
             }
         } 
-        else if (commandExists(segmentedCommand[0])) {
-            commandList.get(segmentedCommand[0]).execute(segmentedCommand, this);
+        else if (commandExists(commandIndex)) {
+            commandList.get(commandIndex).execute(segmentedCommand, this);
         } else {
             System.out.println("Commande non définie dans le protocole");
         }
