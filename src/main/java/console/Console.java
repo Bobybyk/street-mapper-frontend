@@ -1,11 +1,11 @@
 package console;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 import client.Client;
 import commands.debug.CommandDebug;
+import commands.debug.CommandHelp;
 import commands.debug.CommandIndexesList;
 import commands.debug.CommandKill;
 import commands.tcp.RequestTcp;
@@ -22,10 +22,6 @@ public class Console extends Thread {
      */
     private Scanner sc;
     /**
-     * liste des index de commandes disponibles
-     */
-    private LinkedList<String> requestListIndexes;
-    /**
      * liste des requêtes disponibles, triées par index
      */
     private HashMap<String, RequestTcp> requestList;
@@ -38,27 +34,26 @@ public class Console extends Thread {
      */
     private boolean isRunning;
     
+
+    /**
+     * @param client objet contenant toutes les méthodes et paramètres nécessaires à la communication avec le serveur
+     */
     public Console(Client client) {
         this.client = client;
         this.sc = new Scanner(System.in);
-        this.requestListIndexes = new LinkedList<String>();
         this.requestList = new HashMap<String, RequestTcp>();
-        commandList = new HashMap<String, CommandDebug>();
-        requestListIndexes.add(RequestIndexesList.ROUTE);
-        requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
-        commandList.put(CommandIndexesList.KILL, new CommandKill());
-        isRunning = true;
+        this.commandList = new HashMap<String, CommandDebug>();
 
-        System.out.println("############################################");
-        System.out.println("##                                        ##");
-        System.out.println("##            Console de debug            ##");
-        System.out.println("##                                        ##");
-        System.out.println("##----------------------------------------##");
-        System.out.println("##                                        ##");
-        System.out.println("## kill : ferme le programme              ##");
-        System.out.println("## ROUTE <addr1> <addr2> : demande trajet ##");
-        System.out.println("##                                        ##");
-        System.out.println("############################################");
+        // initialisation des commandes et requêtes
+        this.requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
+        this.commandList.put(CommandIndexesList.KILL, new CommandKill());
+        this.commandList.put(CommandIndexesList.HELP, new CommandHelp());
+
+        // la console est marquée comme prête à écouter
+        this.isRunning = true;
+
+        // affichage de la liste des commandes
+        commandList.get(CommandIndexesList.HELP).execute(null, this);
     }
 
     /**
@@ -66,7 +61,7 @@ public class Console extends Thread {
      * @return true si la commande existe, false sinon
      */
     private boolean requestExists(String index) {
-        return requestListIndexes.contains(index);
+        return requestList.containsKey(index);
     }
 
     private boolean commandExists(String index) {
