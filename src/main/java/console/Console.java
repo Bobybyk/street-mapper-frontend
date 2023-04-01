@@ -92,9 +92,7 @@ public class Console extends Thread {
                 String buildedRequest;
                 try {
                     buildedRequest = requestList.get(segmentedCommand[0]).commandBuilder(segmentedCommand);
-                    client.setNextExpectedDataIndex(segmentedCommand[0]);
-                    client.setNextRequest(buildedRequest);
-                    client.sendRequest();
+                    client.setNextRequest(buildedRequest, segmentedCommand[0]);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Arguments manquants pour la requête");
                     e.printStackTrace();

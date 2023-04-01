@@ -100,6 +100,7 @@ public class Client extends Thread {
     public void run() {
         System.out.println("Début de l'écoute TCP");
         while(isConnected) {
+            sendRequest();
             Serializable serverData = readServerData();
             if (serverData == null) {
                 System.out.println("Erreur lors de la récupération des données");
@@ -115,10 +116,15 @@ public class Client extends Thread {
      * envoie au serveur la dernière requête enregistrée si aucunes données sont en transfert
      */
     public void sendRequest() {
-        if (nextRequestToSend != null && nextExpectedDataIndex != null && !isTravalingData) {
+        if (nextRequestToSend == null || nextExpectedDataIndex == null) {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
             expectedDataIndex = nextExpectedDataIndex;
             out.println(nextRequestToSend);
-            isTravalingData = true;
             nextRequestToSend = null;
             nextExpectedDataIndex = null;
             out.flush();
@@ -126,19 +132,13 @@ public class Client extends Thread {
     }
 
     /**
-     * défini la prochaine requête à envoyer au serveur
      * @param request prochaine requête à envoyer au serveur
-     */
-    public void setNextRequest(String request) {
-        this.nextExpectedDataIndex = request;
-    }
-
-    /**
-     * défini l'index de la prochaine donnée à envoyée qui sera attendu en lecture sur l'ObjectInputStream
      * @param expectedDataIndex index de la donnée attendue en lecture sur l'ObjectInputStream
      */
-    public void setNextExpectedDataIndex(String expectedDataIndex) {
-        this.nextExpectedDataIndex = expectedDataIndex;
+    public void setNextRequest(String request, String dataIndex) {
+        this.nextRequestToSend = request;
+        this.nextExpectedDataIndex = dataIndex;
+        this.notify();
     }
 
     /**
