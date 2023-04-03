@@ -1,41 +1,42 @@
 package app;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ServerTest extends Thread {
-    private boolean isRunning;
-    private Socket socket;
-    private BufferedReader in;
+import java.util.concurrent.TimeUnit;
 
-    public ServerTest(String host, int port) {
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+public class ServerTest {
+    private static final String HOST = "localhost";
+    private static final int PORT = 12345;
+    private static final int SLEEP_TIME = 1_000;
+    private static final long TIMEOUT = 10;
+
+    @Test
+    @Timeout(value = TIMEOUT, unit = TimeUnit.SECONDS)
+    public void testLaunchKill() {
+        
+        Server s = new Server(HOST, PORT);
+        s.start();
+
         try {
-            socket = new Socket(host, port);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            Server.sleep(SLEEP_TIME);
+            assertTrue(s.isRunning());
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
 
-    public void run() {
-        isRunning = true;
-        while (isRunning) {
-            try {
-                System.out.println(in.readLine());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        s.kill();
+
         try {
-            socket.close();
-        } catch (IOException e) {
+            Server.sleep(SLEEP_TIME);
+            assertFalse(s.isAlive());
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
 }
