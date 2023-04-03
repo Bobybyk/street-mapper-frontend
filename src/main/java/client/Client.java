@@ -37,10 +37,6 @@ public class Client extends Thread {
      */
     private String nextRequestToSend;
     /**
-     * true si des données sont en vol, false sinon
-     */
-    private boolean isTravalingData;
-    /**
      * true si le client est connecté au serveur, false sinon
      */
     private boolean isConnected;
@@ -107,9 +103,7 @@ public class Client extends Thread {
                 System.out.println("Erreur lors de la récupération des données");
                 kill();
             }
-            isTravalingData = false;
             handleReceivedData(serverData);
-            sendRequest();
         }
     }
 
