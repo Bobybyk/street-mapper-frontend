@@ -82,6 +82,7 @@ public class Client extends Thread {
 
     /**
      * gère les données reçues du serveur
+     *
      * @param serverData données envoyées par le serveur
      */
     private void handleReceivedData(Serializable serverData) {
@@ -99,7 +100,7 @@ public class Client extends Thread {
     @Override
     public void run() {
         System.out.println("Début de l'écoute TCP");
-        while(isConnected) {
+        while (isConnected) {
             sendRequest();
             Serializable serverData = readServerData();
             if (serverData == null) {
@@ -113,7 +114,8 @@ public class Client extends Thread {
     }
 
     /**
-     * envoie au serveur la dernière requête enregistrée si aucunes données sont en transfert
+     * envoie au serveur la dernière requête enregistrée si aucunes données sont en
+     * transfert
      */
     public void sendRequest() {
         while (nextRequestToSend == null || nextExpectedDataIndex == null) {
@@ -131,8 +133,9 @@ public class Client extends Thread {
     }
 
     /**
-     * @param request prochaine requête à envoyer au serveur
-     * @param expectedDataIndex index de la donnée attendue en lecture sur l'ObjectInputStream
+     * @param request           prochaine requête à envoyer au serveur
+     * @param expectedDataIndex index de la donnée attendue en lecture sur
+     *                          l'ObjectInputStream
      */
     public void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;

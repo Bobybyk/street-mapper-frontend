@@ -14,5 +14,5 @@ public class CommandKill implements CommandDebug {
             System.out.println("Impossible de fermer la connexion...");
         }
     }
-    
+
 }

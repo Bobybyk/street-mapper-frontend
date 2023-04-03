@@ -6,8 +6,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-
-public class ServerTest extends Thread{
+public class ServerTest extends Thread {
     private boolean isRunning;
     private Socket socket;
     private BufferedReader in;
@@ -25,7 +24,7 @@ public class ServerTest extends Thread{
 
     public void run() {
         isRunning = true;
-        while(isRunning) {
+        while (isRunning) {
             try {
                 System.out.println(in.readLine());
             } catch (IOException e) {

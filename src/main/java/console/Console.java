@@ -8,13 +8,14 @@ import commands.debug.CommandDebug;
 import commands.debug.CommandHelp;
 import commands.debug.CommandIndexesList;
 import commands.debug.CommandKill;
-import commands.tcp.RequestTcp;
 import commands.tcp.RequestIndexesList;
+import commands.tcp.RequestTcp;
 import commands.tcp.out.RequestTcpRoute;
 
 public class Console extends Thread {
     /**
-     * objet contenant toutes les méthodes et paramètres nécessaires à la communication avec le serveur
+     * objet contenant toutes les méthodes et paramètres nécessaires à la
+     * communication avec le serveur
      */
     private Client client;
     /**
@@ -33,10 +34,10 @@ public class Console extends Thread {
      * true si la console est en cours d'exécution, false sinon
      */
     private boolean isRunning;
-    
 
     /**
-     * @param client objet contenant toutes les méthodes et paramètres nécessaires à la communication avec le serveur
+     * @param client objet contenant toutes les méthodes et paramètres nécessaires à
+     *               la communication avec le serveur
      */
     public Console(Client client) {
         this.client = client;
@@ -74,8 +75,8 @@ public class Console extends Thread {
      */
     private String[] segmentsCommand(String command) {
         String[] args = command.split(" ");
-		return args;
-	}
+        return args;
+    }
 
     /**
      * @param command commande provenant de l'entrée standard
@@ -83,7 +84,7 @@ public class Console extends Thread {
     private void handleCommand(String command) {
         String[] segmentedCommand = segmentsCommand(command);
         String commandIndex = segmentedCommand[0];
-        if(requestExists(commandIndex)) {
+        if (requestExists(commandIndex)) {
             if (client != null) {
                 String buildedRequest;
                 try {
@@ -96,8 +97,7 @@ public class Console extends Thread {
             } else {
                 System.out.println("Aucune connexion au serveur");
             }
-        } 
-        else if (commandExists(commandIndex)) {
+        } else if (commandExists(commandIndex)) {
             commandList.get(commandIndex).execute(segmentedCommand, this);
         } else {
             System.out.println("Commande non définie dans le protocole");
@@ -115,7 +115,7 @@ public class Console extends Thread {
 
     @Override
     public void run() {
-        while(isRunning) {
+        while (isRunning) {
             layout();
             handleCommand(sc.nextLine());
         }

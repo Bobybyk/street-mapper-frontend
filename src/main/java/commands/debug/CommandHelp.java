@@ -23,5 +23,5 @@ public class CommandHelp implements CommandDebug {
         System.out.println("##                                        ##");
         System.out.println("############################################");
     }
-    
+
 }
