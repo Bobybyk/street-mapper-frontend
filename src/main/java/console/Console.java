@@ -25,15 +25,25 @@ public class Console extends Thread {
     /**
      * liste des requêtes disponibles, triées par index
      */
-    private HashMap<String, RequestTcp> requestList;
+    private static HashMap<String, RequestTcp> requestList;
     /**
      * liste des commandes disponibles, triées par index
      */
-    private HashMap<String, CommandDebug> commandList;
+    private static HashMap<String, CommandDebug> commandList;
     /**
      * true si la console est en cours d'exécution, false sinon
      */
     private boolean isRunning;
+
+    static {
+        requestList = new HashMap<String, RequestTcp>();
+        commandList = new HashMap<String, CommandDebug>();
+
+        // initialisation des commandes et requêtes
+        requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
+        commandList.put(CommandIndexesList.KILL, new CommandKill());
+        commandList.put(CommandIndexesList.HELP, new CommandHelp());
+    }
 
     /**
      * @param client objet contenant toutes les méthodes et paramètres nécessaires à
@@ -42,13 +52,6 @@ public class Console extends Thread {
     public Console(Client client) {
         this.client = client;
         this.sc = new Scanner(System.in);
-        this.requestList = new HashMap<String, RequestTcp>();
-        this.commandList = new HashMap<String, CommandDebug>();
-
-        // initialisation des commandes et requêtes
-        this.requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
-        this.commandList.put(CommandIndexesList.KILL, new CommandKill());
-        this.commandList.put(CommandIndexesList.HELP, new CommandHelp());
 
         // la console est marquée comme prête à écouter
         this.isRunning = true;
