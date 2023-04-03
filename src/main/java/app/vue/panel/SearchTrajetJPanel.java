@@ -19,24 +19,22 @@ public class SearchTrajetJPanel extends JPanel {
     private JPanel resultPanel, researchPanel;
 
     SearchTrajetJPanel(){
-        this.resultPanel = new JPanel();
-        this.researchPanel = new JPanel();
-        this.stationArriveList = new FlatJTextField("Depart");
-        this.stationDepartList = new FlatJTextField("Arrive");
+        setPreferredSize(new Dimension(650, 500));
+        this.resultPanel = BuilderJComposant.createPanelBoxLayoutVertical();
+        this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        this.stationArriveList = BuilderJComposant.createFlatJTextField("Depart");
+        this.stationDepartList = BuilderJComposant.createFlatJTextField("Arrive");
         this.valideJbutton = BuilderJComposant.createJButton("Valider");
 
-        setPreferredSize(new Dimension(650, 500));
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
-        researchPanel.setLayout(new BoxLayout(researchPanel, BoxLayout.X_AXIS));
         valideJbutton.addActionListener(e ->{
             /*resultPanel.add(new ListTrajetPanel(new Trajet()));*/
             revalidate();
             repaint();
         });
-        resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
         add(researchPanel);
         add(resultPanel);
         setBackground(new Color(184,223,168));
