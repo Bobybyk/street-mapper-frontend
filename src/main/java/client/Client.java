@@ -116,19 +116,18 @@ public class Client extends Thread {
      * envoie au serveur la dernière requête enregistrée si aucunes données sont en transfert
      */
     public void sendRequest() {
-        if (nextRequestToSend == null || nextExpectedDataIndex == null) {
+        while (nextRequestToSend == null || nextExpectedDataIndex == null) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } else {
-            expectedDataIndex = nextExpectedDataIndex;
-            out.println(nextRequestToSend);
-            nextRequestToSend = null;
-            nextExpectedDataIndex = null;
-            out.flush();
         }
+        expectedDataIndex = nextExpectedDataIndex;
+        out.println(nextRequestToSend);
+        nextRequestToSend = null;
+        nextExpectedDataIndex = null;
+        out.flush();
     }
 
     /**
