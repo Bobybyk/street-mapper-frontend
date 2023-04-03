@@ -2,19 +2,20 @@ package app.vue.utils;
 
 import app.vue.composant.FlatJButton;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Fabrique statique BuilderJComposant permet
+ * de creer des composants graphiques
+ *
+ */
 public class BuilderJComposant {
 
     public static FlatJButton createJButton(String buttonName){
         return new FlatJButton(buttonName);
     }
-
     public static FlatJButton createJButton(String buttonName, String path){
         return new FlatJButton(buttonName, path);
     }

@@ -1,37 +1,38 @@
 package app.vue.panel;
 
 import app.vue.utils.BuilderJComposant;
-import map.Trajet;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * ListTrajetPanel est un jpanel
+ * Dans ce jpanel on affiche la liste des trajet disponible
+ *
+ */
+
 public class ListTrajetPanel extends JPanel implements MouseListener {
 
-    /**
-     * ListTrajetPanel est un jpanel
-     * Dans ce jpanel on affiche la liste des trajet disponible
-     *
-     */
+
     private JLabel htmlJLabel;
 
-    ListTrajetPanel(Trajet trajet) {
+    ListTrajetPanel() {
         setBorder(BorderFactory.createLineBorder(new Color(100, 166, 74)));
-        setBackground(new Color(171 , 235, 198));
+        setBackground(new Color(169,223, 191));
         final Dimension d = new Dimension(650, 150);
         setPreferredSize(d);
         setMaximumSize(d);
         setMinimumSize(d);
         StringBuilder trajetString = new StringBuilder();
-        for (String st : trajet.getTrajet()) trajetString.append("<li>").append(st).append("</li>");
+        /*for (String st : trajet.getTrajet()) trajetString.append("<li>").append(st).append("</li>");
         this.htmlJLabel = new JLabel("<html>Mon trajet: Station " + trajet.getDepart() + " à Station " + trajet.getArrive() + "<br>" +
                 "<ul>" +
                 trajetString +
                 "</html>");//trajet.getDepart() +" à " + trajet.getArrive() + " <html><br>test</html>");
-        this.htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));
-        this.add(htmlJLabel);
+        this.htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));*/
+        //this.add(htmlJLabel);
         addMouseListener(this);
     }
 
@@ -52,7 +53,7 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
-        this.setBackground(new Color(100, 166, 74));
+        this.setBackground(new Color(125, 206, 160));
         this.setForeground(Color.white);
         revalidate();
         repaint();
@@ -60,7 +61,7 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-        this.setBackground(new Color(184, 223, 168));
+        this.setBackground(new Color(169, 223, 191));
         this.setForeground(Color.black);
         revalidate();
         repaint();

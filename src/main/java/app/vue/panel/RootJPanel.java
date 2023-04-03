@@ -2,12 +2,12 @@ package app.vue.panel;
 
 import javax.swing.*;
 
-public class RootJPanel extends JPanel {
+/**
+ * RootJPanel est la jpanel principal ou les elements vont être
+ * changé lors d'un événement de clique
+ */
 
-    /**
-     * RootJPanel est la jpanel principal ou les elements vont être
-     * changé lors d'un événement de clique
-     */
+public class RootJPanel extends JPanel {
 
     private final JPanel rootJPanel;
     private final MenuSelectionJPanel selectionJPanel;

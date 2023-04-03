@@ -1,14 +1,17 @@
 package app.vue.composant;
 
-import app.vue.utils.BuilderJComposant;
-
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.Locale;
+
+/**
+ * FlatJScrollPane est une class JScrollPane
+ * avec des parametres graphiques déjà fait pour facilité
+ * l'implementation graphique
+ *
+ */
 
 public class FlatJScrollPane extends JScrollPane {
 
@@ -24,10 +27,15 @@ public class FlatJScrollPane extends JScrollPane {
 
     private class FlatJScrollBarUI extends BasicScrollBarUI {
 
+
+        @Override
+        protected Rectangle getThumbBounds() {
+            return new Rectangle(0, 0, 30, 30);
+        }
+
         @Override
         protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
             Graphics2D graphics2D = (Graphics2D) g.create();
-            graphics2D.setColor(Color.GREEN);
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics2D.translate(thumbRect.x, thumbRect.y);
             graphics2D.fill(new Ellipse2D.Double(0, 0, thumbRect.width, thumbRect.height));
@@ -53,6 +61,23 @@ public class FlatJScrollPane extends JScrollPane {
         }
 
 
+        @Override
+        protected void paintDecreaseHighlight(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            int size = 20;
+            g2.setColor(Color.blue);
+            g2.fill(new RoundRectangle2D.Double(trackRect.x, trackRect.y, trackRect.width, size, size, size));
+            g2.dispose();
+        }
+
+        @Override
+        protected void paintIncreaseHighlight(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            int size = 20;
+            g2.setColor(Color.blue);
+            g2.fill(new RoundRectangle2D.Double(trackRect.x, trackRect.y, trackRect.width, size, size, size));
+            g2.dispose();
+        }
     }
 
 }
