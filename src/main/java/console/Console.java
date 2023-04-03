@@ -119,6 +119,7 @@ public class Console extends Thread {
             layout();
             handleCommand(sc.nextLine());
         }
+        sc.close();
     }
 
     /**
