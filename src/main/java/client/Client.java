@@ -7,11 +7,12 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import app.server.data.ErrorServer;
+import app.server.data.Route;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
-import data.Route;
 
-public class Client extends Thread {
+public class Client implements Runnable {
     /**
      * socket pour assurer la communication TCP avec le serveur
      */
@@ -46,7 +47,6 @@ public class Client extends Thread {
             System.out.println("Création de la connection TCP avec le serveur...");
             socket = new Socket(ip, port);
             out = new PrintWriter(socket.getOutputStream());
-            ois = new ObjectInputStream(socket.getInputStream());
             isConnected = true;
             System.out.println("...succès");
         } catch (UnknownHostException e) {
@@ -82,10 +82,9 @@ public class Client extends Thread {
      * @param serverData données envoyées par le serveur
      */
     private void handleReceivedData(Serializable serverData) {
-        // TODO : vérifier la bonne conformité des données reçues
         switch (expectedDataIndex) {
             case RequestIndexesList.ROUTE:
-                DataList.route = (Route) serverData;
+                DataList.route = serverData;
                 break;
             default:
                 System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
@@ -96,6 +95,12 @@ public class Client extends Thread {
     @Override
     public void run() {
         System.out.println("Début de l'écoute TCP");
+        try {
+            ois = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         while (isConnected) {
             sendRequest();
             Serializable serverData = readServerData();
@@ -114,7 +119,7 @@ public class Client extends Thread {
     public void sendRequest() {
         while (nextRequestToSend == null || nextExpectedDataIndex == null) {
             try {
-                this.wait();
+                wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -128,13 +133,12 @@ public class Client extends Thread {
 
     /**
      * @param request           prochaine requête à envoyer au serveur
-     * @param expectedDataIndex index de la donnée attendue en lecture sur
      *                          l'ObjectInputStream
      */
     public void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
-        this.notify();
+        notify();
     }
 
     /**
@@ -159,4 +163,8 @@ public class Client extends Thread {
         return false;
     }
 
+    public void start() {
+        Thread t = new Thread(this);
+        t.start();
+    }
 }

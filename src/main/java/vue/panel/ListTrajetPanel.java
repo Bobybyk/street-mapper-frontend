@@ -1,6 +1,8 @@
-package app.vue.panel;
+package vue.panel;
 
-import app.vue.utils.BuilderJComposant;
+import app.map.Section;
+import app.server.data.Route;
+import vue.utils.BuilderJComposant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +20,7 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
 
     private JLabel htmlJLabel;
 
-    ListTrajetPanel() {
+    ListTrajetPanel(Route route) {
         setBorder(BorderFactory.createLineBorder(new Color(100, 166, 74)));
         setBackground(new Color(169,223, 191));
         final Dimension d = new Dimension(650, 150);
@@ -26,13 +28,13 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
         setMaximumSize(d);
         setMinimumSize(d);
         StringBuilder trajetString = new StringBuilder();
-        /*for (String st : trajet.getTrajet()) trajetString.append("<li>").append(st).append("</li>");
-        this.htmlJLabel = new JLabel("<html>Mon trajet: Station " + trajet.getDepart() + " à Station " + trajet.getArrive() + "<br>" +
+        for (Section section : route.getPathDistOpt()) trajetString.append("<li>").append(section.toString()).append("</li>");
+        this.htmlJLabel = new JLabel("<html>Mon trajet:" +
                 "<ul>" +
                 trajetString +
-                "</html>");//trajet.getDepart() +" à " + trajet.getArrive() + " <html><br>test</html>");
-        this.htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));*/
-        //this.add(htmlJLabel);
+                "</html>");
+        this.htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));
+        this.add(htmlJLabel);
         addMouseListener(this);
     }
 

@@ -1,11 +1,17 @@
-package app.vue.panel;
+package vue.panel;
 
-import app.vue.composant.FlatJTextField;
-import app.vue.utils.BuilderJComposant;
-import app.vue.utils.Props;
+import app.server.data.ErrorServer;
+import app.server.data.Route;
+import controller.Controller;
+import data.DataList;
+import vue.composant.FlatJTextField;
+import vue.utils.BuilderJComposant;
+import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * SearchTrajetJPanel est un jpanel
@@ -19,7 +25,7 @@ public class SearchTrajetJPanel extends JPanel {
 
     private JPanel resultPanel, researchPanel;
 
-    SearchTrajetJPanel(){
+    SearchTrajetJPanel(Controller controler){
         setPreferredSize(new Dimension(650, 500));
         this.resultPanel = BuilderJComposant.createPanelBoxLayoutVertical();
         this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontal();
@@ -32,7 +38,18 @@ public class SearchTrajetJPanel extends JPanel {
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
         valideJbutton.addActionListener(e ->{
-            /*resultPanel.add(new ListTrajetPanel(new Trajet()));*/
+            String depart = stationDepartList.getText().toUpperCase().charAt(0) + stationDepartList.getText().substring(1).toLowerCase();
+            String arrive = stationArriveList.getText().toUpperCase().charAt(0) + stationArriveList.getText().substring(1).toLowerCase();
+            controler.sendRequestRoute("ROUTE;"+depart+";"+arrive);
+            Serializable serverData = DataList.route;
+            if(serverData instanceof Route){
+                resultPanel.add(new ListTrajetPanel((Route) serverData));
+            }else if(serverData instanceof ErrorServer){
+                resultPanel.add(new JLabel("Erreur: " + ((ErrorServer) serverData).getError().toLowerCase()));
+            }else{
+                resultPanel.add(new JLabel("Erreur"));
+                System.out.println("Erreur"); //TODO: gerer l'erreur
+            }
             revalidate();
             repaint();
         });

@@ -1,6 +1,6 @@
-package app.vue.composant;
+package vue.composant;
 
-import app.vue.utils.BuilderJComposant;
+import vue.utils.BuilderJComposant;
 
 import javax.swing.*;
 import java.awt.*;

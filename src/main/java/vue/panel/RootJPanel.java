@@ -1,4 +1,6 @@
-package app.vue.panel;
+package vue.panel;
+
+import controller.Controller;
 
 import javax.swing.*;
 
@@ -12,11 +14,11 @@ public class RootJPanel extends JPanel {
     private final JPanel rootJPanel;
     private final MenuSelectionJPanel selectionJPanel;
 
-    public RootJPanel() {
+    public RootJPanel(Controller controller) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         rootJPanel = new JPanel();
-        rootJPanel.add(new SearchTrajetJPanel());
-        selectionJPanel = new MenuSelectionJPanel(this);
+        rootJPanel.add(new SearchTrajetJPanel(controller));
+        selectionJPanel = new MenuSelectionJPanel(controller,this);
         add(rootJPanel);
         add(selectionJPanel);
     }
