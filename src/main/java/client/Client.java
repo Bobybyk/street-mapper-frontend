@@ -135,9 +135,10 @@ public class Client extends Thread {
      * @param expectedDataIndex index de la donnée attendue en lecture sur
      *                          l'ObjectInputStream
      */
-    public void setNextRequest(String request, String dataIndex) {
+    public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
+        this.notify();
         System.out.println("Nouvelle requête enregistrée : " + request);
     }
 
