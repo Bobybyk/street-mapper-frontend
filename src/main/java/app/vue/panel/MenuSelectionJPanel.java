@@ -2,6 +2,7 @@ package app.vue.panel;
 
 import app.vue.composant.FlatJButton;
 import app.vue.utils.BuilderJComposant;
+import app.vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,8 +25,8 @@ public class MenuSelectionJPanel extends JPanel {
 
         this.rootJPanel = rootJPanel;
         this.centerPanel = new JPanel();
-        this.buttonSearchTrajet = BuilderJComposant.createJButton("Rercherche", "src/main/resources/icon/recherche_icon.png");
-        this.buttonHistory = BuilderJComposant.createJButton("Historique","src/main/resources/icon/history_icon.png");
+        this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.recherche, Props.iconPathSearch);
+        this.buttonHistory = BuilderJComposant.createJButton(Props.history,Props.iconPathHistory);
         this.add(buttonSearchTrajet, CENTER_ALIGNMENT);
         this.add(buttonHistory, CENTER_ALIGNMENT);
         actionListerner();

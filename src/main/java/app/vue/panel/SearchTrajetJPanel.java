@@ -2,6 +2,7 @@ package app.vue.panel;
 
 import app.vue.composant.FlatJTextField;
 import app.vue.utils.BuilderJComposant;
+import app.vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,9 +23,9 @@ public class SearchTrajetJPanel extends JPanel {
         setPreferredSize(new Dimension(650, 500));
         this.resultPanel = BuilderJComposant.createPanelBoxLayoutVertical();
         this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        this.stationArriveList = BuilderJComposant.createFlatJTextField("Depart");
-        this.stationDepartList = BuilderJComposant.createFlatJTextField("Arrive");
-        this.valideJbutton = BuilderJComposant.createJButton("Valider");
+        this.stationArriveList = BuilderJComposant.createFlatJTextField(Props.depart);
+        this.stationDepartList = BuilderJComposant.createFlatJTextField(Props.arrive);
+        this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
 
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
