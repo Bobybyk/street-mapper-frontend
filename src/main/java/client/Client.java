@@ -133,9 +133,10 @@ public class Client implements Runnable {
      * @param request           prochaine requête à envoyer au serveur
      *                          l'ObjectInputStream
      */
-    public void setNextRequest(String request, String dataIndex) {
+    public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
+        this.notify();
         System.out.println("Nouvelle requête enregistrée : " + request);
     }
 
