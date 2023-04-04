@@ -3,6 +3,10 @@
  */
 package app;
 
+import app.vue.MainWindowJFrame;
+
+import javax.swing.*;
+
 import client.Client;
 import console.Console;
 
@@ -17,6 +21,7 @@ public class App {
     private static final int PORT = 12345;
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(MainWindowJFrame::new);
         Client client = new Client(HOST, PORT);
         if (client.isConnected()) {
             client.start();
