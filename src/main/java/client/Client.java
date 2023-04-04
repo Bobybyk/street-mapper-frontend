@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import app.server.data.ErrorServer;
 import app.server.data.Route;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
@@ -63,6 +62,9 @@ public class Client implements Runnable {
      */
     private Serializable readServerData() {
         try {
+            System.out.println("En attente de données du serveur");
+            // TODO : remettre ois dans le constructeur une fois que la déclaration de l'ObjectOutputStream du server sera correctement placée
+            ois = new ObjectInputStream(socket.getInputStream());
             return (Serializable) ois.readObject();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -84,7 +86,7 @@ public class Client implements Runnable {
     private void handleReceivedData(Serializable serverData) {
         switch (expectedDataIndex) {
             case RequestIndexesList.ROUTE:
-                DataList.route = serverData;
+                DataList.route = (Route) serverData;
                 break;
             default:
                 System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
@@ -95,15 +97,10 @@ public class Client implements Runnable {
     @Override
     public void run() {
         System.out.println("Début de l'écoute TCP");
-        try {
-            ois = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         while (isConnected) {
             sendRequest();
             Serializable serverData = readServerData();
+            System.out.println("Données reçues du serveur : ");
             if (serverData == null) {
                 System.out.println("Erreur lors de la récupération des données");
                 kill();
@@ -116,10 +113,10 @@ public class Client implements Runnable {
      * envoie au serveur la dernière requête enregistrée si aucunes données sont en
      * transfert
      */
-    public void sendRequest() {
+    public synchronized void sendRequest() {
         while (nextRequestToSend == null || nextExpectedDataIndex == null) {
             try {
-                wait();
+                this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -129,6 +126,7 @@ public class Client implements Runnable {
         nextRequestToSend = null;
         nextExpectedDataIndex = null;
         out.flush();
+        System.out.println("Requête envoyée au serveur : " + expectedDataIndex);
     }
 
     /**
@@ -138,7 +136,7 @@ public class Client implements Runnable {
     public void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
-        notify();
+        System.out.println("Nouvelle requête enregistrée : " + request);
     }
 
     /**
