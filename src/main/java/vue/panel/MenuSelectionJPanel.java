@@ -1,8 +1,9 @@
-package app.vue.panel;
+package vue.panel;
 
-import app.vue.composant.FlatJButton;
-import app.vue.utils.BuilderJComposant;
-import app.vue.utils.Props;
+import controller.Controller;
+import vue.composant.FlatJButton;
+import vue.utils.BuilderJComposant;
+import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +19,11 @@ public class MenuSelectionJPanel extends JPanel {
     private final FlatJButton buttonHistory, buttonSearchTrajet;
     private final JPanel centerPanel;
     private final RootJPanel rootJPanel;
+    private final Controller controller;
 
-    MenuSelectionJPanel(RootJPanel rootJPanel){
+
+    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel){
+        this.controller = controller;
         this.setPreferredSize(new Dimension(250, 125));
         this.setBackground(new Color(241, 242, 246));
 
@@ -38,7 +42,7 @@ public class MenuSelectionJPanel extends JPanel {
         });
 
         buttonSearchTrajet.addActionListener(actionEvent -> {
-            rootJPanel.updateRootPanel(new SearchTrajetJPanel());
+            rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller));
         });
     }
 

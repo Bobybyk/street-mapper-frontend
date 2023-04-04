@@ -1,8 +1,8 @@
-package app.vue.panel;
+package vue.panel;
 
-import app.vue.composant.FlatJScrollPane;
-import app.vue.utils.BuilderJComposant;
-import app.vue.utils.Props;
+import vue.composant.FlatJScrollPane;
+import vue.utils.BuilderJComposant;
+import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +26,7 @@ public class HistoryTrajetJPanel extends JPanel {
 
         panelTrajetHistorique = BuilderJComposant.createPanelBoxLayoutVertical();
         paneScroll = new FlatJScrollPane(panelTrajetHistorique);
-        for (int i = 0; i < 5; i++) panelTrajetHistorique.add(new ListTrajetPanel());
+       // for (int i = 0; i < 5; i++) panelTrajetHistorique.add(new ListTrajetPanel());
         final JLabel jlabel = new JLabel(Props.listTrajets);
         jlabel.setFont(BuilderJComposant.lemontRegularFont(22));
         add(jlabel);

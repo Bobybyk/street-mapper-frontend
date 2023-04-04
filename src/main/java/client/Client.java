@@ -7,11 +7,11 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import app.server.data.Route;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
-import data.Route;
 
-public class Client extends Thread {
+public class Client implements Runnable {
     /**
      * socket pour assurer la communication TCP avec le serveur
      */
@@ -84,7 +84,6 @@ public class Client extends Thread {
      * @param serverData données envoyées par le serveur
      */
     private void handleReceivedData(Serializable serverData) {
-        // TODO : vérifier la bonne conformité des données reçues
         switch (expectedDataIndex) {
             case RequestIndexesList.ROUTE:
                 DataList.route = (Route) serverData;
@@ -131,9 +130,9 @@ public class Client extends Thread {
     }
 
     /**
-     * @param request           prochaine requête à envoyer au serveur
-     * @param expectedDataIndex index de la donnée attendue en lecture sur
-     *                          l'ObjectInputStream
+     * @param request   prochaine requête à envoyer au serveur l'ObjectInputStream
+     * @param dataIndex index de la donnée attendue en lecture sur
+     *                  l'ObjectInputStream
      */
     public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
@@ -164,4 +163,8 @@ public class Client extends Thread {
         return false;
     }
 
+    public void start() {
+        Thread t = new Thread(this);
+        t.start();
+    }
 }

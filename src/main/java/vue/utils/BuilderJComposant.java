@@ -1,7 +1,7 @@
-package app.vue.utils;
+package vue.utils;
 
-import app.vue.composant.FlatJButton;
-import app.vue.composant.FlatJTextField;
+import vue.composant.FlatJButton;
+import vue.composant.FlatJTextField;
 
 import javax.swing.*;
 import java.awt.*;

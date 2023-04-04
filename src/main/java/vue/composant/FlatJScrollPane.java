@@ -1,4 +1,4 @@
-package app.vue.composant;
+package vue.composant;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;

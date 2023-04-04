@@ -1,4 +1,4 @@
-package app.vue.utils;
+package vue.utils;
 
 public class Props {
 
