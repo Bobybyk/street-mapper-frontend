@@ -46,7 +46,6 @@ public class Client extends Thread {
             System.out.println("Création de la connection TCP avec le serveur...");
             socket = new Socket(ip, port);
             out = new PrintWriter(socket.getOutputStream());
-            ois = new ObjectInputStream(socket.getInputStream());
             isConnected = true;
             System.out.println("...succès");
         } catch (UnknownHostException e) {
@@ -63,6 +62,9 @@ public class Client extends Thread {
      */
     private Serializable readServerData() {
         try {
+            System.out.println("En attente de données du serveur");
+            // TODO : remettre ois dans le constructeur une fois que la déclaration de l'ObjectOutputStream du server sera correctement placée
+            ois = new ObjectInputStream(socket.getInputStream());
             return (Serializable) ois.readObject();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -99,6 +101,7 @@ public class Client extends Thread {
         while (isConnected) {
             sendRequest();
             Serializable serverData = readServerData();
+            System.out.println("Données reçues du serveur : ");
             if (serverData == null) {
                 System.out.println("Erreur lors de la récupération des données");
                 kill();
@@ -111,7 +114,7 @@ public class Client extends Thread {
      * envoie au serveur la dernière requête enregistrée si aucunes données sont en
      * transfert
      */
-    public void sendRequest() {
+    public synchronized void sendRequest() {
         while (nextRequestToSend == null || nextExpectedDataIndex == null) {
             try {
                 this.wait();
@@ -124,6 +127,7 @@ public class Client extends Thread {
         nextRequestToSend = null;
         nextExpectedDataIndex = null;
         out.flush();
+        System.out.println("Requête envoyée au serveur : " + expectedDataIndex);
     }
 
     /**
@@ -131,10 +135,11 @@ public class Client extends Thread {
      * @param expectedDataIndex index de la donnée attendue en lecture sur
      *                          l'ObjectInputStream
      */
-    public void setNextRequest(String request, String dataIndex) {
+    public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
         this.notify();
+        System.out.println("Nouvelle requête enregistrée : " + request);
     }
 
     /**
