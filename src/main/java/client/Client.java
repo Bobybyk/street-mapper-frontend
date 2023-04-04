@@ -130,8 +130,8 @@ public class Client implements Runnable {
     }
 
     /**
-     * @param request           prochaine requête à envoyer au serveur
-     *                          l'ObjectInputStream
+     * @param request prochaine requête à envoyer au serveur l'ObjectInputStream
+     * @param expectedDataIndex index de la donnée attendue en lecture sur
      */
     public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
