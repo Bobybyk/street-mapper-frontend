@@ -58,8 +58,8 @@ public class SearchTrajetJPanel extends JPanel {
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
         valideJbutton.addActionListener(e ->{
-            String depart = stationDepartList.getText().toUpperCase().charAt(0) + stationDepartList.getText().substring(1).toLowerCase();
-            String arrive = stationArriveList.getText().toUpperCase().charAt(0) + stationArriveList.getText().substring(1).toLowerCase();
+            String depart = stationDepartList.getText();
+            String arrive = stationArriveList.getText();
             controler.sendRequestRoute("ROUTE;"+depart+";"+arrive);
             timer.start();
             resultPanel.add(new JLabel("Recherche en attente ..."));
