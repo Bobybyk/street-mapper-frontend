@@ -86,7 +86,7 @@ public class Client implements Runnable {
     private void handleReceivedData(Serializable serverData) {
         switch (expectedDataIndex) {
             case RequestIndexesList.ROUTE:
-                DataList.route = (Route) serverData;
+                DataList.route = serverData;
                 break;
             default:
                 System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
