@@ -17,9 +17,10 @@ public class Props {
      */
     public static final String history = "Historique";
     public static final String recherche = "Rechercher";
-    public static String listTrajets = "La liste des vos derniers trajets recherchées";
-    public static String depart = "Depart";
-    public static String arrive = "Arrive";
-    public static String valider = "Valider";
-
+    public static final String listTrajets = "La liste des vos derniers trajets recherchées";
+    public static final String depart = "Depart";
+    public static final String arrive = "Arrive";
+    public static final String valider = "Valider";
+    public static final String horaire = "Horaire";
+    public static final String station = "Station";
 }

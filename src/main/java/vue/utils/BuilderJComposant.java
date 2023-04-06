@@ -57,4 +57,18 @@ public class BuilderJComposant {
     public static FlatJTextField createFlatJTextField(String placeHolder) {
         return new FlatJTextField(placeHolder);
     }
+
+    public static JList<String> createJList(DefaultListModel list) {
+        final JList jList = new JList(list);
+       // jList.setFont(lemonLightFont(18));
+        jList.setVisibleRowCount(1);
+        jList.setSelectedIndex(0);
+        return jList;
+    }
+
+    public static DefaultListModel fillJListString(String ... values){
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (String v: values) model.addElement(v);
+        return model;
+    }
 }

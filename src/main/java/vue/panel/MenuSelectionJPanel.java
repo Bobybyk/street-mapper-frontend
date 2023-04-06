@@ -16,8 +16,7 @@ import java.awt.*;
 
 public class MenuSelectionJPanel extends JPanel {
 
-    private final FlatJButton buttonHistory, buttonSearchTrajet;
-    private final JPanel centerPanel;
+    private final FlatJButton buttonHistory, buttonSearchTrajet, buttonSearchHoraire;
     private final RootJPanel rootJPanel;
     private final Controller controller;
 
@@ -28,11 +27,13 @@ public class MenuSelectionJPanel extends JPanel {
         this.setBackground(new Color(241, 242, 246));
 
         this.rootJPanel = rootJPanel;
-        this.centerPanel = new JPanel();
         this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.recherche, Props.iconPathSearch);
         this.buttonHistory = BuilderJComposant.createJButton(Props.history,Props.iconPathHistory);
-        this.add(buttonSearchTrajet, CENTER_ALIGNMENT);
-        this.add(buttonHistory, CENTER_ALIGNMENT);
+        this.buttonSearchHoraire = BuilderJComposant.createJButton(Props.horaire,Props.iconPathHistory);
+
+        this.add(buttonSearchTrajet, LEFT_ALIGNMENT);
+        this.add(buttonSearchHoraire, CENTER_ALIGNMENT);
+        this.add(buttonHistory, RIGHT_ALIGNMENT);
         actionListerner();
     }
 
@@ -43,6 +44,10 @@ public class MenuSelectionJPanel extends JPanel {
 
         buttonSearchTrajet.addActionListener(actionEvent -> {
             rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller));
+        });
+
+        buttonSearchHoraire.addActionListener(actionEvent -> {
+            rootJPanel.updateRootPanel(new SearchHorairePanel(controller));
         });
     }
 

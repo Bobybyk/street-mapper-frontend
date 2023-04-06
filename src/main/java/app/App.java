@@ -22,6 +22,9 @@ public class App {
     private static final int PORT = 12345;
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MainWindowJFrame(null));
+
+        /*
         Client client = new Client(HOST, PORT);
         Controller controller = new Controller(client);
 
@@ -32,5 +35,7 @@ public class App {
         } else {
             new Console(null).start();
         }
+
+         */
     }
 }
