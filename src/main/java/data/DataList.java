@@ -1,7 +1,5 @@
 package data;
 
-import app.server.data.Route;
-
 import java.io.Serializable;
 
 public class DataList {

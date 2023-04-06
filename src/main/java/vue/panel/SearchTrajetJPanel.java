@@ -12,7 +12,6 @@ import vue.utils.Props;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
-import java.util.Locale;
 
 /**
  * SearchTrajetJPanel est un jpanel

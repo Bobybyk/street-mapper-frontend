@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import app.server.data.Route;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
 
