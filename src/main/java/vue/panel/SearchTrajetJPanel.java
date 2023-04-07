@@ -64,8 +64,8 @@ public class SearchTrajetJPanel extends JPanel {
             timer.start();
             resultPanel.add(new JLabel("Recherche en attente ..."));
         });
-        add(researchPanel);
-        add(resultPanel);
+        add(researchPanel, BorderLayout.NORTH);
+        add(resultPanel, BorderLayout.CENTER);
         setBackground(new Color(184,223,168));
     }
 

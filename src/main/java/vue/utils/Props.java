@@ -11,6 +11,7 @@ public class Props {
 
     public static final String iconPathSearch = "src/main/resources/icon/recherche_icon.png";
     public static final String iconPathHistory = "src/main/resources/icon/history_icon.png";
+    public static final String iconPathTime = "src/main/resources/icon/temps_icon.png";
 
     /**
      * String

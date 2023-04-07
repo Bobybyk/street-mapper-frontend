@@ -29,7 +29,7 @@ public class MenuSelectionJPanel extends JPanel {
         this.rootJPanel = rootJPanel;
         this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.recherche, Props.iconPathSearch);
         this.buttonHistory = BuilderJComposant.createJButton(Props.history,Props.iconPathHistory);
-        this.buttonSearchHoraire = BuilderJComposant.createJButton(Props.horaire,Props.iconPathHistory);
+        this.buttonSearchHoraire = BuilderJComposant.createJButton(Props.horaire,Props.iconPathTime);
 
         this.add(buttonSearchTrajet, LEFT_ALIGNMENT);
         this.add(buttonSearchHoraire, CENTER_ALIGNMENT);
