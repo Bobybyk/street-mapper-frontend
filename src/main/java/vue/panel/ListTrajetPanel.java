@@ -28,9 +28,16 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
         setMaximumSize(d);
         setMinimumSize(d);
         StringBuilder trajetString = new StringBuilder();
-        if(route.getPathDistOpt().size() > 0)
-            for (Section section : route.getPathDistOpt()) trajetString.append("Station: ").append("<li>").append(section.toString()).append("</li>");
-        else{
+        if(route.getPathDistOpt().size() > 0){
+            for (Section section : route.getPathDistOpt()) {
+                if (section.toString().length() < 40) {
+                    trajetString.append("Station: ").append("<li>").append(section).append("</li>");
+                } else {
+                    trajetString.append("Station: ").append("<li>").append(section.toString(), 0, 39);
+                    trajetString.append(section.toString().substring(40)).append("</li>");
+                }
+            }
+        }else{
             trajetString.append("Vous etes déjà à destination");
         }
         this.htmlJLabel = new JLabel("<html>Mon trajet:" +
