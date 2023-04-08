@@ -25,15 +25,15 @@ public class MenuSelectionJPanel extends JPanel {
         this.controller = controller;
         this.setPreferredSize(new Dimension(250, 125));
         this.setBackground(new Color(241, 242, 246));
-
+        this.setLayout(new GridLayout(1, 2));
         this.rootJPanel = rootJPanel;
         this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.recherche, Props.iconPathSearch);
         this.buttonHistory = BuilderJComposant.createJButton(Props.history,Props.iconPathHistory);
         this.buttonSearchHoraire = BuilderJComposant.createJButton(Props.horaire,Props.iconPathTime);
 
-        this.add(buttonSearchTrajet, LEFT_ALIGNMENT);
-        this.add(buttonSearchHoraire, CENTER_ALIGNMENT);
-        this.add(buttonHistory, RIGHT_ALIGNMENT);
+        this.add(buttonSearchTrajet);
+     // this.add(buttonSearchHoraire, CENTER_ALIGNMENT);
+        this.add(buttonHistory);
         actionListerner();
     }
 
