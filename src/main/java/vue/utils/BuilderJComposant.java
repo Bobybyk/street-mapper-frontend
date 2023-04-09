@@ -1,12 +1,13 @@
 package vue.utils;
 
+import app.App;
 import vue.composant.FlatJButton;
 import vue.composant.FlatJTextField;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Fabrique statique BuilderJComposant permet
@@ -24,8 +25,9 @@ public class BuilderJComposant {
 
     public static Font lemontRegularFont(float value){
         try {
-            final Font font = Font.createFont(Font.TRUETYPE_FONT, new File(Props.fontPathNormal)).deriveFont(value);
-            return font;
+            InputStream stream = App.class.getResourceAsStream(Props.fontPathNormal);
+            if(stream==null) throw new IOException();
+            return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
             System.out.println("Erreur chargement des polices d'écritures");
         }
@@ -34,8 +36,9 @@ public class BuilderJComposant {
 
     public static Font lemonLightFont(float value){
         try {
-            final Font font = Font.createFont(Font.TRUETYPE_FONT, new File(Props.fontPathLight)).deriveFont(value);
-            return font;
+            InputStream stream = App.class.getResourceAsStream(Props.fontPathLight);
+            if(stream==null) throw new IOException();
+            return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
             System.out.println("Erreur chargement des polices d'écritures");
         }
