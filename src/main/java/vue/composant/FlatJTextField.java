@@ -16,16 +16,21 @@ import java.awt.event.FocusEvent;
 public class FlatJTextField extends JTextField {
 
 
-    public FlatJTextField(String placeHolder){
+    public FlatJTextField(String placeHolder, Dimension d){
         setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         setFont(BuilderJComposant.lemontRegularFont(20));
         setText(placeHolder);
+        setPreferredSize(d);
+        setMaximumSize(d);
+        setMinimumSize(d);
         setForeground(Color.GRAY);
         addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                setText("");
-                setForeground(Color.BLACK);
+                if(getText().equals(placeHolder)){
+                    setText("");
+                    setForeground(Color.BLACK);
+                }
             }
 
             @Override
