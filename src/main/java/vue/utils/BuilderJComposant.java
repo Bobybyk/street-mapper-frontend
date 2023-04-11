@@ -55,6 +55,17 @@ public class BuilderJComposant {
     }
 
     public static FlatJTextField createFlatJTextField(String placeHolder) {
-        return new FlatJTextField(placeHolder);
+        return new FlatJTextField(placeHolder, new Dimension(200, 100));
+    }
+
+    public static FlatJTextField createFlatJTextField(String placeHolder, Dimension d) {
+        return new FlatJTextField(placeHolder,d);
+    }
+
+    public static Component createJLabelStyle(String s, float v, Color color) {
+        final JLabel label = new JLabel(s);
+        label.setFont(lemontRegularFont(v));
+        label.setForeground(color);
+        return label;
     }
 }

@@ -23,16 +23,14 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
     ListTrajetPanel(Route route) {
         setBorder(BorderFactory.createLineBorder(new Color(100, 166, 74)));
         setBackground(new Color(169,223, 191));
-        final Dimension d = new Dimension(650, 250);
-        setPreferredSize(d);
-        setMaximumSize(d);
-        setMinimumSize(d);
+       // final Dimension d = new Dimension(650, 30*route.getPathDistOpt().size());
+      //  setPreferredSize(d);
+       // setMaximumSize(d);
+       // setMinimumSize(d);
         StringBuilder trajetString = new StringBuilder();
-        if(route.getPathDistOpt().size() > 0)
-            for (Section section : route.getPathDistOpt()) trajetString.append("Station: ").append("<li>").append(section.toString()).append("</li>");
-        else{
-            trajetString.append("Vous etes déjà à destination");
-        }
+        if(route.getPathDistOpt().size() > 0){
+            for (Section section : route.getPathDistOpt()) trajetString.append("Station: ").append("<li>").append(section).append("</li>");
+        }else trajetString.append("Vous etes déjà à destination");
         this.htmlJLabel = new JLabel("<html>Mon trajet:" +
                 "<ul>" +
                 trajetString +
