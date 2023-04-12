@@ -6,11 +6,11 @@ public class Props {
     /**
      * Path
      */
-    public static final String fontPathNormal = "src/main/resources/font/coco_normal.ttf";
-    public static final String fontPathLight = "src/main/resources/font/coco_ultra_fin.ttf";
+    public static final String fontPathNormal = "/font/coco_normal.ttf";
+    public static final String fontPathLight = "/font/coco_ultra_fin.ttf";
 
-    public static final String iconPathSearch = "src/main/resources/icon/recherche_icon.png";
-    public static final String iconPathHistory = "src/main/resources/icon/history_icon.png";
+    public static final String iconPathSearch = "/icon/recherche_icon.png";
+    public static final String iconPathHistory = "/icon/history_icon.png";
 
     /**
      * String

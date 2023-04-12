@@ -1,5 +1,6 @@
 package vue.composant;
 
+import app.App;
 import vue.utils.BuilderJComposant;
 
 import javax.swing.*;
@@ -7,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.net.URL;
 
 public class FlatJButton extends JButton implements MouseListener, MouseMotionListener {
 
@@ -35,7 +37,8 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
 
     public FlatJButton(String name, String path){
         this(name);
-        this.setIcon(new ImageIcon(path));
+        URL url = App.class.getResource(path);
+        if (url != null) this.setIcon(new ImageIcon(url));
     }
 
     @Override
