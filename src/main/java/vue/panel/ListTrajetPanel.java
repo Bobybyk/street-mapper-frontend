@@ -20,7 +20,7 @@ public class ListTrajetPanel extends JPanel implements MouseListener {
 
     private final JLabel htmlJLabel;
 
-    ListTrajetPanel(Route route) {
+    public ListTrajetPanel(Route route) {
         setBorder(BorderFactory.createLineBorder(new Color(100, 166, 74)));
         setBackground(new Color(169,223, 191));
        // final Dimension d = new Dimension(650, 30*route.getPathDistOpt().size());

@@ -7,11 +7,19 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import app.server.data.ErrorServer;
 import app.server.data.Route;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
+import utils.Observer;
+import vue.panel.ListTrajetPanel;
+import vue.panel.ResearchPanel;
 
-public class Client implements Runnable {
+import javax.swing.*;
+
+public class Client implements Runnable, Observer {
+
+    private final ResearchPanel researchPanel;
     /**
      * socket pour assurer la communication TCP avec le serveur
      */
@@ -41,7 +49,25 @@ public class Client implements Runnable {
      */
     private boolean isConnected;
 
-    public Client(String ip, int port) {
+    @Override
+    public void update(ResearchPanel researchPanel) {
+        JPanel resultPanel = researchPanel;
+        resultPanel.removeAll();
+        Serializable serverData = DataList.route;
+        if(serverData instanceof Route){
+            resultPanel.add(new ListTrajetPanel((Route) serverData));
+        }else if(serverData instanceof ErrorServer){
+            resultPanel.add(new JLabel("Erreur: " + ((ErrorServer) serverData).getError().toLowerCase()));
+        }else{
+            resultPanel.add(new JLabel("Erreur"));
+            System.out.println("Erreur");
+        }
+        researchPanel.repaint();
+        researchPanel.revalidate();
+    }
+
+    public Client(String ip, int port, ResearchPanel researchPanel) {
+        this.researchPanel = researchPanel;
         try {
             System.out.println("Création de la connection TCP avec le serveur...");
             socket = new Socket(ip, port);
@@ -87,6 +113,7 @@ public class Client implements Runnable {
         switch (expectedDataIndex) {
             case RequestIndexesList.ROUTE:
                 DataList.route = serverData;
+                researchPanel.notifyObservers();
                 break;
             default:
                 System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");

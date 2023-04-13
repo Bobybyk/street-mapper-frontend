@@ -20,10 +20,12 @@ public class MenuSelectionJPanel extends JPanel {
     private final JPanel centerPanel;
     private final RootJPanel rootJPanel;
     private final Controller controller;
+    private final ResearchPanel researchPanel;
 
 
-    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel){
+    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel){
         this.controller = controller;
+        this.researchPanel = researchPanel;
         this.setPreferredSize(new Dimension(250, 125));
         this.setBackground(new Color(241, 242, 246));
         this.setLayout(new GridLayout(1, 2));
@@ -38,7 +40,7 @@ public class MenuSelectionJPanel extends JPanel {
 
     private void actionListerner() {
         buttonHistory.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new HistoryTrajetJPanel()));
-        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller)));
+        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel)));
     }
 
 }
