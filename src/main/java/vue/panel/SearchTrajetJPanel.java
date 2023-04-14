@@ -21,20 +21,22 @@ public class SearchTrajetJPanel extends JPanel {
     private final JScrollPane paneScroll;
     private final JPanel resultPanel, researchPanel;
 
-    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanel) {
+    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB) {
         setPreferredSize(new Dimension(650, 500));
-        this.resultPanel = researchPanel;
-        this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        this.resultPanel = researchPanelB;
+        this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
         this.stationArriveList = BuilderJComposant.createFlatJTextField(Props.arrive);
         this.stationDepartList = BuilderJComposant.createFlatJTextField(Props.depart);
         this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
 
         paneScroll = new FlatJScrollPane(resultPanel);
 
-        //researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
+        valideJbutton.setOpaque(true);
+        researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
+        //researchPanel.setBorder(/*BorderFactory.createLineBorder(Color.BLACK)*/);
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
             resultPanel.add(BuilderJComposant.createJLabelStyle("Recherche en attente ...", 18f, Color.black));
@@ -44,9 +46,11 @@ public class SearchTrajetJPanel extends JPanel {
             String arrive = stationArriveList.getText();
             controler.sendRequestRoute("ROUTE;" + depart + ";" + arrive);
         });
+        paneScroll.setBorder(BorderFactory.createEmptyBorder());
         add(researchPanel);
         add(paneScroll);
-        setBackground(new Color(184, 223, 168));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(new Color(255, 255, 255));
     }
 
     public JPanel getResearchPanel() {

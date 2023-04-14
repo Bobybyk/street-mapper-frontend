@@ -27,7 +27,7 @@ public class MenuSelectionJPanel extends JPanel {
         this.controller = controller;
         this.researchPanel = researchPanel;
         this.setPreferredSize(new Dimension(250, 125));
-        this.setBackground(new Color(241, 242, 246));
+        this.setBackground(new Color(255, 255, 255));
         this.setLayout(new GridLayout(1, 2));
         this.rootJPanel = rootJPanel;
         this.centerPanel = new JPanel();
