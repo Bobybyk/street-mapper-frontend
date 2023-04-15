@@ -19,7 +19,10 @@ public class CommandHelp implements CommandDebug {
         System.out.println("##                                        ##");
         System.out.println("##           COMMANDES RESEAU             ##");
         System.out.println("##                                        ##");
-        System.out.println("## ROUTE <addr1> <addr2> : demande trajet ##");
+        System.out.println("## ROUTE <addr1> <addr2>                  ##");
+        System.out.println("##      -> demande le chemin              ##");
+        System.out.println("## TIME <station> <hour> <minutes>        ##");
+        System.out.println("##      -> demande temps d'attente        ##");
         System.out.println("##                                        ##");
         System.out.println("############################################");
     }
