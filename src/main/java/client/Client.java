@@ -88,6 +88,9 @@ public class Client implements Runnable {
             case RequestIndexesList.ROUTE:
                 DataList.route = serverData;
                 break;
+            case RequestIndexesList.SEARCH:
+                DataList.station = serverData;
+                break;
             default:
                 System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
                 break;
