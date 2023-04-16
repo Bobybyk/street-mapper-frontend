@@ -41,6 +41,7 @@ public class Console extends Thread {
 
         // initialisation des commandes et requêtes
         requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
+        requestList.put(RequestIndexesList.SEARCH, new RequestTcpRoute());
         commandList.put(CommandIndexesList.KILL, new CommandKill());
         commandList.put(CommandIndexesList.HELP, new CommandHelp());
     }
