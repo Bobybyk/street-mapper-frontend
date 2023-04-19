@@ -1,7 +1,5 @@
 package data;
 
-import app.server.data.Route;
-
 import java.io.Serializable;
 
 public class DataList {
@@ -10,4 +8,5 @@ public class DataList {
      */
     public static Serializable route = null;
     public static Serializable station = null;
+    public static Serializable timeStation = null;
 }
