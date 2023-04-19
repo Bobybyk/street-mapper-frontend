@@ -88,6 +88,9 @@ public class Client implements Runnable {
             case RequestIndexesList.ROUTE:
                 DataList.route = serverData;
                 break;
+            case RequestIndexesList.SEARCH:
+                DataList.station = serverData;
+                break;
             case RequestIndexesList.TIME:
                 DataList.timeStation = serverData;
                 break;
