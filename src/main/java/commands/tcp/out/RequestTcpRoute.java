@@ -18,14 +18,17 @@ public class RequestTcpRoute implements RequestTcp {
      * @param date la date à tester
      * @return true si date est au bon format, false sinon
      */
-    private boolean isDateFormat(String date) {
+    private boolean isTimeFormat(String date) {
+        int[] time = new int[2];
         try {
-            DateFormat.getDateInstance(DateFormat.SHORT, Locale.FRENCH).parse(date);
-            return true;
-        } catch (ParseException e) {
+            time[0] = Integer.parseInt(date.substring(0, 1));
+            time[1] = Integer.parseInt(date.substring(3, 4));
+            if (date.charAt(3) == ':')
+                return true;
+        } catch (NumberFormatException e) {
             System.out.println("La date n'est pas au bon format");
-            return false;
         }
+        return false;
     }
 
     /**
@@ -37,7 +40,7 @@ public class RequestTcpRoute implements RequestTcp {
     public String commandBuilder(String[] args) throws ArrayIndexOutOfBoundsException {
         if (args.length == 3) {
             return RequestIndexesList.ROUTE + ";" + args[1] + ";" + args[2];
-        } else if (isDateFormat(args[3])) {
+        } else if (isTimeFormat(args[3])) {
             if (args.length == 5 && (args[4].equals("DISTANCE") || args[4].equals("TIME") || args[4].equals("FOOT"))) {
                 return RequestIndexesList.ROUTE + ";" + args[1] + ";" + args[2] + ";" + args[3] + ";" + args[4];
             } else {
