@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import client.Client;
 import console.Console;
+import vue.panel.ResearchPanel;
 
 public class App {
     /**
@@ -22,12 +23,13 @@ public class App {
     private static final int PORT = 12345;
 
     public static void main(String[] args) {
-        Client client = new Client(HOST, PORT);
+        ResearchPanel researchPanel = new ResearchPanel();
+        Client client = new Client(HOST, PORT, researchPanel);
         Controller controller = new Controller(client);
-
+        researchPanel.addObserver(client);
         if (client.isConnected()) {
             client.start();
-            SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller));
+            SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel));
             new Console(client).start();
         } else {
             new Console(null).start();

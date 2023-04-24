@@ -11,6 +11,8 @@ import commands.debug.CommandKill;
 import commands.tcp.RequestIndexesList;
 import commands.tcp.RequestTcp;
 import commands.tcp.out.RequestTcpRoute;
+import commands.tcp.out.RequestTcpSearchStation;
+import commands.tcp.out.RequestTcpTimeStation;
 
 public class Console extends Thread {
     /**
@@ -41,6 +43,9 @@ public class Console extends Thread {
 
         // initialisation des commandes et requêtes
         requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
+        requestList.put(RequestIndexesList.SEARCH, new RequestTcpSearchStation());
+        requestList.put(RequestIndexesList.TIME, new RequestTcpTimeStation());
+        
         commandList.put(CommandIndexesList.KILL, new CommandKill());
         commandList.put(CommandIndexesList.HELP, new CommandHelp());
     }
@@ -96,7 +101,8 @@ public class Console extends Thread {
 
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Arguments manquants pour la requête");
-                    e.printStackTrace();
+                } catch (NumberFormatException e) {
+                    System.out.println("Arguments invalides pour la requête");
                 }
             } else {
                 System.out.println("Aucune connexion au serveur");
