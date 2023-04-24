@@ -115,8 +115,14 @@ public class Client implements Runnable, Observer {
                 DataList.route = serverData;
                 researchPanel.notifyObservers();
                 break;
+            case RequestIndexesList.SEARCH:
+                DataList.station = serverData;
+                break;
+            case RequestIndexesList.TIME:
+                DataList.timeStation = serverData;
+                break;
             default:
-                System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
+                System.out.println("Les données attendues sont inconnues et seront ignorées");
                 break;
         }
     }
