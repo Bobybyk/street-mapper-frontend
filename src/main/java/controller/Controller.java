@@ -19,6 +19,8 @@ public class Controller {
         client.setNextRequest(arguments, RequestIndexesList.ROUTE);
     }
 
-
+    public void sendRequestSearch(String arguments){
+        client.setNextRequest(arguments, RequestIndexesList.SEARCH);
+    }
 
 }

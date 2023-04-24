@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 
 import app.server.data.ErrorServer;
 import app.server.data.Route;
+import app.server.data.SuggestionStations;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
 import utils.Observer;
@@ -53,11 +54,12 @@ public class Client implements Runnable, Observer {
     public void update(ResearchPanel researchPanel) {
         JPanel resultPanel = researchPanel;
         resultPanel.removeAll();
-        Serializable serverData = DataList.route;
-        if(serverData instanceof Route){
-            resultPanel.add(new ListTrajetPanel((Route) serverData));
-        }else if(serverData instanceof ErrorServer){
-            resultPanel.add(new JLabel("Erreur: " + ((ErrorServer) serverData).getError().toLowerCase()));
+        if(DataList.route instanceof Route){
+            resultPanel.add(new ListTrajetPanel((Route) DataList.route));
+        }else if(DataList.station instanceof SuggestionStations){
+            System.out.println("reçu");
+        }else if(DataList.route instanceof ErrorServer){
+            resultPanel.add(new JLabel("Erreur: " + ((ErrorServer) DataList.route).getError().toLowerCase()));
         }else{
             resultPanel.add(new JLabel("Erreur"));
             System.out.println("Erreur");
@@ -117,6 +119,7 @@ public class Client implements Runnable, Observer {
                 break;
             case RequestIndexesList.SEARCH:
                 DataList.station = serverData;
+                researchPanel.notifyObservers();
                 break;
             case RequestIndexesList.TIME:
                 DataList.timeStation = serverData;
