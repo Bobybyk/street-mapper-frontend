@@ -5,6 +5,7 @@ import vue.composant.FlatJButton;
 import vue.composant.FlatJTextField;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +55,33 @@ public class BuilderJComposant {
     public static JPanel createPanelBoxLayoutHorizontal() {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        return panel;
+    }
+
+    public static JPanel createPanelBoxLayoutHorizontalRounded(){
+        Border roundedBorder = new Border() {
+            private final int radius = 12;
+
+            @Override
+            public Insets getBorderInsets(Component c) {
+                return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
+            }
+
+            @Override
+            public boolean isBorderOpaque() {
+                return true;
+            }
+
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                g.setColor(Color.BLACK);
+                g.drawRoundRect(x+12, y+12, width - 24, height - 26, radius, radius);
+            }
+        };
+
+        JPanel panel = createPanelBoxLayoutHorizontal();
+        panel.setBorder(roundedBorder);
+        panel.setOpaque(false);
         return panel;
     }
 

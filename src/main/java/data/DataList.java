@@ -15,4 +15,5 @@ public class DataList {
      * informations relativent au dernier temps d'attente reçu du serveur, object TimeStation
      */
     public static Serializable timeStation = null;
+
 }

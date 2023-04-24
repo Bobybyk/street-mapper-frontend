@@ -14,11 +14,11 @@ public class RootJPanel extends JPanel {
     private final JPanel rootJPanel;
     private final MenuSelectionJPanel selectionJPanel;
 
-    public RootJPanel(Controller controller) {
+    public RootJPanel(Controller controller, ResearchPanel panel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         rootJPanel = new JPanel();
-        rootJPanel.add(new SearchTrajetJPanel(controller));
-        selectionJPanel = new MenuSelectionJPanel(controller,this);
+        rootJPanel.add(new SearchTrajetJPanel(controller, panel));
+        selectionJPanel = new MenuSelectionJPanel(controller,this, panel);
         add(rootJPanel);
         add(selectionJPanel);
     }
