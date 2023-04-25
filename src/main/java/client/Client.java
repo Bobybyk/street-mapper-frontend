@@ -6,13 +6,16 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
+import app.map.StationInfo;
 import app.server.data.ErrorServer;
 import app.server.data.Route;
 import app.server.data.SuggestionStations;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
 import utils.Observer;
+import vue.composant.FlatComboBox;
 import vue.panel.ListTrajetPanel;
 import vue.panel.ResearchPanel;
 
@@ -21,6 +24,10 @@ import javax.swing.*;
 public class Client implements Runnable, Observer {
 
     private final ResearchPanel researchPanel;
+
+    private FlatComboBox startBox;
+
+    private final FlatComboBox arrivalBox;
     /**
      * socket pour assurer la communication TCP avec le serveur
      */
@@ -51,25 +58,57 @@ public class Client implements Runnable, Observer {
     private boolean isConnected;
 
     @Override
-    public void update(ResearchPanel researchPanel) {
-        JPanel resultPanel = researchPanel;
-        resultPanel.removeAll();
+    public void update(Object researchPanel) {
         if(DataList.route instanceof Route){
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
             resultPanel.add(new ListTrajetPanel((Route) DataList.route));
+            ((JPanel) researchPanel).repaint();
+            ((JPanel) researchPanel).revalidate();
         }else if(DataList.station instanceof SuggestionStations){
-            System.out.println("reçu");
+            //System.out.println("\n --> "+researchPanel+" <-- \n");
+            FlatComboBox comboBox = (FlatComboBox) researchPanel;
+            SuggestionStations sugg = ((SuggestionStations) DataList.station);
+            //System.out.println(sugg.getStations().size());
+            //System.out.println("reçu");
+            String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
+            //startBox.removeAll();
+            //arrivalBox.removeAll();
+            /*for (int i = 0; i < arr.length; i++) {
+                startBox.addItem(arr[i]);
+            }*/
+
+            //startBox  = new FlatComboBox(arr);
+            SwingUtilities.invokeLater(() -> {
+                //startBox.removeAllItems();
+                startBox.removeAllItems();
+                for (int i = 0; i < arr.length; i++) {
+                    startBox.addItem(arr[i]);
+                    //startBox.addItem(arr[i]);
+                }
+                //startBox.addItem(arr[0]);
+                //startBox.addItem("a");
+            });
+            //System.out.println(Arrays.toString(arr));
         }else if(DataList.route instanceof ErrorServer){
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur: " + ((ErrorServer) DataList.route).getError().toLowerCase()));
+            ((JPanel) researchPanel).repaint();
+            ((JPanel) researchPanel).revalidate();
         }else{
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur"));
-            System.out.println("Erreur");
+            System.out.println("Erreur");((JPanel) researchPanel).repaint();
+            ((JPanel) researchPanel).revalidate();
         }
-        researchPanel.repaint();
-        researchPanel.revalidate();
     }
 
-    public Client(String ip, int port, ResearchPanel researchPanel) {
+    public Client(String ip, int port, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         this.researchPanel = researchPanel;
+        this.startBox = startBox;
+        this.arrivalBox = arrivalBox;
         try {
             System.out.println("Création de la connection TCP avec le serveur...");
             socket = new Socket(ip, port);
@@ -119,7 +158,8 @@ public class Client implements Runnable, Observer {
                 break;
             case RequestIndexesList.SEARCH:
                 DataList.station = serverData;
-                researchPanel.notifyObservers();
+                startBox.notifyObservers();
+                arrivalBox.notifyObservers();
                 break;
             case RequestIndexesList.TIME:
                 DataList.timeStation = serverData;

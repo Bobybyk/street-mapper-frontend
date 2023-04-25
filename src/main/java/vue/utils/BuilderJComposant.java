@@ -79,7 +79,8 @@ public class BuilderJComposant {
             }
         };
 
-        JPanel panel = createPanelBoxLayoutHorizontal();
+        final JPanel panel = createPanelBoxLayoutHorizontal();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(roundedBorder);
         panel.setOpaque(false);
         return panel;

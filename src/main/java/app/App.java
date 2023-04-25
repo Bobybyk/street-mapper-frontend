@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import client.Client;
 import console.Console;
+import vue.composant.FlatComboBox;
 import vue.panel.ResearchPanel;
 
 public class App {
@@ -24,12 +25,16 @@ public class App {
 
     public static void main(String[] args) {
         ResearchPanel researchPanel = new ResearchPanel();
-        Client client = new Client(HOST, PORT, researchPanel);
+        FlatComboBox stationDepartList = new FlatComboBox(new String[]{}), stationArriveList = new FlatComboBox(new String[]{});
+        //TODO: créer les bouttons ici puis les passer en paramètre
+        Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
         Controller controller = new Controller(client);
         researchPanel.addObserver(client);
+        stationDepartList.addObserver(client);
+        stationArriveList.addObserver(client);
         if (client.isConnected()) {
             client.start();
-            SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel));
+            SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel, stationDepartList, stationArriveList));
             new Console(client).start();
         } else {
             new Console(null).start();

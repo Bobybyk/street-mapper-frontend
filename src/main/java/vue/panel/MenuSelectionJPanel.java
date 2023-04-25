@@ -1,6 +1,7 @@
 package vue.panel;
 
 import controller.Controller;
+import vue.composant.FlatComboBox;
 import vue.composant.FlatJButton;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
@@ -16,6 +17,8 @@ import java.awt.*;
 
 public class MenuSelectionJPanel extends JPanel {
 
+    FlatComboBox startBox;
+    FlatComboBox arrivalBox;
     private final FlatJButton buttonHistory, buttonSearchTrajet;
     private final JPanel centerPanel;
     private final RootJPanel rootJPanel;
@@ -23,9 +26,11 @@ public class MenuSelectionJPanel extends JPanel {
     private final ResearchPanel researchPanel;
 
 
-    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel){
+    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox){
         this.controller = controller;
         this.researchPanel = researchPanel;
+        this.startBox=startBox;
+        this.arrivalBox=arrivalBox;
         this.setPreferredSize(new Dimension(250, 125));
         this.setBackground(new Color(255, 255, 255));
         this.setLayout(new GridLayout(1, 2));
@@ -40,7 +45,7 @@ public class MenuSelectionJPanel extends JPanel {
 
     private void actionListerner() {
         buttonHistory.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new HistoryTrajetJPanel()));
-        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel)));
+        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel, startBox, arrivalBox)));
     }
 
 }

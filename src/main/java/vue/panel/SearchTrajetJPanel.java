@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 /**
@@ -25,12 +27,12 @@ public class SearchTrajetJPanel extends JPanel {
     private final JScrollPane paneScroll;
     private final JPanel resultPanel, researchPanel;
 
-    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB) {
+    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setPreferredSize(new Dimension(650, 500));
         this.resultPanel = researchPanelB;
         this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
-        this.stationArriveList = new FlatComboBox(new String[]{});//BuilderJComposant.createFlatJTextField(Props.arrive);
-        this.stationDepartList = new FlatComboBox(new String[]{});//BuilderJComposant.createFlatJTextField(Props.depart);
+        this.stationArriveList = arrivalBox;//new FlatComboBox(new String[]{});//BuilderJComposant.createFlatJTextField(Props.arrive);
+        this.stationDepartList = startBox;//new FlatComboBox(new String[]{});//BuilderJComposant.createFlatJTextField(Props.depart);
         this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
 
         paneScroll = new FlatJScrollPane(resultPanel);
@@ -60,10 +62,28 @@ public class SearchTrajetJPanel extends JPanel {
     }
 
     private void setJcomboBox(Controller controler, FlatComboBox field){
-        ((JTextField) field.getEditor().getEditorComponent()).getDocument().addDocumentListener(new DocumentListener() {
+        field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String word = ((JTextField) field.getEditor().getEditorComponent()).getText();
+                if(word.matches("[a-zA-Z]+")){
+                    controler.sendRequestSearch("SEARCH;" + word);
+                    /*SwingUtilities.invokeLater(() -> {
+                        field.removeAllItems();
+                        field.addItem(word);
+                        field.addItem("a");
+                    });*/
+                }
+            }
+        });
+        /*.addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 controler.sendRequestSearch("SEARCH;" + ((JTextField) field.getEditor().getEditorComponent()).getText());
+                SwingUtilities.invokeLater(() -> {
+                    field.removeAllItems();
+                    field.addItem("a");
+                });
             }
 
             @Override
@@ -74,7 +94,7 @@ public class SearchTrajetJPanel extends JPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
             }
-        });
+        });*/
     }
 
     public JPanel getResearchPanel() {
