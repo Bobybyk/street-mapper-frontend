@@ -3,13 +3,10 @@ package vue.panel;
 import controller.Controller;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJScrollPane;
-import vue.composant.FlatJTextField;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -31,8 +28,8 @@ public class SearchTrajetJPanel extends JPanel {
         setPreferredSize(new Dimension(650, 500));
         this.resultPanel = researchPanelB;
         this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
-        this.stationArriveList = arrivalBox;//new FlatComboBox(new String[]{});//BuilderJComposant.createFlatJTextField(Props.arrive);
-        this.stationDepartList = startBox;//new FlatComboBox(new String[]{});//BuilderJComposant.createFlatJTextField(Props.depart);
+        this.stationArriveList = arrivalBox;
+        this.stationDepartList = startBox;
         this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
 
         paneScroll = new FlatJScrollPane(resultPanel);
@@ -42,7 +39,6 @@ public class SearchTrajetJPanel extends JPanel {
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
-        //researchPanel.setBorder(/*BorderFactory.createLineBorder(Color.BLACK)*/);
         setJcomboBox(controler, stationArriveList);
         setJcomboBox(controler, stationDepartList);
         valideJbutton.addActionListener(e -> {
@@ -50,8 +46,8 @@ public class SearchTrajetJPanel extends JPanel {
             resultPanel.add(BuilderJComposant.createJLabelStyle("Recherche en attente ...", 18f, Color.black));
             repaint();
             revalidate();
-            String depart = Objects.requireNonNull(stationDepartList.getSelectedItem()).toString();//.getText();
-            String arrive = Objects.requireNonNull(stationArriveList.getSelectedItem()).toString();//.getText();
+            String depart = Objects.requireNonNull(stationDepartList.getSelectedItem()).toString();
+            String arrive = Objects.requireNonNull(stationArriveList.getSelectedItem()).toString();
             controler.sendRequestRoute("ROUTE;" + depart + ";" + arrive);
         });
         paneScroll.setBorder(BorderFactory.createEmptyBorder());
@@ -61,40 +57,16 @@ public class SearchTrajetJPanel extends JPanel {
         setBackground(new Color(255, 255, 255));
     }
 
-    private void setJcomboBox(Controller controler, FlatComboBox field){
+    private void setJcomboBox(Controller controler, FlatComboBox field) {
         field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 String word = ((JTextField) field.getEditor().getEditorComponent()).getText();
-                if(word.matches("[a-zA-Z]+")){
+                if (word.matches("[a-zA-Z]+")) {
                     controler.sendRequestSearch("SEARCH;" + word);
-                    /*SwingUtilities.invokeLater(() -> {
-                        field.removeAllItems();
-                        field.addItem(word);
-                        field.addItem("a");
-                    });*/
                 }
             }
         });
-        /*.addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                controler.sendRequestSearch("SEARCH;" + ((JTextField) field.getEditor().getEditorComponent()).getText());
-                SwingUtilities.invokeLater(() -> {
-                    field.removeAllItems();
-                    field.addItem("a");
-                });
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                controler.sendRequestSearch("SEARCH;" + ((JTextField) field.getEditor().getEditorComponent()).getText());
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-            }
-        });*/
     }
 
     public JPanel getResearchPanel() {

@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 
 import app.map.StationInfo;
 import app.server.data.ErrorServer;
@@ -25,7 +24,7 @@ public class Client implements Runnable, Observer {
 
     private final ResearchPanel researchPanel;
 
-    private FlatComboBox startBox;
+    private final FlatComboBox startBox;
 
     private final FlatComboBox arrivalBox;
     /**
@@ -65,31 +64,14 @@ public class Client implements Runnable, Observer {
             resultPanel.add(new ListTrajetPanel((Route) DataList.route));
             ((JPanel) researchPanel).repaint();
             ((JPanel) researchPanel).revalidate();
-        }else if(DataList.station instanceof SuggestionStations){
-            //System.out.println("\n --> "+researchPanel+" <-- \n");
-            FlatComboBox comboBox = (FlatComboBox) researchPanel;
-            SuggestionStations sugg = ((SuggestionStations) DataList.station);
-            //System.out.println(sugg.getStations().size());
-            //System.out.println("reçu");
+        }else if(DataList.station instanceof SuggestionStations sugg){
             String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
-            //startBox.removeAll();
-            //arrivalBox.removeAll();
-            /*for (int i = 0; i < arr.length; i++) {
-                startBox.addItem(arr[i]);
-            }*/
-
-            //startBox  = new FlatComboBox(arr);
             SwingUtilities.invokeLater(() -> {
-                //startBox.removeAllItems();
                 startBox.removeAllItems();
-                for (int i = 0; i < arr.length; i++) {
-                    startBox.addItem(arr[i]);
-                    //startBox.addItem(arr[i]);
+                for (String s : arr) {
+                    startBox.addItem(s);
                 }
-                //startBox.addItem(arr[0]);
-                //startBox.addItem("a");
             });
-            //System.out.println(Arrays.toString(arr));
         }else if(DataList.route instanceof ErrorServer){
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
@@ -133,11 +115,7 @@ public class Client implements Runnable, Observer {
             // TODO : remettre ois dans le constructeur une fois que la déclaration de l'ObjectOutputStream du server sera correctement placée
             ois = new ObjectInputStream(socket.getInputStream());
             return (Serializable) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la récupération des données");
-            kill();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors de la récupération des données");
             kill();
@@ -152,21 +130,17 @@ public class Client implements Runnable, Observer {
      */
     private void handleReceivedData(Serializable serverData) {
         switch (expectedDataIndex) {
-            case RequestIndexesList.ROUTE:
+            case RequestIndexesList.ROUTE -> {
                 DataList.route = serverData;
                 researchPanel.notifyObservers();
-                break;
-            case RequestIndexesList.SEARCH:
+            }
+            case RequestIndexesList.SEARCH -> {
                 DataList.station = serverData;
                 startBox.notifyObservers();
                 arrivalBox.notifyObservers();
-                break;
-            case RequestIndexesList.TIME:
-                DataList.timeStation = serverData;
-                break;
-            default:
-                System.out.println("Les données attendues sont inconnues et seront ignorées");
-                break;
+            }
+            case RequestIndexesList.TIME -> DataList.timeStation = serverData;
+            default -> System.out.println("Les données attendues sont inconnues et seront ignorées");
         }
     }
 

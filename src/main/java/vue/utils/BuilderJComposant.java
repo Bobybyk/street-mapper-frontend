@@ -13,37 +13,37 @@ import java.io.InputStream;
 /**
  * Fabrique statique BuilderJComposant permet
  * de creer des composants graphiques
- *
  */
 public class BuilderJComposant {
 
-    public static FlatJButton createJButton(String buttonName){
+    public static FlatJButton createJButton(String buttonName) {
         return new FlatJButton(buttonName);
     }
-    public static FlatJButton createJButton(String buttonName, String path){
+
+    public static FlatJButton createJButton(String buttonName, String path) {
         return new FlatJButton(buttonName, path);
     }
 
-    public static Font lemontRegularFont(float value){
+    public static Font lemontRegularFont(float value) {
         try {
             InputStream stream = App.class.getResourceAsStream(Props.fontPathNormal);
-            if(stream==null) throw new IOException();
+            if (stream == null) throw new IOException();
             return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
             System.out.println("Erreur chargement des polices d'écritures");
         }
-        return new Font(Font.SANS_SERIF,  Font.BOLD, 30);
+        return new Font(Font.SANS_SERIF, Font.BOLD, 30);
     }
 
-    public static Font lemonLightFont(float value){
+    public static Font lemonLightFont(float value) {
         try {
             InputStream stream = App.class.getResourceAsStream(Props.fontPathLight);
-            if(stream==null) throw new IOException();
+            if (stream == null) throw new IOException();
             return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
             System.out.println("Erreur chargement des polices d'écritures");
         }
-        return new Font(Font.SANS_SERIF,  Font.BOLD, 30);
+        return new Font(Font.SANS_SERIF, Font.BOLD, 30);
     }
 
     public static JPanel createPanelBoxLayoutVertical() {
@@ -58,7 +58,7 @@ public class BuilderJComposant {
         return panel;
     }
 
-    public static JPanel createPanelBoxLayoutHorizontalRounded(){
+    public static JPanel createPanelBoxLayoutHorizontalRounded() {
         Border roundedBorder = new Border() {
             private final int radius = 12;
 
@@ -75,11 +75,11 @@ public class BuilderJComposant {
             @Override
             public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
                 g.setColor(Color.BLACK);
-                g.drawRoundRect(x+12, y+12, width - 24, height - 26, radius, radius);
+                g.drawRoundRect(x + 12, y + 12, width - 24, height - 26, radius, radius);
             }
         };
 
-        final JPanel panel = new JPanel(){
+        final JPanel panel = new JPanel() {
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(super.getPreferredSize().width, -250);
@@ -96,7 +96,7 @@ public class BuilderJComposant {
     }
 
     public static FlatJTextField createFlatJTextField(String placeHolder, Dimension d) {
-        return new FlatJTextField(placeHolder,d);
+        return new FlatJTextField(placeHolder, d);
     }
 
     public static Component createJLabelStyle(String s, float v, Color color) {

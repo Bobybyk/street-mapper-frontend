@@ -5,7 +5,6 @@ import utils.Observer;
 import vue.utils.BuilderJComposant;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
@@ -18,10 +17,10 @@ import java.util.List;
 
 public class FlatComboBox extends JComboBox<String> implements Observable {
 
-    private List<Observer> listObserver = new ArrayList<>();
+    private final List<Observer> listObserver = new ArrayList<>();
 
-    public FlatComboBox(String[] items) {
-        super(items);
+    public FlatComboBox() {
+        super();
         setEditable(true);
         setEditor(new ComboBoxCustom());
         setPrototypeDisplayValue("XXXXXXXXXXXXXX");
@@ -30,26 +29,11 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
         textField.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (isPopupVisible() || getItemCount()==0) hidePopup();
+                if (isPopupVisible() || getItemCount() == 0) hidePopup();
                 else showPopup();
             }
         });
-        /*textField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                showPopup();
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                hidePopup();
-            }
-        });*/
-        Border border = BorderFactory.createLineBorder(new Color(220,220,220), 1); // red color with 2-pixel width
-        //setSize(10,10);
-        setBorder(border);
+        setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
     }
 
     @Override
@@ -70,7 +54,7 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
         public ComboBoxCustom() {
             super();
             field.setBorder(null);
-            field.setPreferredSize(new Dimension(10,10));
+            field.setPreferredSize(new Dimension(10, 10));
             field.addFocusListener(new FocusAdapter() {
                 public void focusGained(FocusEvent e) {
                     if (field.getText().length() > 0) field.selectAll();
@@ -103,7 +87,6 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
         public void setItem(Object item) {
             String text = (item != null) ? item.toString() : "";
             this.field.setText(text);
-            //this.field.setSelectionStart(0);
             this.field.setSelectionEnd(text.length());
         }
 

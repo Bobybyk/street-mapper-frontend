@@ -12,32 +12,31 @@ import java.awt.*;
 /**
  * MenuSelectionJPanel est un jpanel
  * ou il y'aura les differents action de l'utilisateur
- *
  */
 
 public class MenuSelectionJPanel extends JPanel {
 
-    FlatComboBox startBox;
-    FlatComboBox arrivalBox;
     private final FlatJButton buttonHistory, buttonSearchTrajet;
     private final JPanel centerPanel;
     private final RootJPanel rootJPanel;
     private final Controller controller;
     private final ResearchPanel researchPanel;
+    FlatComboBox startBox;
+    FlatComboBox arrivalBox;
 
 
-    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox){
+    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         this.controller = controller;
         this.researchPanel = researchPanel;
-        this.startBox=startBox;
-        this.arrivalBox=arrivalBox;
+        this.startBox = startBox;
+        this.arrivalBox = arrivalBox;
         this.setPreferredSize(new Dimension(250, 125));
         this.setBackground(new Color(255, 255, 255));
         this.setLayout(new GridLayout(1, 2));
         this.rootJPanel = rootJPanel;
         this.centerPanel = new JPanel();
         this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.recherche, Props.iconPathSearch);
-        this.buttonHistory = BuilderJComposant.createJButton(Props.history,Props.iconPathHistory);
+        this.buttonHistory = BuilderJComposant.createJButton(Props.history, Props.iconPathHistory);
         this.add(buttonSearchTrajet);
         this.add(buttonHistory);
         actionListerner();

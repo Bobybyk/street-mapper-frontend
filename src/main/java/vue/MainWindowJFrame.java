@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class MainWindowJFrame extends JFrame {
 
-    public MainWindowJFrame(Controller controller, ResearchPanel panel, FlatComboBox startBox, FlatComboBox arrivalBox){
+    public MainWindowJFrame(Controller controller, ResearchPanel panel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);

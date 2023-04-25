@@ -3,15 +3,14 @@
  */
 package app;
 
-import controller.Controller;
-import vue.MainWindowJFrame;
-
-import javax.swing.*;
-
 import client.Client;
 import console.Console;
+import controller.Controller;
+import vue.MainWindowJFrame;
 import vue.composant.FlatComboBox;
 import vue.panel.ResearchPanel;
+
+import javax.swing.*;
 
 public class App {
     /**
@@ -25,8 +24,7 @@ public class App {
 
     public static void main(String[] args) {
         ResearchPanel researchPanel = new ResearchPanel();
-        FlatComboBox stationDepartList = new FlatComboBox(new String[]{}), stationArriveList = new FlatComboBox(new String[]{});
-        //TODO: créer les bouttons ici puis les passer en paramètre
+        FlatComboBox stationDepartList = new FlatComboBox(), stationArriveList = new FlatComboBox();
         Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
         Controller controller = new Controller(client);
         researchPanel.addObserver(client);
