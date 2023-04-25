@@ -52,9 +52,22 @@ public class BuilderJComposant {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         return panel;
     }
+    public static JPanel createPanelBoxLayoutVertical(String name) {
+        final JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder(name));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        return panel;
+    }
 
     public static JPanel createPanelBoxLayoutHorizontal() {
         final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        return panel;
+    }
+
+    public static JPanel createPanelBoxLayoutHorizontal(String name) {
+        final JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder(name));
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         return panel;
     }

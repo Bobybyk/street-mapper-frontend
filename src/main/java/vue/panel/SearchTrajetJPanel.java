@@ -21,15 +21,16 @@ public class SearchTrajetJPanel extends JPanel {
     private final FlatJTextField stationDepartList, stationArriveList;
     private final JButton valideJbutton;
     private final JScrollPane paneScroll;
-    private final JPanel resultPanel, researchPanel, optionPanel;
+    private final JPanel resultPanel, researchPanel, typeDeplacementPanel, optionPanel;
 
     SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB) {
         setPreferredSize(new Dimension(650, 500));
         this.resultPanel = researchPanelB;
         this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
-        this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
+        this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
         this.stationArriveList = BuilderJComposant.createFlatJTextField(Props.arrive);
-
+        this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal("Option de recherche");
+        optionPanel.setOpaque(false);
         this.stationDepartList = BuilderJComposant.createFlatJTextField(Props.depart);
         this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
 
@@ -37,8 +38,9 @@ public class SearchTrajetJPanel extends JPanel {
         paneScroll = new FlatJScrollPane(resultPanel);
 
         optionPanelLoad();
+        sectionAPied();
+        datePanelLoad();
 
-        optionPanel.setName("Option de recherche");
         valideJbutton.setOpaque(true);
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
@@ -56,40 +58,70 @@ public class SearchTrajetJPanel extends JPanel {
         });
         paneScroll.setBorder(BorderFactory.createEmptyBorder());
 
-        SpinnerDateModel model = new SpinnerDateModel();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(calendar.getTime());
-        //calendar.set
-      //  calendar.set(2023, Calendar.APRIL, 25);
-        model.setValue(calendar.getTime());
-
-        // Créez une instance de la classe JSpinner
-        JSpinner spinner = new JSpinner(model);
-
-        // Ajoutez le composant JSpinner à la fenêtre
         add(researchPanel);
-        add(spinner);
         add(optionPanel);
-
         add(paneScroll);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(new Color(255, 255, 255));
     }
 
+    private void datePanelLoad() {
+        final JPanel panelHeure = BuilderJComposant.createPanelBoxLayoutHorizontal();
+
+        // Créez une instance de la classe SpinnerDateModel
+        SpinnerDateModel model = new SpinnerDateModel();
+        Calendar calendar = Calendar.getInstance();
+        model.setValue(calendar.getTime());
+        model.setCalendarField(Calendar.HOUR_OF_DAY); // Définir le champ calendrier pour modifier uniquement les heures
+
+        // Créer un éditeur personnalisé
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(new JSpinner(model), "HH:mm");
+        editor.getTextField().setEditable(false);
+        editor.getTextField().setBackground(java.awt.Color.WHITE);
+        editor.getTextField().setHorizontalAlignment(JTextField.CENTER);
+
+        // Créer un Spinner
+        JSpinner spinner = new JSpinner(model);
+        spinner.setPreferredSize(new Dimension(60, 50));
+        spinner.setMaximumSize(new Dimension(60, 50));
+        spinner.setMinimumSize(new Dimension(60, 50));
+        spinner.setEditor(editor);
+        // Ajoutez le compsant JSpinner à la fenêtre
+        panelHeure.add(new JLabel("Depart à :"));
+        panelHeure.add(spinner);
+        optionPanel.add(panelHeure);
+    }
+
     private void optionPanelLoad() {
-        final FlatJRadioButton distanceRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, "distance");
-        final FlatJRadioButton apiedRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, "à pied");
-        final FlatJRadioButton entempsRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, "temps ");
+        final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        final FlatJRadioButton distanceRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, "Distance");
+       // final FlatJRadioButton apiedRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, "Section à pied");
+        final FlatJRadioButton entempsRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, "Temps ");
 
         final ButtonGroup groupe = new ButtonGroup();
         distanceRadioButton.setSelected(true);
         groupe.add(distanceRadioButton);
-        groupe.add(apiedRadioButton);
+      //  groupe.add(apiedRadioButton);
         groupe.add(entempsRadioButton);
 
-        optionPanel.add(distanceRadioButton);
-        optionPanel.add(apiedRadioButton);
-        optionPanel.add(entempsRadioButton);
+        typeDeplacementPanel.add(distanceRadioButton);
+       // typeDeplacementPanel.add(apiedRadioButton);
+        typeDeplacementPanel.add(entempsRadioButton);
+        panelTypeTrajet.add(new JLabel(Props.typeTrajet));
+        panelTypeTrajet.add(typeDeplacementPanel);
+        optionPanel.add(panelTypeTrajet);
+    }
+
+    private void sectionAPied(){
+        final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        final FlatJRadioButton sectionPied = BuilderJComposant.createJRadioButton(Props.iconPathSearch, "Non");
+        sectionPied.addActionListener(e ->{
+            if(sectionPied.isSelected()) sectionPied.setText("Oui");
+            else sectionPied.setText("Non");
+        });
+        panelTypeTrajet.add(new JLabel(Props.sectionAPied));
+        panelTypeTrajet.add(sectionPied);
+        optionPanel.add(panelTypeTrajet);
     }
 
     public JPanel getResearchPanel() {

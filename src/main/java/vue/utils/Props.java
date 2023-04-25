@@ -22,4 +22,6 @@ public class Props {
     public static String arrive = "Arrive";
     public static String valider = "Valider";
 
+    public static String typeTrajet = "Type de trajet :";
+    public static String sectionAPied = "Section à pied : ";
 }
