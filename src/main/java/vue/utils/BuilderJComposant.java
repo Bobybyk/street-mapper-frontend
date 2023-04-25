@@ -2,6 +2,7 @@ package vue.utils;
 
 import app.App;
 import vue.composant.FlatJButton;
+import vue.composant.FlatJRadioButton;
 import vue.composant.FlatJTextField;
 
 import javax.swing.*;
@@ -98,5 +99,41 @@ public class BuilderJComposant {
         label.setFont(lemontRegularFont(v));
         label.setForeground(color);
         return label;
+    }
+
+    public static FlatJRadioButton createJRadioButton(String path, String text){
+        final FlatJRadioButton jRadioButton = new FlatJRadioButton(path, text);
+        return jRadioButton;
+    }
+
+    public static JPanel createPanelGridPanelRounded(int rows, int cols) {
+        Border roundedBorder = new Border() {
+            private final int radius = 12;
+
+            @Override
+            public Insets getBorderInsets(Component c) {
+                return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
+            }
+
+            @Override
+            public boolean isBorderOpaque() {
+                return true;
+            }
+
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                g.setColor(Color.BLACK);
+                g.drawRoundRect(x+12, y+12, width - 24, height - 26, radius, radius);
+            }
+        };
+
+        JPanel panel = new JPanel();
+        GridLayout layout = new GridLayout(rows, cols);
+        layout.setHgap(1);
+        layout.setVgap(1);
+        panel.setLayout(layout);
+        panel.setBorder(roundedBorder);
+        panel.setOpaque(false);
+        return panel;
     }
 }
