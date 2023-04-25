@@ -21,7 +21,7 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
     private List<Observer> listObserver = new ArrayList<>();
 
     public FlatComboBox(String[] items) {
-        super(/*items*/);
+        super(items);
         setEditable(true);
         setEditor(new ComboBoxCustom());
         setPrototypeDisplayValue("XXXXXXXXXXXXXX");
@@ -30,11 +30,11 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
         textField.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (isPopupVisible()) hidePopup();
+                if (isPopupVisible() || getItemCount()==0) hidePopup();
                 else showPopup();
             }
         });
-        textField.addFocusListener(new FocusAdapter() {
+        /*textField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
@@ -46,9 +46,8 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
                 super.focusLost(e);
                 hidePopup();
             }
-        });
-        //TODO: remove border
-        Border border = BorderFactory.createLineBorder(Color.RED, 2); // red color with 2-pixel width
+        });*/
+        Border border = BorderFactory.createLineBorder(new Color(220,220,220), 1); // red color with 2-pixel width
         //setSize(10,10);
         setBorder(border);
     }

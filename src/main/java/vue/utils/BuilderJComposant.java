@@ -79,7 +79,12 @@ public class BuilderJComposant {
             }
         };
 
-        final JPanel panel = createPanelBoxLayoutHorizontal();
+        final JPanel panel = new JPanel(){
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(super.getPreferredSize().width, -250);
+            }
+        };
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(roundedBorder);
         panel.setOpaque(false);
