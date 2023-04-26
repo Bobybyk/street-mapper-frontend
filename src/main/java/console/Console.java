@@ -102,17 +102,17 @@ public class Console extends Thread {
                     client.setNextRequest(buildedRequest, commandIndex);
 
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Arguments manquants pour la requête");
+                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments manquants pour la requête, elle ne sera pas envoyé");
                 } catch (NumberFormatException e) {
-                    System.out.println("Arguments invalides pour la requête");
+                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments invalides pour la requête, elle ne sera pas envoyé");
                 }
             } else {
-                System.out.println("Aucune connexion au serveur");
+                Debug.print(DebugList.WARNING, "[WARNING/Console] Aucune connexion au serveur, la requête ne pourra être envoyée");
             }
         } else if (commandExists(commandIndex)) {
             commandList.get(commandIndex).execute(segmentedCommand, this);
         } else {
-            System.out.println("Commande non définie dans le protocole");
+            Debug.print(DebugList.WARNING, "[WARNING/Console] Commande non définie dans le protocole");
         }
     }
 
