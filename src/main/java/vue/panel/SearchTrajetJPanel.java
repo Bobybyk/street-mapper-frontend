@@ -1,9 +1,10 @@
 package vue.panel;
 
+import app.server.data.SuggestionStations;
 import controller.Controller;
 import vue.composant.FlatJRadioButton;
+import vue.composant.FlatComboBox;
 import vue.composant.FlatJScrollPane;
-import vue.composant.FlatJTextField;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -11,6 +12,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 /**
  * SearchTrajetJPanel est un jpanel
@@ -19,32 +23,47 @@ import java.util.Date;
 
 public class SearchTrajetJPanel extends JPanel {
 
+<<<<<<< src/main/java/vue/panel/SearchTrajetJPanel.java
     private final FlatJTextField stationDepartList, stationArriveList;
     private final JPanel resultPanel;
     private final JPanel typeDeplacementPanel;
     private final JPanel optionPanel;
     private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
     private Date date;
+    
+    private final FlatComboBox stationDepartList, stationArriveList;
+    private final JButton valideJbutton;
+    private final JScrollPane paneScroll;
+    private final JPanel resultPanel, researchPanel;
 
-    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB) {
+
+    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setPreferredSize(new Dimension(650, 700));
+        this.stationArriveList = arrivalBox;
+        this.stationDepartList = startBox;
         this.resultPanel = researchPanelB;
         JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
+  
         this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
-        this.stationArriveList = BuilderJComposant.createFlatJTextField(Props.arrive);
         this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal(Props.optionRecherche);
         optionPanel.setOpaque(false);
-        this.stationDepartList = BuilderJComposant.createFlatJTextField(Props.depart);
         JButton valideJbutton = BuilderJComposant.createJButton(Props.valider);
         JScrollPane paneScroll = new FlatJScrollPane(resultPanel);
         optionPanelLoad();
         sectionAPied();
         datePanelLoad();
+        
+        paneScroll = new FlatJScrollPane(resultPanel);
+
         valideJbutton.setOpaque(true);
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
+
+        setJcomboBox(controler, stationArriveList, SuggestionStations.SuggestionKind.ARRIVAL);
+        setJcomboBox(controler, stationDepartList, SuggestionStations.SuggestionKind.DEPART);
+
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
             if(((stationDepartList.getText().isBlank() || stationDepartList.getText().isEmpty()) || stationDepartList.getText().equalsIgnoreCase(Props.depart) ||
@@ -121,5 +140,17 @@ public class SearchTrajetJPanel extends JPanel {
         panelTypeTrajet.add(sectionPied);
         panelTypeTrajet.setOpaque(false);
         optionPanel.add(panelTypeTrajet);
+
+    private void setJcomboBox(Controller controler, FlatComboBox field, SuggestionStations.SuggestionKind depart) {
+        field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String word = ((JTextField) field.getEditor().getEditorComponent()).getText();
+                if (word.matches("[a-zA-Z]+")) {
+                    controler.sendRequestSearch("SEARCH;" + word + ";" + depart);
+                }
+            }
+        });
     }
+
 }

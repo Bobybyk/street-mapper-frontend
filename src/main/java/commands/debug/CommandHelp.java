@@ -16,6 +16,9 @@ public class CommandHelp implements CommandDebug {
         System.out.println("##                                                     ##");
         System.out.println("## kill : ferme le programme                           ##");
         System.out.println("## help : affiche ce menu de commandes                 ##");
+        System.out.println("## debug : affiche les commandes de debogage           ##");
+        System.out.println("## debug <type> <state>                                ##");
+        System.out.println("##      -> active ou désactive le type de debogage     ##");
         System.out.println("##                                                     ##");
         System.out.println("##                  COMMANDES RESEAU                   ##");
         System.out.println("##                                                     ##");
@@ -23,7 +26,7 @@ public class CommandHelp implements CommandDebug {
         System.out.println("##      -> demande le chemin de <addr1> à <addr2>      ##");
         System.out.println("## ROUTE <addr1> <addr2> <time>                        ##");
         System.out.println("##      -> demande le chemin de <addr1> à <addr2>      ##");
-        System.out.println("##      -> tu temps <time>                             ##");
+        System.out.println("##      -> du temps <time>                             ##");
         System.out.println("## ROUTE <addr1> <addr2> <time> DISTANCE               ##");
         System.out.println("##      -> demande le chemin de <addr1> à <addr2>      ##");
         System.out.println("##      -> au temps <time> optimisé en distance        ##");
