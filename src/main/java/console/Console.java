@@ -8,6 +8,7 @@ import commands.debug.CommandDebug;
 import commands.debug.CommandHelp;
 import commands.debug.CommandIndexesList;
 import commands.debug.CommandKill;
+import commands.debug.CommandSettings;
 import commands.tcp.RequestIndexesList;
 import commands.tcp.RequestTcp;
 import commands.tcp.out.RequestTcpRoute;
@@ -48,6 +49,7 @@ public class Console extends Thread {
         
         commandList.put(CommandIndexesList.KILL, new CommandKill());
         commandList.put(CommandIndexesList.HELP, new CommandHelp());
+        commandList.put(CommandIndexesList.DEBUG, new CommandSettings());
     }
 
     /**
@@ -125,8 +127,8 @@ public class Console extends Thread {
 
     @Override
     public void run() {
+        layout();
         while (isRunning) {
-            layout();
             handleCommand(sc.nextLine());
         }
         sc.close();
