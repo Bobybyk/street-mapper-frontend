@@ -3,6 +3,8 @@ package controller;
 import client.Client;
 import commands.tcp.RequestIndexesList;
 
+import javax.swing.*;
+
 public class Controller {
 
     private Client client;
@@ -11,14 +13,7 @@ public class Controller {
         this.client = client;
     }
 
-    /**
-     *
-     * @param arguments
-     */
-    public void sendRequestRoute(String arguments){
-        client.setNextRequest(arguments, RequestIndexesList.ROUTE);
+
+    public void sendRequestRoute(String text, String text1, String typeTrajet, boolean selected, SpinnerDateModel value) {
     }
-
-
-
 }

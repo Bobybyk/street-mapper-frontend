@@ -15,6 +15,7 @@ public class ResearchPanel extends JPanel implements Observable {
     public ResearchPanel(){
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
     }
 
     @Override
