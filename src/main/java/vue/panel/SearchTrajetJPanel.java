@@ -52,9 +52,9 @@ public class SearchTrajetJPanel extends JPanel {
                 resultPanel.add(BuilderJComposant.createJLabelStyle(Props.champsIncorrect, 18f, Color.RED));
             }else{
                 resultPanel.add(BuilderJComposant.createJLabelStyle(Props.rechercheEnCours, 18f, Color.black));
-                String typeTrajet = "distance";
-                if(distanceRadioButton.isSelected()) typeTrajet = "distance";
-                else if (entempsRadioButton.isSelected()) typeTrajet = "entemps";
+                String typeTrajet = "DISTANCE";
+                if(distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
+                else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
                 controler.sendRequestRoute(stationDepartList.getText(), stationArriveList.getText(), typeTrajet, sectionPied.isSelected(), date);
             }
             repaint();
@@ -84,6 +84,7 @@ public class SearchTrajetJPanel extends JPanel {
         spinner.setMaximumSize(new Dimension(60, 50));
         spinner.setMinimumSize(new Dimension(60, 50));
         spinner.setEditor(editor);
+        date = model.getDate();
         spinner.addChangeListener(e-> date = model.getDate());
         panelHeure.add(new JLabel(Props.departA));
         panelHeure.add(spinner);
