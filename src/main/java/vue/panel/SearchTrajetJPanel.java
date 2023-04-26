@@ -1,5 +1,6 @@
 package vue.panel;
 
+import app.server.data.SuggestionStations;
 import controller.Controller;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJScrollPane;
@@ -39,8 +40,8 @@ public class SearchTrajetJPanel extends JPanel {
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
-        setJcomboBox(controler, stationArriveList);
-        setJcomboBox(controler, stationDepartList);
+        setJcomboBox(controler, stationArriveList, SuggestionStations.SuggestionKind.ARRIVAL);
+        setJcomboBox(controler, stationDepartList, SuggestionStations.SuggestionKind.DEPART);
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
             resultPanel.add(BuilderJComposant.createJLabelStyle("Recherche en attente ...", 18f, Color.black));
@@ -57,13 +58,13 @@ public class SearchTrajetJPanel extends JPanel {
         setBackground(new Color(255, 255, 255));
     }
 
-    private void setJcomboBox(Controller controler, FlatComboBox field) {
+    private void setJcomboBox(Controller controler, FlatComboBox field, SuggestionStations.SuggestionKind depart) {
         field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 String word = ((JTextField) field.getEditor().getEditorComponent()).getText();
                 if (word.matches("[a-zA-Z]+")) {
-                    controler.sendRequestSearch("SEARCH;" + word);
+                    controler.sendRequestSearch("SEARCH;" + word + ";" + depart);
                 }
             }
         });
