@@ -89,6 +89,8 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
             this.field.setText(text);
             this.field.setSelectionEnd(text.length());
         }
-
+    }
+    public String getText(){
+        return super.getToolTipText();
     }
 }

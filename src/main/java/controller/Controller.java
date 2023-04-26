@@ -34,4 +34,8 @@ public class Controller {
         System.out.println(arguments);
         client.setNextRequest(arguments, RequestIndexesList.ROUTE);
     }
+
+    public void sendRequestSearch(String requete) {
+        client.setNextRequest(requete, RequestIndexesList.SEARCH);
+    }
 }
