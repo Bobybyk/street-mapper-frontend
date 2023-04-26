@@ -12,6 +12,8 @@ import app.server.data.ErrorServer;
 import app.server.data.Route;
 import app.server.data.SuggestionStations;
 import commands.tcp.RequestIndexesList;
+import console.Debug;
+import console.DebugList;
 import data.DataList;
 import utils.Observer;
 import vue.composant.FlatComboBox;
@@ -91,6 +93,7 @@ public class Client implements Runnable, Observer {
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur"));
+            Debug.print(DebugList.WARNING, "[WARNING/Client] données reçues du serveur non reconnues");
             resultPanel.repaint();
             resultPanel.revalidate();
         }
@@ -101,17 +104,17 @@ public class Client implements Runnable, Observer {
         this.startBox = startBox;
         this.arrivalBox = arrivalBox;
         try {
-            System.out.println("Création de la connection TCP avec le serveur...");
+            Debug.print(DebugList.NETWORK, "Création de la connection TCP avec le serveur...");
             socket = new Socket(ip, port);
             out = new PrintWriter(socket.getOutputStream());
             isConnected = true;
-            System.out.println("...succès");
+            Debug.print(DebugList.NETWORK, "...succès");
         } catch (UnknownHostException e) {
-            System.out.println("[ERREUR] : L'adresse IP de l'hôte ne peut être déterminée");
-            System.out.println("La connexion au serveur a échoué");
+            Debug.print(DebugList.NETWORK, "L'adresse IP de l'hôte ne peut être déterminée");
+            Debug.print(DebugList.NETWORK, "...la connexion au serveur a échoué");
         } catch (IOException e) {
-            System.out.println("[ERREUR] : Numero de PORT INDISPONIBLE ou IP INCONNUE");
-            System.out.println("...la connexion au serveur a échoué");
+            Debug.print(DebugList.NETWORK, "Numero de PORT INDISPONIBLE ou IP INCONNUE");
+            Debug.print(DebugList.NETWORK, "...la connexion au serveur a échoué");
         }
     }
 
@@ -120,14 +123,14 @@ public class Client implements Runnable, Observer {
      */
     private Serializable readServerData() {
         try {
-            System.out.println("En attente de données du serveur");
-            // TODO : remettre ois dans le constructeur une fois que la déclaration de l'ObjectOutputStream du server sera correctement placée
+            Debug.print(DebugList.NETWORK, "En attente de données du serveur");
             ois = new ObjectInputStream(socket.getInputStream());
             return (Serializable) ois.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la récupération des données");
+        } catch (ClassNotFoundException e) {
+            Debug.print(DebugList.ERROR, "[ERREUR/Client] Erreur lors de la récupération des données");
             kill();
+        } catch (IOException e) {
+            Debug.print(DebugList.ERROR, "[ERREUR/Client] Erreur lors de la récupération des données");
         }
         return null;
     }
@@ -154,19 +157,19 @@ public class Client implements Runnable, Observer {
                 }
             }
             case RequestIndexesList.TIME -> DataList.timeStation = serverData;
-            default -> System.out.println("Les données attendues sont inconnues et seront ignorées");
+            default -> Debug.print(DebugList.WARNING, "[WARNING/Client] Les données attendues sont inconnues et seront ignorées");
         }
     }
 
     @Override
     public void run() {
-        System.out.println("Début de l'écoute TCP");
+        Debug.print(DebugList.NETWORK, "Début de l'écoute TCP");
         while (isConnected) {
             sendRequest();
             Serializable serverData = readServerData();
-            System.out.println("Données reçues du serveur : ");
+            Debug.print(DebugList.INFO, "Nouvelles données reçues du serveur !");
             if (serverData == null) {
-                System.out.println("Erreur lors de la récupération des données");
+                Debug.print(DebugList.ERROR, "[ERREUR/Client] erreur lors de la récupération des données");
                 kill();
             }
             handleReceivedData(serverData);
@@ -190,7 +193,7 @@ public class Client implements Runnable, Observer {
         nextRequestToSend = null;
         nextExpectedDataIndex = null;
         out.flush();
-        System.out.println("Requête envoyée au serveur : " + expectedDataIndex);
+        Debug.print(DebugList.INFO, "Requête envoyée au serveur : " + expectedDataIndex);
     }
 
     /**
@@ -202,7 +205,7 @@ public class Client implements Runnable, Observer {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
         this.notify();
-        System.out.println("Nouvelle requête enregistrée : " + request);
+        Debug.print(DebugList.INFO, "Nouvelle requête enregistrée : " + request);
     }
 
     /**
@@ -219,7 +222,7 @@ public class Client implements Runnable, Observer {
         try {
             this.socket.close();
             this.isConnected = false;
-            System.out.println("Client déconnecté !");
+            Debug.print(DebugList.NETWORK, "Client déconnecté !");
             return true;
         } catch (IOException e) {
             e.printStackTrace();

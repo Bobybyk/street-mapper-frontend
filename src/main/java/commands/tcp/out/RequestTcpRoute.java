@@ -6,6 +6,8 @@ import java.util.Locale;
 
 import commands.tcp.RequestIndexesList;
 import commands.tcp.RequestTcp;
+import console.Debug;
+import console.DebugList;
 
 public class RequestTcpRoute implements RequestTcp {
 
@@ -26,7 +28,7 @@ public class RequestTcpRoute implements RequestTcp {
             if (date.charAt(3) == ':')
                 return true;
         } catch (NumberFormatException e) {
-            System.out.println("La date n'est pas au bon format");
+            Debug.print(DebugList.WARNING, "[WARNING/RequestTcpRoute] La date renseignée n'est pas au bon format");
         }
         return false;
     }

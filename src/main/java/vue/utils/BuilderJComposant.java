@@ -1,6 +1,8 @@
 package vue.utils;
 
 import app.App;
+import console.Debug;
+import console.DebugList;
 import vue.composant.FlatJButton;
 import vue.composant.FlatJTextField;
 
@@ -30,7 +32,7 @@ public class BuilderJComposant {
             if (stream == null) throw new IOException();
             return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
-            System.out.println("Erreur chargement des polices d'écritures");
+            Debug.print(DebugList.ERROR, "[ERROR/BuilderJComposant] Erreur chargement des polices d'écritures");
         }
         return new Font(Font.SANS_SERIF, Font.BOLD, 30);
     }
@@ -41,7 +43,7 @@ public class BuilderJComposant {
             if (stream == null) throw new IOException();
             return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
-            System.out.println("Erreur chargement des polices d'écritures");
+            Debug.print(DebugList.ERROR, "[ERROR/BuilderJComposant] Erreur chargement des polices d'écritures");
         }
         return new Font(Font.SANS_SERIF, Font.BOLD, 30);
     }
