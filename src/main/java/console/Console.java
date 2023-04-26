@@ -127,8 +127,8 @@ public class Console extends Thread {
 
     @Override
     public void run() {
-        layout();
         while (isRunning) {
+            layout();
             handleCommand(sc.nextLine());
         }
         sc.close();

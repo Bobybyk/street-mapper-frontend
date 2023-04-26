@@ -9,10 +9,18 @@ public class CommandSettings implements CommandDebug {
     @Override
     public void execute(String[] args, Console console) {
 
+        if (args.length == 1) {
+            for (String key : Debug.debugTypes.keySet()) {
+                Debug.print(DebugList.SETTINGS, "Débogage " + key + " : " + (Debug.debugTypeStatus.get(Debug.debugTypes.get(key)) ? "activé" : "désactivé"));
+            }
+            return;
+        }
+
         try {
             boolean value = args[2].equals("0") ? false : true;
-            Debug.debugTypeStatus.put(Debug.debugTypes.get(args[1]), value);
-            Debug.print(DebugList.SETTINGS, "Débogage " + args[1] + (args[2].equals("0") ? "désactivé" : "activé"));
+            int type = Debug.debugTypes.get(args[1]);
+            Debug.debugTypeStatus.put(type, value);
+            Debug.print(DebugList.GENERAL, "Débogage " + args[1] + (args[2].equals("0") ? " désactivé" : " activé"));
         } catch (ArrayIndexOutOfBoundsException e) {
             Debug.print(DebugList.SETTINGS, "[ERREUR/CommandSettings] gestion debogage, out of bounds exception");
         } catch (NullPointerException e) {

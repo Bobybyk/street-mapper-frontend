@@ -22,13 +22,11 @@ public class Debug {
 
     public static void print(int type, String message) {
         try {
-            if (debugTypeStatus.get(type) || debugTypeStatus.get(DebugList.GENERAL)) {
+            if (debugTypeStatus.get(type) || type == DebugList.GENERAL) {
                 System.out.println(message);
-                Console.layout();
             }
         } catch (NullPointerException e) {
             System.out.println("[ERREUR/Debug] type de debug inconnu");
-            Console.layout();
         }
     }
 }
