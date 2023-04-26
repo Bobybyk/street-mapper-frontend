@@ -66,12 +66,21 @@ public class Client implements Runnable, Observer {
             ((JPanel) researchPanel).revalidate();
         }else if(DataList.station instanceof SuggestionStations sugg){
             String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
-            SwingUtilities.invokeLater(() -> {
-                startBox.removeAllItems();
-                for (String s : arr) {
-                    startBox.addItem(s);
-                }
-            });
+            if (sugg.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
+                SwingUtilities.invokeLater(() -> {
+                    arrivalBox.removeAllItems();
+                    for (String s : arr) {
+                        arrivalBox.addItem(s);
+                    }
+                });
+            }else{
+                SwingUtilities.invokeLater(() -> {
+                    startBox.removeAllItems();
+                    for (String s : arr) {
+                        startBox.addItem(s);
+                    }
+                });
+            }
         }else if(DataList.route instanceof ErrorServer){
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
@@ -136,8 +145,13 @@ public class Client implements Runnable, Observer {
             }
             case RequestIndexesList.SEARCH -> {
                 DataList.station = serverData;
-                startBox.notifyObservers();
-                arrivalBox.notifyObservers();
+                if(DataList.station instanceof SuggestionStations sugg){
+                    if (sugg.getKind()== SuggestionStations.SuggestionKind.ARRIVAL){
+                        arrivalBox.notifyObservers();
+                    }else{
+                        startBox.notifyObservers();
+                    }
+                }
             }
             case RequestIndexesList.TIME -> DataList.timeStation = serverData;
             default -> System.out.println("Les données attendues sont inconnues et seront ignorées");
