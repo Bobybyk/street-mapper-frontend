@@ -7,11 +7,14 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import app.map.StationInfo;
 import app.server.data.ErrorServer;
 import app.server.data.Route;
+import app.server.data.SuggestionStations;
 import commands.tcp.RequestIndexesList;
 import data.DataList;
 import utils.Observer;
+import vue.composant.FlatComboBox;
 import vue.panel.ListTrajetPanel;
 import vue.panel.ResearchPanel;
 
@@ -20,6 +23,10 @@ import javax.swing.*;
 public class Client implements Runnable, Observer {
 
     private final ResearchPanel researchPanel;
+
+    private final FlatComboBox startBox;
+
+    private final FlatComboBox arrivalBox;
     /**
      * socket pour assurer la communication TCP avec le serveur
      */
@@ -50,24 +57,49 @@ public class Client implements Runnable, Observer {
     private boolean isConnected;
 
     @Override
-    public void update(ResearchPanel researchPanel) {
-        JPanel resultPanel = researchPanel;
-        resultPanel.removeAll();
-        Serializable serverData = DataList.route;
-        if(serverData instanceof Route){
-            resultPanel.add(new ListTrajetPanel((Route) serverData));
-        }else if(serverData instanceof ErrorServer){
-            resultPanel.add(new JLabel("Erreur: " + ((ErrorServer) serverData).getError().toLowerCase()));
+    public void update(Object researchPanel) {
+        if(DataList.route instanceof Route route){
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
+            resultPanel.add(new ListTrajetPanel(route));
+            resultPanel.repaint();
+            resultPanel.revalidate();
+        }else if(DataList.station instanceof SuggestionStations sugg){
+            String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
+            if (sugg.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
+                SwingUtilities.invokeLater(() -> {
+                    arrivalBox.removeAllItems();
+                    for (String s : arr) {
+                        arrivalBox.addItem(s);
+                    }
+                });
+            }else{
+                SwingUtilities.invokeLater(() -> {
+                    startBox.removeAllItems();
+                    for (String s : arr) {
+                        startBox.addItem(s);
+                    }
+                });
+            }
+        }else if(DataList.route instanceof ErrorServer error){
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
+            resultPanel.add(new JLabel("Erreur: " + error.getError().toLowerCase()));
+            resultPanel.repaint();
+            resultPanel.revalidate();
         }else{
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur"));
-            System.out.println("Erreur");
+            resultPanel.repaint();
+            resultPanel.revalidate();
         }
-        researchPanel.repaint();
-        researchPanel.revalidate();
     }
 
-    public Client(String ip, int port, ResearchPanel researchPanel) {
+    public Client(String ip, int port, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         this.researchPanel = researchPanel;
+        this.startBox = startBox;
+        this.arrivalBox = arrivalBox;
         try {
             System.out.println("Création de la connection TCP avec le serveur...");
             socket = new Socket(ip, port);
@@ -92,11 +124,7 @@ public class Client implements Runnable, Observer {
             // TODO : remettre ois dans le constructeur une fois que la déclaration de l'ObjectOutputStream du server sera correctement placée
             ois = new ObjectInputStream(socket.getInputStream());
             return (Serializable) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la récupération des données");
-            kill();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors de la récupération des données");
             kill();
@@ -111,19 +139,22 @@ public class Client implements Runnable, Observer {
      */
     private void handleReceivedData(Serializable serverData) {
         switch (expectedDataIndex) {
-            case RequestIndexesList.ROUTE:
+            case RequestIndexesList.ROUTE -> {
                 DataList.route = serverData;
                 researchPanel.notifyObservers();
-                break;
-            case RequestIndexesList.SEARCH:
+            }
+            case RequestIndexesList.SEARCH -> {
                 DataList.station = serverData;
-                break;
-            case RequestIndexesList.TIME:
-                DataList.timeStation = serverData;
-                break;
-            default:
-                System.out.println("Les données attendues sont inconnues et seront ignorées");
-                break;
+                if(DataList.station instanceof SuggestionStations sugg){
+                    if (sugg.getKind()== SuggestionStations.SuggestionKind.ARRIVAL){
+                        arrivalBox.notifyObservers();
+                    }else{
+                        startBox.notifyObservers();
+                    }
+                }
+            }
+            case RequestIndexesList.TIME -> DataList.timeStation = serverData;
+            default -> System.out.println("Les données attendues sont inconnues et seront ignorées");
         }
     }
 

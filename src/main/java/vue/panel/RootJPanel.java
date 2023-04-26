@@ -1,6 +1,7 @@
 package vue.panel;
 
 import controller.Controller;
+import vue.composant.FlatComboBox;
 
 import javax.swing.*;
 
@@ -14,11 +15,11 @@ public class RootJPanel extends JPanel {
     private final JPanel rootJPanel;
     private final MenuSelectionJPanel selectionJPanel;
 
-    public RootJPanel(Controller controller, ResearchPanel panel) {
+    public RootJPanel(Controller controller, ResearchPanel panel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         rootJPanel = new JPanel();
-        rootJPanel.add(new SearchTrajetJPanel(controller, panel));
-        selectionJPanel = new MenuSelectionJPanel(controller,this, panel);
+        rootJPanel.add(new SearchTrajetJPanel(controller, panel, startBox, arrivalBox));
+        selectionJPanel = new MenuSelectionJPanel(controller, this, panel, startBox, arrivalBox);
         add(rootJPanel);
         add(selectionJPanel);
     }
