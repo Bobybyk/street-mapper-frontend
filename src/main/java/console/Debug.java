@@ -3,9 +3,18 @@ package console;
 import java.util.HashMap;
 
 public class Debug {
+    /**
+     * Liste des types de debug disponibles et leur état (activé ou non)
+     */
     public static HashMap<Integer, Boolean> debugTypeStatus;
+    /**
+     * Liste des types de debug disponibles et leur index
+     */
     public static HashMap<String, Integer> debugTypes;
    
+    /**
+     * Initialisation des types de debug
+     */
     static {
         debugTypeStatus = new HashMap<Integer, Boolean>();
         debugTypes = new HashMap<String, Integer>();
@@ -24,6 +33,11 @@ public class Debug {
         debugTypes.put("NETWORK", DebugList.NETWORK);
     }
 
+    /**
+     * Affiche le message de debug si son type est activé
+     * @param type type de debug
+     * @param message message à afficher
+     */
     public static void print(int type, String message) {
         try {
             if (debugTypeStatus.get(type) || type == DebugList.GENERAL) {

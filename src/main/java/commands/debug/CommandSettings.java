@@ -17,6 +17,10 @@ public class CommandSettings implements CommandDebug {
         }
 
         try {
+            if (args[1].equals("GENERAL")) {
+                Debug.print(DebugList.SETTINGS, "le type de debogage GENERAL ne peut pas être modifié");
+                return;
+            }
             boolean value = args[2].equals("0") ? false : true;
             int type = Debug.debugTypes.get(args[1]);
             Debug.debugTypeStatus.put(type, value);
