@@ -10,6 +10,7 @@ import vue.utils.Props;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * SearchTrajetJPanel est un jpanel
@@ -23,7 +24,7 @@ public class SearchTrajetJPanel extends JPanel {
     private final JScrollPane paneScroll;
     private final JPanel resultPanel, researchPanel, typeDeplacementPanel, optionPanel;
     private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
-    private JSpinner spinner;
+    private Date date;
 
 
     SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB) {
@@ -59,7 +60,7 @@ public class SearchTrajetJPanel extends JPanel {
                 String typeTrajet = "distance";
                 if(distanceRadioButton.isSelected()) typeTrajet = "distance";
                 else if (entempsRadioButton.isSelected()) typeTrajet = "entemps";
-                controler.sendRequestRoute(stationDepartList.getText(), stationArriveList.getText(), typeTrajet, sectionPied.isSelected(), (SpinnerDateModel) spinner.getModel().getValue());
+                controler.sendRequestRoute(stationDepartList.getText(), stationArriveList.getText(), typeTrajet, sectionPied.isSelected(), date);
             }
             repaint();
             revalidate();
@@ -75,8 +76,6 @@ public class SearchTrajetJPanel extends JPanel {
 
     private void datePanelLoad() {
         final JPanel panelHeure = BuilderJComposant.createPanelBoxLayoutHorizontal();
-
-        // Créez une instance de la classe SpinnerDateModel
         SpinnerDateModel model = new SpinnerDateModel();
         Calendar calendar = Calendar.getInstance();
         model.setValue(calendar.getTime());
@@ -85,11 +84,12 @@ public class SearchTrajetJPanel extends JPanel {
         editor.getTextField().setEditable(false);
         editor.getTextField().setBackground(java.awt.Color.WHITE);
         editor.getTextField().setHorizontalAlignment(JTextField.CENTER);
-        spinner = new JSpinner(model);
+        final JSpinner spinner = new JSpinner(model);
         spinner.setPreferredSize(new Dimension(60, 50));
         spinner.setMaximumSize(new Dimension(60, 50));
         spinner.setMinimumSize(new Dimension(60, 50));
         spinner.setEditor(editor);
+        spinner.addChangeListener(e-> date = model.getDate());
         panelHeure.add(new JLabel("Depart à :"));
         panelHeure.add(spinner);
         panelHeure.setOpaque(false);
@@ -125,9 +125,5 @@ public class SearchTrajetJPanel extends JPanel {
         panelTypeTrajet.add(sectionPied);
         panelTypeTrajet.setOpaque(false);
         optionPanel.add(panelTypeTrajet);
-    }
-
-    public JPanel getResearchPanel() {
-        return researchPanel;
     }
 }
