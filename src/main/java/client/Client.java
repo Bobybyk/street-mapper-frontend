@@ -58,12 +58,12 @@ public class Client implements Runnable, Observer {
 
     @Override
     public void update(Object researchPanel) {
-        if(DataList.route instanceof Route){
+        if(DataList.route instanceof Route route){
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
-            resultPanel.add(new ListTrajetPanel((Route) DataList.route));
-            ((JPanel) researchPanel).repaint();
-            ((JPanel) researchPanel).revalidate();
+            resultPanel.add(new ListTrajetPanel(route));
+            resultPanel.repaint();
+            resultPanel.revalidate();
         }else if(DataList.station instanceof SuggestionStations sugg){
             String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
             if (sugg.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
@@ -81,18 +81,18 @@ public class Client implements Runnable, Observer {
                     }
                 });
             }
-        }else if(DataList.route instanceof ErrorServer){
+        }else if(DataList.route instanceof ErrorServer error){
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
-            resultPanel.add(new JLabel("Erreur: " + ((ErrorServer) DataList.route).getError().toLowerCase()));
-            ((JPanel) researchPanel).repaint();
-            ((JPanel) researchPanel).revalidate();
+            resultPanel.add(new JLabel("Erreur: " + error.getError().toLowerCase()));
+            resultPanel.repaint();
+            resultPanel.revalidate();
         }else{
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur"));
-            System.out.println("Erreur");((JPanel) researchPanel).repaint();
-            ((JPanel) researchPanel).revalidate();
+            resultPanel.repaint();
+            resultPanel.revalidate();
         }
     }
 
