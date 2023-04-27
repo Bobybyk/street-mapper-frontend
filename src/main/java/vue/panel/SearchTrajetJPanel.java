@@ -45,7 +45,7 @@ public class SearchTrajetJPanel extends JPanel {
         sectionAPied();
         datePanelLoad();
 
-        final JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(650, 150));
+        final JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(645, 100));
         final JButton valideJbutton = BuilderJComposant.createJButton(Props.valider);
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);

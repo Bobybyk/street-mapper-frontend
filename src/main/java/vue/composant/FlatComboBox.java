@@ -21,13 +21,13 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
     public FlatComboBox(String placeHolder) {
         setEditable(true);
         setEditor(new ComboBoxCustom(placeHolder));
-        setFont(BuilderJComposant.lemontRegularFont(20));
-        Dimension d = new Dimension(235, 150);
+        Dimension d = new Dimension(235, 100);
         setPreferredSize(d);
         setMinimumSize(d);
         setMaximumSize(d);
+        setFont(BuilderJComposant.lemontRegularFont(18));
 
-       // setRenderer(new CustomListCellRenderer());
+        setRenderer(new CustomListCellRenderer());
 
         addActionListener(e -> {
             if(e.getModifiers() != 0){
@@ -96,5 +96,26 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
             return field.getText();
         }
 
+    }
+
+    static class CustomListCellRenderer extends JLabel implements ListCellRenderer<Object> {
+        public CustomListCellRenderer() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            setText(value.toString());
+            setFont(BuilderJComposant.lemontRegularFont(14));
+            if (isSelected) {
+                setBackground(new Color(127, 177, 50));
+                setForeground(Color.BLACK);
+            } else {
+                setBackground(list.getBackground());
+                setForeground(list.getForeground());
+            }
+
+            return this;
+        }
     }
 }
