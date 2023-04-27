@@ -19,7 +19,7 @@ public class Controller {
 
     /**
      *
-     * Fonction dans le controller qui permet d'envoyer un requete au serveur
+     * Fonction dans le controller qui permet d'envoyer un requete de route au serveur
      *
      * @param depart String de la station de depart
      * @param arrive String de la station d'arrivé
@@ -35,11 +35,25 @@ public class Controller {
         client.setNextRequest(arguments, RequestIndexesList.ROUTE);
     }
 
+    /**
+     *
+     * Fonction dans le controller qui permet d'envoyer un requete de search au serveur
+     *
+     * @param word String du mot d'entrée de l'utilisateur dans la textfield
+     * @param depart Savoir quel type d'input l'utilisateur va cliquer
+     */
     public void sendRequestSearch(String word, SuggestionStations.SuggestionKind depart) {
         String requete = "SEARCH;" + word + ";" + depart;
         client.setNextRequest(requete, RequestIndexesList.SEARCH);
     }
 
+    /**
+     *
+     * Fonction dans le controller qui permet d'envoyer un requete de Horaire au serveur
+     *
+     * @param station String de la station
+     * @param date date d'horaire
+     */
     public void sendRequestHoraire(String station, Date date) {
         LocalTime time = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");

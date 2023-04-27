@@ -1,5 +1,7 @@
 package vue.composant;
 
+import app.server.data.SuggestionStations;
+import controller.Controller;
 import utils.Observable;
 import utils.Observer;
 import vue.utils.BuilderJComposant;
@@ -12,6 +14,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FlatComboBox extends JComboBox<String> implements Observable {
 
@@ -34,6 +38,28 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
                 String selectedItem = (String) getSelectedItem();
                 field.setText(selectedItem);
                 field.revalidate();
+            }
+        });
+    }
+
+    public void requestInitComboBox(Controller controler, SuggestionStations.SuggestionKind depart) {
+        getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String word = ((JTextField) getEditor().getEditorComponent()).getText();
+                char c = e.getKeyChar();
+                if (Character.isLetterOrDigit(c)) {
+                    showPopup();
+                    java.util.Timer te = new Timer();
+                    te.purge();
+                    te.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            controler.sendRequestSearch(word, depart);
+                            cancel();
+                        }
+                    }, 0, 400);
+                }
             }
         });
     }

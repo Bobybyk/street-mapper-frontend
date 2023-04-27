@@ -1,8 +1,9 @@
 package vue.panel;
 
+import app.server.data.SuggestionStations;
 import controller.Controller;
 import vue.composant.FlatComboBox;
-import vue.composant.FlatJTextField;
+
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -19,24 +20,26 @@ public class SearchHorairePanel extends JPanel {
     private final JPanel resultPanel, researchPanel;
     private Date date;
 
-    SearchHorairePanel(Controller controler, FlatComboBox stationRecherche){
+    SearchHorairePanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox stationRecherche){
         setPreferredSize(new Dimension(650, 700));
-        this.resultPanel = BuilderJComposant.createPanelBoxLayoutVertical();
-        this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        this.resultPanel = researchPanelB;
+        this.researchPanel =  BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(565, 100));
         this.stationRecherche = stationRecherche;
+        stationRecherche.requestInitComboBox(controler, SuggestionStations.SuggestionKind.DEPART);
         this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
-
-        researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
+        valideJbutton.setOpaque(true);
+        researchPanel.setOpaque(true);
         researchPanel.add(stationRecherche);
+        researchPanel.setBackground(Color.WHITE);
         datePanelLoad();
         researchPanel.add(valideJbutton);
         valideJbutton.addActionListener(e ->{
             String station = stationRecherche.getTextField().getText();
             controler.sendRequestHoraire(station,  date);
         });
+
         add(researchPanel);
         add(resultPanel);
-        setBackground(new Color(184,223,168));
     }
 
     private void datePanelLoad() {
@@ -44,7 +47,7 @@ public class SearchHorairePanel extends JPanel {
         SpinnerDateModel model = new SpinnerDateModel();
         Calendar calendar = Calendar.getInstance();
         model.setValue(calendar.getTime());
-        model.setCalendarField(Calendar.HOUR_OF_DAY); // Définir le champ calendrier pour modifier uniquement les heures
+        model.setCalendarField(Calendar.HOUR_OF_DAY);
         JSpinner.DateEditor editor = new JSpinner.DateEditor(new JSpinner(model), "HH:mm");
         editor.getTextField().setEditable(false);
         editor.getTextField().setBackground(java.awt.Color.WHITE);
@@ -56,9 +59,10 @@ public class SearchHorairePanel extends JPanel {
         spinner.setEditor(editor);
         date = model.getDate();
         spinner.addChangeListener(e -> date = model.getDate());
-        panelHeure.add(new JLabel(Props.departA));
+        panelHeure.add(new JLabel(Props.horaireA));
         panelHeure.add(spinner);
         panelHeure.setOpaque(false);
+        panelHeure.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         researchPanel.add(panelHeure);
     }
 

@@ -66,6 +66,13 @@ public class Client implements Runnable, Observer {
             resultPanel.add(new ListTrajetPanel(route));
             resultPanel.repaint();
             resultPanel.revalidate();
+        }else if(DataList.route instanceof Route route){
+            //TODO mettre l'objet listHoraireStation
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
+            resultPanel.add(new ListTrajetPanel(route));
+            resultPanel.repaint();
+            resultPanel.revalidate();
         }else if(DataList.station instanceof SuggestionStations sugg){
             String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
             if (sugg.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){

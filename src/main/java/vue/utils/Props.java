@@ -11,7 +11,7 @@ public class Props {
 
     public static final String iconPathSearch = "/icon/recherche_icon.png";
     public static final String iconPathHistory = "/icon/history_icon.png";
-    public static final String iconPathTime = "src/main/resources/icon/temps_icon.png";
+    public static final String iconPathTime = "/icon/temps_icon.png";
 
     /**
      * String
@@ -37,4 +37,5 @@ public class Props {
     public static String non = "Non ";
     public static String oui = "Oui ";
     public static String station = "Station";
+    public static String horaireA = "Horaire à :";
 }
