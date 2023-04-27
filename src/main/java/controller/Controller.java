@@ -32,12 +32,19 @@ public class Controller {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime = time.format(formatter);
         String arguments = "ROUTE;"+depart+";"+arrive+";"+ formattedTime+";"+ typeTrajet+";"+ (sectionAPied ? "FOOT\n" :"\n");
-        System.out.println(arguments);
         client.setNextRequest(arguments, RequestIndexesList.ROUTE);
     }
 
     public void sendRequestSearch(String word, SuggestionStations.SuggestionKind depart) {
         String requete = "SEARCH;" + word + ";" + depart;
         client.setNextRequest(requete, RequestIndexesList.SEARCH);
+    }
+
+    public void sendRequestHoraire(String station, Date date) {
+        LocalTime time = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedTime = time.format(formatter);
+        String arguments = "TIME;"+station+";"+ formattedTime+"\n";
+        client.setNextRequest(arguments, RequestIndexesList.TIME);
     }
 }

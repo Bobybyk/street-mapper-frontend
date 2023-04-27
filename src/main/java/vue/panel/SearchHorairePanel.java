@@ -1,6 +1,7 @@
 package vue.panel;
 
 import controller.Controller;
+import vue.composant.FlatComboBox;
 import vue.composant.FlatJTextField;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
@@ -12,29 +13,29 @@ import java.util.Date;
 
 public class SearchHorairePanel extends JPanel {
 
-    private final FlatJTextField stationSearch;
+    private final FlatComboBox stationRecherche;
 
     private final JButton valideJbutton;
     private final JPanel resultPanel, researchPanel;
     private Date date;
 
-    SearchHorairePanel(Controller controler){
+    SearchHorairePanel(Controller controler, FlatComboBox stationRecherche){
         setPreferredSize(new Dimension(650, 700));
         this.resultPanel = BuilderJComposant.createPanelBoxLayoutVertical();
         this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        this.stationSearch = BuilderJComposant.createFlatJTextField(Props.station);
+        this.stationRecherche = stationRecherche;
         this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
 
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
-        researchPanel.add(stationSearch);
+        researchPanel.add(stationRecherche);
+        datePanelLoad();
         researchPanel.add(valideJbutton);
         valideJbutton.addActionListener(e ->{
-            String station = stationSearch.getText();
-
+            String station = stationRecherche.getTextField().getText();
+            controler.sendRequestHoraire(station,  date);
         });
         add(researchPanel);
         add(resultPanel);
-        datePanelLoad();
         setBackground(new Color(184,223,168));
     }
 

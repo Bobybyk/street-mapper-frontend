@@ -48,7 +48,7 @@ public class MenuSelectionJPanel extends JPanel {
     private void actionListerner() {
         buttonHistory.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new HistoryTrajetJPanel()));
         buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel, startBox, arrivalBox)));
-        buttonSearchHoraire.addActionListener(actionEvent -> {rootJPanel.updateRootPanel(new SearchHorairePanel(controller));});
+        buttonSearchHoraire.addActionListener(actionEvent -> {rootJPanel.updateRootPanel(new SearchHorairePanel(controller, startBox));});
     }
 
 }

@@ -5,7 +5,6 @@ import controller.Controller;
 import vue.composant.FlatJRadioButton;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJScrollPane;
-import vue.composant.FlatJTextField;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -17,7 +16,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
 
 import static vue.utils.Props.depart;
 
