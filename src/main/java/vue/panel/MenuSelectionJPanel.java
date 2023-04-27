@@ -8,6 +8,7 @@ import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * MenuSelectionJPanel est un jpanel
@@ -21,12 +22,13 @@ public class MenuSelectionJPanel extends JPanel {
     private final RootJPanel rootJPanel;
     private final Controller controller;
     private final ResearchPanel researchPanel;
-    FlatComboBox startBox;
-    FlatComboBox arrivalBox;
+    private FlatComboBox startBox;
+    private FlatComboBox arrivalBox;
+    private MapJPanel map;
 
-
-    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
+    MenuSelectionJPanel(Controller controller, MapJPanel map, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         this.controller = controller;
+        this.map = map;
         this.researchPanel = researchPanel;
         this.setPreferredSize(new Dimension(250, 100));
         this.startBox = startBox;
@@ -44,7 +46,7 @@ public class MenuSelectionJPanel extends JPanel {
 
     private void actionListerner() {
         buttonHistory.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new HistoryTrajetJPanel()));
-        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel, startBox, arrivalBox)));
+        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, map, researchPanel, startBox, arrivalBox)));
     }
 
 }
