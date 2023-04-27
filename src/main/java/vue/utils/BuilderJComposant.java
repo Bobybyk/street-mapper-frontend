@@ -74,7 +74,7 @@ public class BuilderJComposant {
         return panel;
     }
 
-    public static JPanel createPanelBoxLayoutHorizontalRounded() {
+    public static JPanel createPanelBoxLayoutHorizontalRounded(Dimension dimension) {
         Border roundedBorder = new Border() {
             private final int radius = 12;
 
@@ -95,12 +95,11 @@ public class BuilderJComposant {
             }
         };
 
-        final JPanel panel = new JPanel() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(super.getPreferredSize().width, -250);
-            }
-        };
+        final JPanel panel = new JPanel();
+        panel.setPreferredSize(dimension);
+        panel.setMaximumSize(dimension);
+        panel.setMinimumSize(dimension);
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(roundedBorder);
         panel.setOpaque(false);

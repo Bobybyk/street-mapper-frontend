@@ -7,6 +7,7 @@ import vue.utils.BuilderJComposant;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -19,21 +20,14 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
 
     private final List<Observer> listObserver = new ArrayList<>();
 
-    public FlatComboBox() {
-        super();
+    public FlatComboBox(String placeHolder) {
         setEditable(true);
-        setEditor(new ComboBoxCustom());
-        setPrototypeDisplayValue("XXXXXXXXXXXXXX");
+        setEditor(new ComboBoxCustom(placeHolder));
         setFont(BuilderJComposant.lemontRegularFont(20));
-        JTextField textField = (JTextField) getEditor().getEditorComponent();
-        textField.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (isPopupVisible() || getItemCount() == 0) hidePopup();
-                else showPopup();
-            }
-        });
-        setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
+    }
+
+    public FlatJTextField getTextField(){
+        return (FlatJTextField) getEditor().getEditorComponent();
     }
 
     @Override
@@ -43,23 +37,29 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
 
     @Override
     public void notifyObservers() {
-        for (Observer observer : listObserver) {
-            observer.update(this);
-        }
+        for (Observer observer : listObserver) observer.update(this);
     }
 
     private class ComboBoxCustom extends BasicComboBoxEditor {
-        private final JTextField field = new JTextField();
 
-        public ComboBoxCustom() {
+        private final FlatJTextField field;
+
+        public ComboBoxCustom(String placeHolder) {
             super();
-            field.setBorder(null);
-            field.setPreferredSize(new Dimension(10, 10));
+            field = BuilderJComposant.createFlatJTextField(placeHolder,  new Dimension(150, 70));
             field.addFocusListener(new FocusAdapter() {
                 public void focusGained(FocusEvent e) {
                     if (field.getText().length() > 0) field.selectAll();
                 }
             });
+            field.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (isPopupVisible() || getItemCount() == 0) hidePopup();
+                    else showPopup();
+                }
+            });
+
             setUI(new BasicComboBoxUI() {
                 @Override
                 protected JButton createArrowButton() {
@@ -71,6 +71,8 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
                     };
                 }
             });
+            repaint();
+            revalidate();
         }
 
         @Override
@@ -89,8 +91,6 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
             this.field.setText(text);
             this.field.setSelectionEnd(text.length());
         }
-    }
-    public String getText(){
-        return super.getToolTipText();
+
     }
 }

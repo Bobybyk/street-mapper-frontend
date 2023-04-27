@@ -26,55 +26,50 @@ import static vue.utils.Props.depart;
 public class SearchTrajetJPanel extends JPanel {
 
     private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
-    private final JPanel resultPanel;
-    private final JPanel typeDeplacementPanel;
-    private final JPanel optionPanel;
-    private Date date;
-    
     private final FlatComboBox stationDepartList, stationArriveList;
-
+    private final JPanel resultPanel, typeDeplacementPanel, optionPanel;
+    private Date date;
 
     SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setPreferredSize(new Dimension(650, 700));
         this.stationArriveList = arrivalBox;
         this.stationDepartList = startBox;
         this.resultPanel = researchPanelB;
-        JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
-  
-        this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
+        this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(160, 60));
         this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal(Props.optionRecherche);
         optionPanel.setOpaque(false);
-        JButton valideJbutton = BuilderJComposant.createJButton(Props.valider);
-        JScrollPane paneScroll =  new FlatJScrollPane(resultPanel);
         optionPanelLoad();
         sectionAPied();
         datePanelLoad();
 
+        final JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(650,  150));
+        final JButton valideJbutton = BuilderJComposant.createJButton(Props.valider);
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
+        valideJbutton.setOpaque(true);
 
         setJcomboBox(controler, stationArriveList, SuggestionStations.SuggestionKind.ARRIVAL);
         setJcomboBox(controler, stationDepartList, SuggestionStations.SuggestionKind.DEPART);
 
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
-            if(((stationDepartList.getText().isBlank() || stationDepartList.getText().isEmpty()) || stationDepartList.getText().equalsIgnoreCase(depart) ||
-                    stationArriveList.getText().isBlank() || stationArriveList.getText().isEmpty() || stationArriveList.getText().equalsIgnoreCase(Props.arrive))){
+            if(((stationDepartList.getTextField().getText().isBlank() || stationDepartList.getTextField().getText().isEmpty()) || stationDepartList.getTextField().getText().equalsIgnoreCase(depart) ||
+                    stationArriveList.getTextField().getText().isBlank() || stationArriveList.getTextField().getText().isEmpty() || stationArriveList.getTextField().getText().equalsIgnoreCase(Props.arrive))){
                 resultPanel.add(BuilderJComposant.createJLabelStyle(Props.champsIncorrect, 18f, Color.RED));
             }else{
                 resultPanel.add(BuilderJComposant.createJLabelStyle(Props.rechercheEnCours, 18f, Color.black));
                 String typeTrajet = "DISTANCE";
                 if(distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
                 else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
-                controler.sendRequestRoute(stationDepartList.getText(), stationArriveList.getText(), typeTrajet, sectionPied.isSelected(), date);
+                controler.sendRequestRoute(stationDepartList.getTextField().getText(), stationArriveList.getTextField().getText(), typeTrajet, sectionPied.isSelected(), date);
             }
             repaint();
             revalidate();
         });
+        final JScrollPane paneScroll =  new FlatJScrollPane(resultPanel);
         paneScroll.setBorder(BorderFactory.createEmptyBorder());
-
         add(researchPanel);
         add(optionPanel);
         add(paneScroll);

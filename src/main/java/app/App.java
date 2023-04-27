@@ -9,6 +9,7 @@ import controller.Controller;
 import vue.MainWindowJFrame;
 import vue.composant.FlatComboBox;
 import vue.panel.ResearchPanel;
+import vue.utils.Props;
 
 import javax.swing.*;
 
@@ -24,7 +25,8 @@ public class App {
 
     public static void main(String[] args) {
         ResearchPanel researchPanel = new ResearchPanel();
-        FlatComboBox stationDepartList = new FlatComboBox(), stationArriveList = new FlatComboBox();
+        FlatComboBox stationDepartList = new FlatComboBox(Props.depart);
+        FlatComboBox stationArriveList = new FlatComboBox(Props.arrive);
         Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
         Controller controller = new Controller(client);
         researchPanel.addObserver(client);
