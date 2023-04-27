@@ -7,33 +7,39 @@ import vue.utils.BuilderJComposant;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FlatComboBox extends JComboBox<String> implements Observable {
 
     private final List<Observer> listObserver = new ArrayList<>();
+    private FlatJTextField field;
 
-    public FlatComboBox() {
-        super();
+    public FlatComboBox(String placeHolder) {
         setEditable(true);
-        setEditor(new ComboBoxCustom());
-        setPrototypeDisplayValue("XXXXXXXXXXXXXX");
-        setFont(BuilderJComposant.lemontRegularFont(20));
-        JTextField textField = (JTextField) getEditor().getEditorComponent();
-        textField.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (isPopupVisible() || getItemCount() == 0) hidePopup();
-                else showPopup();
+        setEditor(new ComboBoxCustom(placeHolder));
+        Dimension d = new Dimension(235, 100);
+        setPreferredSize(d);
+        setMinimumSize(d);
+        setMaximumSize(d);
+        setFont(BuilderJComposant.lemontRegularFont(18));
+
+        setRenderer(new CustomListCellRenderer());
+
+        addActionListener(e -> {
+            if(e.getModifiers() != 0){
+                String selectedItem = (String) getSelectedItem();
+                field.setText(selectedItem);
+                field.revalidate();
             }
         });
-        setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
+    }
+
+    public FlatJTextField getTextField(){
+        return (FlatJTextField) getEditor().getEditorComponent();
     }
 
     @Override
@@ -43,23 +49,28 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
 
     @Override
     public void notifyObservers() {
-        for (Observer observer : listObserver) {
-            observer.update(this);
-        }
+        for (Observer observer : listObserver) observer.update(this);
     }
 
     private class ComboBoxCustom extends BasicComboBoxEditor {
-        private final JTextField field = new JTextField();
 
-        public ComboBoxCustom() {
+
+        public ComboBoxCustom(String placeHolder) {
             super();
-            field.setBorder(null);
-            field.setPreferredSize(new Dimension(10, 10));
+            field = BuilderJComposant.createFlatJTextField(placeHolder,  new Dimension(150, 70));
             field.addFocusListener(new FocusAdapter() {
                 public void focusGained(FocusEvent e) {
                     if (field.getText().length() > 0) field.selectAll();
                 }
             });
+            field.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (isPopupVisible() || getItemCount() == 0) hidePopup();
+                    else showPopup();
+                }
+            });
+
             setUI(new BasicComboBoxUI() {
                 @Override
                 protected JButton createArrowButton() {
@@ -71,24 +82,40 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
                     };
                 }
             });
+            repaint();
+            revalidate();
         }
 
         @Override
         public Component getEditorComponent() {
-            return this.field;
+            return field;
         }
 
         @Override
         public Object getItem() {
-            return this.field.getText();
+            return field.getText();
+        }
+
+    }
+
+    static class CustomListCellRenderer extends JLabel implements ListCellRenderer<Object> {
+        public CustomListCellRenderer() {
+            setOpaque(true);
         }
 
         @Override
-        public void setItem(Object item) {
-            String text = (item != null) ? item.toString() : "";
-            this.field.setText(text);
-            this.field.setSelectionEnd(text.length());
-        }
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            setText(value.toString());
+            setFont(BuilderJComposant.lemontRegularFont(14));
+            if (isSelected) {
+                setBackground(new Color(127, 177, 50));
+                setForeground(Color.BLACK);
+            } else {
+                setBackground(list.getBackground());
+                setForeground(list.getForeground());
+            }
 
+            return this;
+        }
     }
 }

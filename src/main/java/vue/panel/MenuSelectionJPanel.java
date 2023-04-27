@@ -28,9 +28,9 @@ public class MenuSelectionJPanel extends JPanel {
     MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         this.controller = controller;
         this.researchPanel = researchPanel;
+        this.setPreferredSize(new Dimension(250, 100));
         this.startBox = startBox;
         this.arrivalBox = arrivalBox;
-        this.setPreferredSize(new Dimension(250, 125));
         this.setBackground(new Color(255, 255, 255));
         this.setLayout(new GridLayout(1, 2));
         this.rootJPanel = rootJPanel;

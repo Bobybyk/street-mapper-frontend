@@ -22,11 +22,9 @@ public class HistoryTrajetJPanel extends JPanel {
     HistoryTrajetJPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(new Color(184, 223, 168));
-        setPreferredSize(new Dimension(650, 500));
-
+        setPreferredSize(new Dimension(650, 700));
         panelTrajetHistorique = BuilderJComposant.createPanelBoxLayoutVertical();
         paneScroll = new FlatJScrollPane(panelTrajetHistorique);
-       // for (int i = 0; i < 5; i++) panelTrajetHistorique.add(new ListTrajetPanel());
         final JLabel jlabel = new JLabel(Props.listTrajets);
         jlabel.setFont(BuilderJComposant.lemontRegularFont(22));
         add(jlabel);

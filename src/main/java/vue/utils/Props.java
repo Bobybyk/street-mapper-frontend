@@ -22,4 +22,15 @@ public class Props {
     public static String arrive = "Arrive";
     public static String valider = "Valider";
 
+    public static String typeTrajet = "Type de trajet :";
+    public static String sectionAPied = "Section à pied : ";
+    public static String departA = "Depart à :";
+    public static String distance = "Distance";
+    public static String temps = "Temps ";
+
+    public static String champsIncorrect = "Erreur champs incorrect";
+    public static String rechercheEnCours = "Recherche en attente ...";
+    public static String optionRecherche = "Option de recherche";
+    public static String non = "Non ";
+    public static String oui = "Oui ";
 }

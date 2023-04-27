@@ -4,6 +4,7 @@ import app.App;
 import console.Debug;
 import console.DebugList;
 import vue.composant.FlatJButton;
+import vue.composant.FlatJRadioButton;
 import vue.composant.FlatJTextField;
 
 import javax.swing.*;
@@ -53,6 +54,12 @@ public class BuilderJComposant {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         return panel;
     }
+    public static JPanel createPanelBoxLayoutVertical(String name) {
+        final JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder(name));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        return panel;
+    }
 
     public static JPanel createPanelBoxLayoutHorizontal() {
         final JPanel panel = new JPanel();
@@ -60,7 +67,14 @@ public class BuilderJComposant {
         return panel;
     }
 
-    public static JPanel createPanelBoxLayoutHorizontalRounded() {
+    public static JPanel createPanelBoxLayoutHorizontal(String name) {
+        final JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder(name));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        return panel;
+    }
+
+    public static JPanel createPanelBoxLayoutHorizontalRounded(Dimension dimension) {
         Border roundedBorder = new Border() {
             private final int radius = 12;
 
@@ -81,12 +95,11 @@ public class BuilderJComposant {
             }
         };
 
-        final JPanel panel = new JPanel() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(super.getPreferredSize().width, -250);
-            }
-        };
+        final JPanel panel = new JPanel();
+        panel.setPreferredSize(dimension);
+        panel.setMaximumSize(dimension);
+        panel.setMinimumSize(dimension);
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(roundedBorder);
         panel.setOpaque(false);
@@ -106,5 +119,41 @@ public class BuilderJComposant {
         label.setFont(lemontRegularFont(v));
         label.setForeground(color);
         return label;
+    }
+
+    public static FlatJRadioButton createJRadioButton(String path, String text){
+        final FlatJRadioButton jRadioButton = new FlatJRadioButton(path, text);
+        return jRadioButton;
+    }
+
+    public static JPanel createPanelGridPanelRounded(int rows, int cols) {
+        Border roundedBorder = new Border() {
+            private final int radius = 12;
+
+            @Override
+            public Insets getBorderInsets(Component c) {
+                return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
+            }
+
+            @Override
+            public boolean isBorderOpaque() {
+                return true;
+            }
+
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                g.setColor(Color.BLACK);
+                g.drawRoundRect(x+12, y+12, width - 24, height - 26, radius, radius);
+            }
+        };
+
+        JPanel panel = new JPanel();
+        GridLayout layout = new GridLayout(rows, cols);
+        layout.setHgap(1);
+        layout.setVgap(1);
+        panel.setLayout(layout);
+        panel.setBorder(roundedBorder);
+        panel.setOpaque(false);
+        return panel;
     }
 }

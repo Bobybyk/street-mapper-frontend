@@ -2,16 +2,24 @@ package vue.panel;
 
 import app.server.data.SuggestionStations;
 import controller.Controller;
+import vue.composant.FlatJRadioButton;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJScrollPane;
+import vue.composant.FlatJTextField;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static vue.utils.Props.depart;
 
 /**
  * SearchTrajetJPanel est un jpanel
@@ -20,42 +28,110 @@ import java.util.Objects;
 
 public class SearchTrajetJPanel extends JPanel {
 
+    private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
     private final FlatComboBox stationDepartList, stationArriveList;
-    private final JButton valideJbutton;
-    private final JScrollPane paneScroll;
-    private final JPanel resultPanel, researchPanel;
+    private final JPanel resultPanel, typeDeplacementPanel, optionPanel;
+    private Date date;
 
     SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
-        setPreferredSize(new Dimension(650, 500));
-        this.resultPanel = researchPanelB;
-        this.researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded();
+        setPreferredSize(new Dimension(650, 700));
         this.stationArriveList = arrivalBox;
         this.stationDepartList = startBox;
-        this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
+        this.resultPanel = researchPanelB;
+        this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(160, 60));
+        this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal(Props.optionRecherche);
+        optionPanel.setOpaque(false);
+        optionPanelLoad();
+        sectionAPied();
+        datePanelLoad();
 
-        paneScroll = new FlatJScrollPane(resultPanel);
-
-        valideJbutton.setOpaque(true);
+        final JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(645, 100));
+        final JButton valideJbutton = BuilderJComposant.createJButton(Props.valider);
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
         researchPanel.add(valideJbutton);
+        valideJbutton.setOpaque(true);
+
         setJcomboBox(controler, stationArriveList, SuggestionStations.SuggestionKind.ARRIVAL);
         setJcomboBox(controler, stationDepartList, SuggestionStations.SuggestionKind.DEPART);
+
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
-            resultPanel.add(BuilderJComposant.createJLabelStyle("Recherche en attente ...", 18f, Color.black));
+            if (((stationDepartList.getTextField().getText().isBlank() || stationDepartList.getTextField().getText().isEmpty()) || stationDepartList.getTextField().getText().equalsIgnoreCase(depart) ||
+                    stationArriveList.getTextField().getText().isBlank() || stationArriveList.getTextField().getText().isEmpty() || stationArriveList.getTextField().getText().equalsIgnoreCase(Props.arrive))) {
+                resultPanel.add(BuilderJComposant.createJLabelStyle(Props.champsIncorrect, 18f, Color.RED));
+            } else {
+                resultPanel.add(BuilderJComposant.createJLabelStyle(Props.rechercheEnCours, 18f, Color.black));
+                String typeTrajet = "DISTANCE";
+                if (distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
+                else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
+                controler.sendRequestRoute(stationDepartList.getTextField().getText(), stationArriveList.getTextField().getText(), typeTrajet, sectionPied.isSelected(), date);
+            }
             repaint();
             revalidate();
-            String depart = Objects.requireNonNull(stationDepartList.getSelectedItem()).toString();
-            String arrive = Objects.requireNonNull(stationArriveList.getSelectedItem()).toString();
-            controler.sendRequestRoute("ROUTE;" + depart + ";" + arrive);
         });
+        final JScrollPane paneScroll = new FlatJScrollPane(resultPanel);
         paneScroll.setBorder(BorderFactory.createEmptyBorder());
         add(researchPanel);
+        add(optionPanel);
         add(paneScroll);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(new Color(255, 255, 255));
+    }
+
+    private void datePanelLoad() {
+        final JPanel panelHeure = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        SpinnerDateModel model = new SpinnerDateModel();
+        Calendar calendar = Calendar.getInstance();
+        model.setValue(calendar.getTime());
+        model.setCalendarField(Calendar.HOUR_OF_DAY); // Définir le champ calendrier pour modifier uniquement les heures
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(new JSpinner(model), "HH:mm");
+        editor.getTextField().setEditable(false);
+        editor.getTextField().setBackground(java.awt.Color.WHITE);
+        editor.getTextField().setHorizontalAlignment(JTextField.CENTER);
+        final JSpinner spinner = new JSpinner(model);
+        spinner.setPreferredSize(new Dimension(60, 50));
+        spinner.setMaximumSize(new Dimension(60, 50));
+        spinner.setMinimumSize(new Dimension(60, 50));
+        spinner.setEditor(editor);
+        date = model.getDate();
+        spinner.addChangeListener(e -> date = model.getDate());
+        panelHeure.add(new JLabel(Props.departA));
+        panelHeure.add(spinner);
+        panelHeure.setOpaque(false);
+        optionPanel.add(panelHeure);
+    }
+
+    private void optionPanelLoad() {
+        final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        distanceRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.distance);
+        entempsRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.temps);
+
+        final ButtonGroup groupe = new ButtonGroup();
+        distanceRadioButton.setSelected(true);
+        groupe.add(distanceRadioButton);
+        groupe.add(entempsRadioButton);
+
+        typeDeplacementPanel.add(distanceRadioButton);
+        typeDeplacementPanel.add(entempsRadioButton);
+        panelTypeTrajet.add(new JLabel(Props.typeTrajet));
+        panelTypeTrajet.add(typeDeplacementPanel);
+        panelTypeTrajet.setOpaque(false);
+        optionPanel.add(panelTypeTrajet);
+    }
+
+    private void sectionAPied() {
+        final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
+        sectionPied = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.non);
+        sectionPied.addActionListener(e -> {
+            if (sectionPied.isSelected()) sectionPied.setText(Props.oui);
+            else sectionPied.setText(Props.non);
+        });
+        panelTypeTrajet.add(new JLabel(Props.sectionAPied));
+        panelTypeTrajet.add(sectionPied);
+        panelTypeTrajet.setOpaque(false);
+        optionPanel.add(panelTypeTrajet);
     }
 
     private void setJcomboBox(Controller controler, FlatComboBox field, SuggestionStations.SuggestionKind depart) {
@@ -63,14 +139,21 @@ public class SearchTrajetJPanel extends JPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 String word = ((JTextField) field.getEditor().getEditorComponent()).getText();
-                if (word.matches("[a-zA-Z]+")) {
-                    controler.sendRequestSearch("SEARCH;" + word + ";" + depart);
+                char c = e.getKeyChar();
+                if (Character.isLetterOrDigit(c)) {
+                    field.showPopup();
+                    Timer te = new Timer();
+                    te.purge();
+                    te.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            controler.sendRequestSearch(word, depart);
+                            cancel();
+                        }
+                    }, 0, 400);
                 }
             }
         });
     }
 
-    public JPanel getResearchPanel() {
-        return researchPanel;
-    }
 }

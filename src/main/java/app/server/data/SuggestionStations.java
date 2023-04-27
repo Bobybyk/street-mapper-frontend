@@ -16,7 +16,7 @@ import app.map.StationInfo;
  */
 public class SuggestionStations implements Serializable {
 
-    public static enum SuggestionKind {
+    public enum SuggestionKind {
         DEPART,
         ARRIVAL;
 
