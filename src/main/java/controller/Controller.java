@@ -1,5 +1,6 @@
 package controller;
 
+import app.server.data.SuggestionStations;
 import client.Client;
 import commands.tcp.RequestIndexesList;
 
@@ -35,7 +36,8 @@ public class Controller {
         client.setNextRequest(arguments, RequestIndexesList.ROUTE);
     }
 
-    public void sendRequestSearch(String requete) {
+    public void sendRequestSearch(String word, SuggestionStations.SuggestionKind depart) {
+        String requete = "SEARCH;" + word + ";" + depart;
         client.setNextRequest(requete, RequestIndexesList.SEARCH);
     }
 }

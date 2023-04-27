@@ -15,6 +15,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static vue.utils.Props.depart;
 
@@ -42,7 +45,7 @@ public class SearchTrajetJPanel extends JPanel {
         sectionAPied();
         datePanelLoad();
 
-        final JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(650,  150));
+        final JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(650, 150));
         final JButton valideJbutton = BuilderJComposant.createJButton(Props.valider);
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
@@ -55,20 +58,20 @@ public class SearchTrajetJPanel extends JPanel {
 
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
-            if(((stationDepartList.getTextField().getText().isBlank() || stationDepartList.getTextField().getText().isEmpty()) || stationDepartList.getTextField().getText().equalsIgnoreCase(depart) ||
-                    stationArriveList.getTextField().getText().isBlank() || stationArriveList.getTextField().getText().isEmpty() || stationArriveList.getTextField().getText().equalsIgnoreCase(Props.arrive))){
+            if (((stationDepartList.getTextField().getText().isBlank() || stationDepartList.getTextField().getText().isEmpty()) || stationDepartList.getTextField().getText().equalsIgnoreCase(depart) ||
+                    stationArriveList.getTextField().getText().isBlank() || stationArriveList.getTextField().getText().isEmpty() || stationArriveList.getTextField().getText().equalsIgnoreCase(Props.arrive))) {
                 resultPanel.add(BuilderJComposant.createJLabelStyle(Props.champsIncorrect, 18f, Color.RED));
-            }else{
+            } else {
                 resultPanel.add(BuilderJComposant.createJLabelStyle(Props.rechercheEnCours, 18f, Color.black));
                 String typeTrajet = "DISTANCE";
-                if(distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
+                if (distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
                 else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
                 controler.sendRequestRoute(stationDepartList.getTextField().getText(), stationArriveList.getTextField().getText(), typeTrajet, sectionPied.isSelected(), date);
             }
             repaint();
             revalidate();
         });
-        final JScrollPane paneScroll =  new FlatJScrollPane(resultPanel);
+        final JScrollPane paneScroll = new FlatJScrollPane(resultPanel);
         paneScroll.setBorder(BorderFactory.createEmptyBorder());
         add(researchPanel);
         add(optionPanel);
@@ -93,7 +96,7 @@ public class SearchTrajetJPanel extends JPanel {
         spinner.setMinimumSize(new Dimension(60, 50));
         spinner.setEditor(editor);
         date = model.getDate();
-        spinner.addChangeListener(e-> date = model.getDate());
+        spinner.addChangeListener(e -> date = model.getDate());
         panelHeure.add(new JLabel(Props.departA));
         panelHeure.add(spinner);
         panelHeure.setOpaque(false);
@@ -136,8 +139,18 @@ public class SearchTrajetJPanel extends JPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 String word = ((JTextField) field.getEditor().getEditorComponent()).getText();
-                if (word.matches("[a-zA-Z]+")) {
-                    controler.sendRequestSearch("SEARCH;" + word + ";" + depart);
+                char c = e.getKeyChar();
+                if (Character.isLetterOrDigit(c)) {
+                    field.showPopup();
+                    Timer te = new Timer();
+                    te.purge();
+                    te.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            controler.sendRequestSearch(word, depart);
+                            cancel();
+                        }
+                    }, 0, 400);
                 }
             }
         });

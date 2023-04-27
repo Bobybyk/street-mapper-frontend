@@ -9,21 +9,33 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FlatComboBox extends JComboBox<String> implements Observable {
 
     private final List<Observer> listObserver = new ArrayList<>();
+    private FlatJTextField field;
 
     public FlatComboBox(String placeHolder) {
         setEditable(true);
         setEditor(new ComboBoxCustom(placeHolder));
         setFont(BuilderJComposant.lemontRegularFont(20));
+        Dimension d = new Dimension(235, 150);
+        setPreferredSize(d);
+        setMinimumSize(d);
+        setMaximumSize(d);
+
+       // setRenderer(new CustomListCellRenderer());
+
+        addActionListener(e -> {
+            if(e.getModifiers() != 0){
+                String selectedItem = (String) getSelectedItem();
+                field.setText(selectedItem);
+                field.revalidate();
+            }
+        });
     }
 
     public FlatJTextField getTextField(){
@@ -42,7 +54,6 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
 
     private class ComboBoxCustom extends BasicComboBoxEditor {
 
-        private final FlatJTextField field;
 
         public ComboBoxCustom(String placeHolder) {
             super();
@@ -77,19 +88,12 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
 
         @Override
         public Component getEditorComponent() {
-            return this.field;
+            return field;
         }
 
         @Override
         public Object getItem() {
-            return this.field.getText();
-        }
-
-        @Override
-        public void setItem(Object item) {
-            String text = (item != null) ? item.toString() : "";
-            this.field.setText(text);
-            this.field.setSelectionEnd(text.length());
+            return field.getText();
         }
 
     }
