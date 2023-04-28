@@ -18,6 +18,7 @@ import data.DataList;
 import utils.Observer;
 import vue.composant.FlatComboBox;
 import vue.panel.ListTrajetPanel;
+import vue.panel.MapJPanel;
 import vue.panel.ResearchPanel;
 
 import javax.swing.*;

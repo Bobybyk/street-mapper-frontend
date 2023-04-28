@@ -31,8 +31,7 @@ public class Controller {
         LocalTime time = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime = time.format(formatter);
-        String arguments = "ROUTE;"+depart+";"+arrive+";"+ formattedTime+";"+ typeTrajet+";"+ (sectionAPied ? "FOOT\n" :"\n");
-        System.out.println(arguments);
+        String arguments = "ROUTE;"+depart+";"+arrive;//+";"+ formattedTime+";"+ typeTrajet+";"+ (sectionAPied ? "FOOT\n" :"\n");
         client.setNextRequest(arguments, RequestIndexesList.ROUTE);
     }
 

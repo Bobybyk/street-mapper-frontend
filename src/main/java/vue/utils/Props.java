@@ -1,5 +1,7 @@
 package vue.utils;
 
+import java.awt.*;
+
 public class Props {
 
 
@@ -11,6 +13,7 @@ public class Props {
 
     public static final String iconPathSearch = "/icon/recherche_icon.png";
     public static final String iconPathHistory = "/icon/history_icon.png";
+    public static String cursorImage = "/icon/pointeurMap.png";
 
     /**
      * String

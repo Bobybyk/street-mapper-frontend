@@ -1,7 +1,9 @@
 package vue.panel;
 
+import app.map.Coordinate;
 import app.map.Section;
 import app.server.data.Route;
+import vue.composant.FlatJButton;
 import vue.utils.BuilderJComposant;
 
 import javax.swing.*;
@@ -27,6 +29,14 @@ public class ListTrajetPanel extends JPanel {
         }else trajetString.append("Vous etes déjà à destination");
         this.htmlJLabel = new JLabel("<html>Mon trajet:"+"<ul>"+trajetString+"</html>");
         this.htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));
+        FlatJButton voirMap = new FlatJButton("Voir sur la map");
+        voirMap.addActionListener(e->{
+           /* map.clearPoint();
+            for (Section section : route.getPathDistOpt()) {
+                Coordinate coordinate = section.getArrival().getCoordinate();
+                map.addPoint(coordinate.getLatitude(), coordinate.getLongitude());
+            }*/
+        });
         this.add(htmlJLabel);
     }
 
