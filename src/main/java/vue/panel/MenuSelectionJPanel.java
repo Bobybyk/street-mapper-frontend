@@ -8,7 +8,6 @@ import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
 
 /**
  * MenuSelectionJPanel est un jpanel

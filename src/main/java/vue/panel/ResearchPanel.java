@@ -7,16 +7,13 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class ResearchPanel est une classe Jpanel generique elle est observée et mise à jour automatiquement
+ * par l'observeur en cas de retour de requete
+ */
 public class ResearchPanel extends JPanel implements Observable {
 
-
-    private List<Observer> listObserver =  new ArrayList<>();
-
-    public ResearchPanel(){
-        setOpaque(false);
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-    }
+    private final List<Observer> listObserver =  new ArrayList<>();
 
     @Override
     public void addObserver(Observer observer) {

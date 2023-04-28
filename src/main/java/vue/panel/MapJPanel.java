@@ -18,6 +18,7 @@ import java.awt.*;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -35,28 +36,32 @@ public class MapJPanel extends JPanel {
     private BufferedImage cursor_image;
 
     private final double paris_latitude = 48.8588548, paris_longitude = 2.347035;
+    private final int zoom = 8;
 
     public MapJPanel(){
         viewer  = new JXMapViewer();
         positionsTrajet = new HashSet<>();
         waypointPainter = new WaypointPainter<>();
-        setPreferredSize(new Dimension(800, 900));
-        setMinimumSize(new Dimension(800, 900));
-        setMaximumSize(new Dimension(800, 900));
+        final Dimension d = new Dimension(800, 900);
+        setPreferredSize(d);
+        setMinimumSize(d);
+        setMaximumSize(d);
         setLayout(new GridLayout(1, 1));
         setupMapViewer();
         setupWayPointViewer();
-        add(viewer);
+        loadImage();
         testCursor();
-
-        try {
-            URL url = App.class.getResource(Props.cursorImage);
-            if (url != null) cursor_image = ImageIO.read(new File(url.getFile()));
-        }catch (IOException e) {
-            System.out.println("Fichier introuvable");
-        }
+        add(viewer);
     }
 
+    /**
+     * Fonction de test d'affichage simple
+     */
+    private void testCursor(){
+        GeoPosition position = new GeoPosition(paris_latitude,paris_longitude);
+        positionsTrajet.add(new WaypointStation(position, "Station de test"));
+        waypointPainter.setWaypoints(positionsTrajet);
+    }
 
     /**
      * Cette fonction permet de setup la wayPointViewer
@@ -72,17 +77,6 @@ public class MapJPanel extends JPanel {
         viewer.setOverlayPainter(waypointPainter);
     }
 
-
-    /**
-     * Fonction de test d'affichage simple
-     */
-    private void testCursor(){
-        GeoPosition position = new GeoPosition(paris_latitude,paris_longitude);
-        positionsTrajet.add(new WaypointStation(position, "Station de test"));
-        waypointPainter.setWaypoints(positionsTrajet);
-    }
-
-
     /**
      * Fonction qui permet d'init correctement la MapViewer
      */
@@ -90,7 +84,7 @@ public class MapJPanel extends JPanel {
         GeoPosition position = new GeoPosition(paris_latitude, paris_longitude);
         DefaultTileFactory tileFactory = new DefaultTileFactory(new OSMTileFactoryInfo());
         viewer.setTileFactory(tileFactory);
-        viewer.setZoom(8);
+        viewer.setZoom(zoom);
         viewer.setAddressLocation(position);
         MouseInputListener mn = new PanMouseInputListener(viewer);
         viewer.addMouseListener(mn);
@@ -109,7 +103,7 @@ public class MapJPanel extends JPanel {
     /**
      * Fonction de mise à jour graphique
      */
-    public void update(){
+    private void update(){
         waypointPainter.setWaypoints(positionsTrajet);
         repaint();
         revalidate();
@@ -122,10 +116,18 @@ public class MapJPanel extends JPanel {
      * @param station est l'objet station afin de recuperer les coordonnées et le nom de la station
      */
     public void addPoint(Station station){
-        System.out.println(station.getCoordinate().getLatitude() + "  " + station.getCoordinate().getLongitude() );
         GeoPosition position = new GeoPosition(station.getCoordinate().getLongitude(), station.getCoordinate().getLatitude());
         positionsTrajet.add(new WaypointStation(position, station.getName()));
         update();
+    }
+
+    private void loadImage() {
+        try {
+            URL url = App.class.getResource(Props.cursorImage);
+            if (url != null) cursor_image = ImageIO.read(new File(url.getFile()));
+        }catch (IOException e) {
+            System.out.println("Fichier introuvable");
+        }
     }
 
     /**

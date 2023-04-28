@@ -1,6 +1,5 @@
 package vue.panel;
 
-import app.map.Coordinate;
 import app.map.Section;
 import app.server.data.Route;
 import vue.composant.FlatJButton;
