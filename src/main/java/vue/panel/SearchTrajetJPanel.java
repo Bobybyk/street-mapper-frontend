@@ -32,14 +32,13 @@ public class SearchTrajetJPanel extends JPanel {
     private final FlatComboBox stationDepartList, stationArriveList;
     private final JPanel resultPanel, typeDeplacementPanel, optionPanel;
     private Date date;
-    private MapJPanel map;
 
     SearchTrajetJPanel(Controller controler, MapJPanel map, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setPreferredSize(new Dimension(650, 700));
-        this.map = map;
         this.stationArriveList = arrivalBox;
         this.stationDepartList = startBox;
         this.resultPanel = researchPanelB;
+
         this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(160, 60));
         this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal(Props.optionRecherche);
         optionPanel.setOpaque(false);

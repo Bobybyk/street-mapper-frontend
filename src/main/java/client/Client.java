@@ -20,6 +20,7 @@ import vue.composant.FlatComboBox;
 import vue.panel.ListTrajetPanel;
 import vue.panel.MapJPanel;
 import vue.panel.ResearchPanel;
+import vue.panel.RootJPanel;
 
 import javax.swing.*;
 
