@@ -78,8 +78,12 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
         for (Observer observer : listObserver) observer.update(this);
     }
 
-    private class ComboBoxCustom extends BasicComboBoxEditor {
+    public void reset(String msg) {
+        field.setText(msg);
+        field.setForeground(Color.GRAY);
+    }
 
+    private class ComboBoxCustom extends BasicComboBoxEditor {
 
         public ComboBoxCustom(String placeHolder) {
             super();

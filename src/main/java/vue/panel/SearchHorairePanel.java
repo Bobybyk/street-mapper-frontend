@@ -4,6 +4,7 @@ import app.server.data.SuggestionStations;
 import controller.Controller;
 import vue.composant.FlatComboBox;
 
+import vue.composant.FlatJScrollPane;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -22,6 +23,7 @@ public class SearchHorairePanel extends JPanel {
 
     SearchHorairePanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox stationRecherche){
         setPreferredSize(new Dimension(650, 700));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.resultPanel = researchPanelB;
         this.researchPanel =  BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(565, 100));
         this.stationRecherche = stationRecherche;
@@ -34,12 +36,18 @@ public class SearchHorairePanel extends JPanel {
         datePanelLoad();
         researchPanel.add(valideJbutton);
         valideJbutton.addActionListener(e ->{
+            resultPanel.removeAll();
             String station = stationRecherche.getTextField().getText();
             controler.sendRequestHoraire(station,  date);
+            resultPanel.add(new JLabel(Props.rechercheEnCours));
+            resultPanel.repaint();
+            resultPanel.revalidate();
         });
 
+        final JScrollPane paneScroll = new FlatJScrollPane(resultPanel);
+        paneScroll.setBorder(BorderFactory.createEmptyBorder());
         add(researchPanel);
-        add(resultPanel);
+        add(paneScroll);
     }
 
     private void datePanelLoad() {

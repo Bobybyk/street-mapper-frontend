@@ -20,8 +20,7 @@ public class MenuSelectionJPanel extends JPanel {
     private final RootJPanel rootJPanel;
     private final Controller controller;
     private final ResearchPanel researchPanel;
-    FlatComboBox startBox;
-    FlatComboBox arrivalBox;
+    private final FlatComboBox startBox, arrivalBox;
 
 
     MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
@@ -44,9 +43,26 @@ public class MenuSelectionJPanel extends JPanel {
     }
 
     private void actionListerner() {
-        buttonHistory.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new HistoryTrajetJPanel()));
-        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel, startBox, arrivalBox)));
-        buttonSearchHoraire.addActionListener(actionEvent -> {rootJPanel.updateRootPanel(new SearchHorairePanel(controller, researchPanel, startBox));});
+        buttonHistory.addActionListener(actionEvent -> {
+            rootJPanel.updateRootPanel(new HistoryTrajetJPanel());
+        });
+        buttonSearchTrajet.addActionListener(actionEvent -> {
+            resetInput();
+            rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel, startBox, arrivalBox));
+        });
+        buttonSearchHoraire.addActionListener(actionEvent -> {
+            resetInput();
+            rootJPanel.updateRootPanel(new SearchHorairePanel(controller, researchPanel, startBox));
+        });
     }
 
+    private void resetInput(){
+        researchPanel.removeAll();
+        startBox.reset(Props.depart);
+        arrivalBox.reset(Props.arrive);
+        startBox.repaint();
+        startBox.revalidate();
+        arrivalBox.repaint();
+        arrivalBox.revalidate();
+    }
 }

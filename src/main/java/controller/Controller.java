@@ -3,10 +3,12 @@ package controller;
 import app.server.data.SuggestionStations;
 import client.Client;
 import commands.tcp.RequestIndexesList;
+import utils.Observable;
 
 import javax.swing.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Controller {
@@ -31,7 +33,7 @@ public class Controller {
         LocalTime time = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime = time.format(formatter);
-        String arguments = "ROUTE;"+depart+";"+arrive+";"+ formattedTime+";"+ typeTrajet+";"+ (sectionAPied ? "FOOT\n" :"\n");
+        String arguments = "ROUTE;"+depart+";"+arrive;//+";"+ formattedTime+";"+ typeTrajet+";"+ (sectionAPied ? "FOOT\n" :"\n");
         client.setNextRequest(arguments, RequestIndexesList.ROUTE);
     }
 
@@ -61,4 +63,5 @@ public class Controller {
         String arguments = "TIME;"+station+";"+ formattedTime+"\n";
         client.setNextRequest(arguments, RequestIndexesList.TIME);
     }
+
 }
