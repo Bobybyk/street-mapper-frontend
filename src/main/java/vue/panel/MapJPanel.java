@@ -8,6 +8,7 @@ import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.*;
 
+import vue.composant.FlatComboBox;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -16,6 +17,7 @@ import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
@@ -38,14 +40,17 @@ public class MapJPanel extends JPanel {
     private final WaypointPainter<WaypointStation> waypointPainter;
     private BufferedImage cursor_image;
     private GeoPosition pos1, pos2;
+    private final FlatComboBox comboBoxdepart, comboBoxarrive;
 
     private final double paris_latitude = 48.8588548, paris_longitude = 2.347035;
     private final int zoom = 8;
 
-    public MapJPanel(){
+    public MapJPanel(FlatComboBox comboBoxdepart,FlatComboBox comboBoxarrive){
         viewer  = new JXMapViewer();
         positionsTrajet = new HashSet<>();
         waypointPainter = new WaypointPainter<>();
+        this.comboBoxdepart = comboBoxdepart;
+        this.comboBoxarrive = comboBoxarrive;
         final Dimension d = new Dimension(800, 900);
         setPreferredSize(d);
         setMinimumSize(d);
@@ -61,45 +66,30 @@ public class MapJPanel extends JPanel {
 
     private void eventMouseListener() {
 
-        viewer.addMouseListener(new MouseInputListener(){
-            @Override
-            public void mouseDragged(MouseEvent mouseEvent) {
-                Graphics2D g2d =  (Graphics2D) viewer.getGraphics();
-                g2d.setStroke(new BasicStroke(30));
-                Point2D pointp1 = viewer.getTileFactory().geoToPixel(pos1, viewer.getZoom());
-                Point2D pointp2= viewer.getTileFactory().geoToPixel(pos1, viewer.getZoom());
-                g2d.drawLine((int) pointp1.getX(), (int) pointp1.getY(), (int) pointp2.getX(), (int) pointp2.getY());
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent mouseEvent) {
-            }
+        viewer.addMouseListener(new MouseAdapter(){
 
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-              /*  clearPoint();
-                 pos1 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
-                pos2 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
-                update();*/
+                if(pos1 == null) {
+                    pos1 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
+                    addPoint(pos1, Props.poseA);
+                    comboBoxdepart.getTextField().setText(pos1.toString());
+                    update();
+                }else{
+                    if(pos2 == null){
+                        pos2 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
+                        addPoint(pos2, Props.poseB);
+                        comboBoxarrive.getTextField().setText(pos2.toString());
+                        update();
+                    }else{
+                        pos1 = null;
+                        pos2 = null;
+                        clearPoint();
+                    }
+                }
+                update();
             }
 
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-
-            }
-            @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent mouseEvent) {
-
-            }
         });
     }
 
@@ -166,8 +156,18 @@ public class MapJPanel extends JPanel {
      * @param station est l'objet station afin de recuperer les coordonnées et le nom de la station
      */
     public void addPoint(Station station){
-        GeoPosition position = new GeoPosition(station.getCoordinate().getLatitude(), station.getCoordinate().getLongitude());
+        GeoPosition position = new GeoPosition(station.getCoordinate().getLongitude(), station.getCoordinate().getLatitude());
         positionsTrajet.add(new WaypointStation(position, station.getName()));
+        update();
+    }
+
+    /**
+     * Fonction qui ajout un point à la liste
+     * @param position position locale
+     * @param msg Position à afficher
+     */
+    public void addPoint(GeoPosition position, String msg){
+        positionsTrajet.add(new WaypointStation(position, msg));
         update();
     }
 

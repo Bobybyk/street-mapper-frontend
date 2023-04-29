@@ -14,11 +14,12 @@ public class RootJPanel extends JPanel {
 
     private final JPanel verticalRootJPanel, rootJPanel;
     private final MenuSelectionJPanel selectionJPanel;
-    private static final MapJPanel map = (new MapJPanel());
+    private static MapJPanel map = null;
 
     public RootJPanel(Controller controller, ResearchPanel panel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         rootJPanel = new JPanel();
+        map = (new MapJPanel(startBox, arrivalBox));
         verticalRootJPanel = new JPanel();
         verticalRootJPanel.setLayout(new BoxLayout(verticalRootJPanel, BoxLayout.Y_AXIS));
         rootJPanel.add(new SearchTrajetJPanel(controller, map, panel, startBox, arrivalBox));
