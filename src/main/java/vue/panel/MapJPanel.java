@@ -16,12 +16,15 @@ import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.*;
 
 /**
@@ -34,6 +37,7 @@ public class MapJPanel extends JPanel {
     private final Set<WaypointStation> positionsTrajet;
     private final WaypointPainter<WaypointStation> waypointPainter;
     private BufferedImage cursor_image;
+    private GeoPosition pos1, pos2;
 
     private final double paris_latitude = 48.8588548, paris_longitude = 2.347035;
     private final int zoom = 8;
@@ -49,9 +53,54 @@ public class MapJPanel extends JPanel {
         setLayout(new GridLayout(1, 1));
         setupMapViewer();
         setupWayPointViewer();
+        eventMouseListener();
         loadImage();
         testCursor();
         add(viewer);
+    }
+
+    private void eventMouseListener() {
+
+        viewer.addMouseListener(new MouseInputListener(){
+            @Override
+            public void mouseDragged(MouseEvent mouseEvent) {
+                Graphics2D g2d =  (Graphics2D) viewer.getGraphics();
+                g2d.setStroke(new BasicStroke(30));
+                Point2D pointp1 = viewer.getTileFactory().geoToPixel(pos1, viewer.getZoom());
+                Point2D pointp2= viewer.getTileFactory().geoToPixel(pos1, viewer.getZoom());
+                g2d.drawLine((int) pointp1.getX(), (int) pointp1.getY(), (int) pointp2.getX(), (int) pointp2.getY());
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent mouseEvent) {
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+              /*  clearPoint();
+                 pos1 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
+                pos2 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
+                update();*/
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
     }
 
     /**
@@ -81,6 +130,7 @@ public class MapJPanel extends JPanel {
      * Fonction qui permet d'init correctement la MapViewer
      */
     private void setupMapViewer() {
+
         GeoPosition position = new GeoPosition(paris_latitude, paris_longitude);
         DefaultTileFactory tileFactory = new DefaultTileFactory(new OSMTileFactoryInfo());
         viewer.setTileFactory(tileFactory);
@@ -116,7 +166,7 @@ public class MapJPanel extends JPanel {
      * @param station est l'objet station afin de recuperer les coordonnées et le nom de la station
      */
     public void addPoint(Station station){
-        GeoPosition position = new GeoPosition(station.getCoordinate().getLongitude(), station.getCoordinate().getLatitude());
+        GeoPosition position = new GeoPosition(station.getCoordinate().getLatitude(), station.getCoordinate().getLongitude());
         positionsTrajet.add(new WaypointStation(position, station.getName()));
         update();
     }
