@@ -39,4 +39,6 @@ public class Props {
     public static String poseA = "Position A";
     public static String poseB = "Position B";
 
+    public static String placerMarquer = "Placez marqueur";
+    public static String nettoyerMap = "Nettoyez la map";
 }

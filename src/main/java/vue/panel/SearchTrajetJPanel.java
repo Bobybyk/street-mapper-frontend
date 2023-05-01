@@ -105,8 +105,8 @@ public class SearchTrajetJPanel extends JPanel {
 
     private void optionPanelLoad() {
         final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        distanceRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.distance);
-        entempsRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.temps);
+        distanceRadioButton = BuilderJComposant.createJRadioButton(Props.distance);
+        entempsRadioButton = BuilderJComposant.createJRadioButton(Props.temps);
 
         final ButtonGroup groupe = new ButtonGroup();
         distanceRadioButton.setSelected(true);
@@ -123,7 +123,7 @@ public class SearchTrajetJPanel extends JPanel {
 
     private void sectionAPied() {
         final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        sectionPied = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.non);
+        sectionPied = BuilderJComposant.createJRadioButton(Props.non);
         sectionPied.addActionListener(e -> {
             if (sectionPied.isSelected()) sectionPied.setText(Props.oui);
             else sectionPied.setText(Props.non);

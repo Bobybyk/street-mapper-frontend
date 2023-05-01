@@ -121,9 +121,8 @@ public class BuilderJComposant {
         return label;
     }
 
-    public static FlatJRadioButton createJRadioButton(String path, String text){
-        final FlatJRadioButton jRadioButton = new FlatJRadioButton(path, text);
-        return jRadioButton;
+    public static FlatJRadioButton createJRadioButton(String text){
+        return new FlatJRadioButton(text);
     }
 
     public static JPanel createPanelGridPanelRounded(int rows, int cols) {

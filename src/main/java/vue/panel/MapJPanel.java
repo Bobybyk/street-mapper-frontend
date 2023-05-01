@@ -2,6 +2,8 @@ package vue.panel;
 
 import app.App;
 import app.map.Station;
+import console.Debug;
+import console.DebugList;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -9,7 +11,7 @@ import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.*;
 
 import vue.composant.FlatComboBox;
-import vue.composant.FlatJButton;
+import vue.composant.FlatJButtonRound;
 import vue.composant.FlatJRadioButton;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
@@ -21,14 +23,11 @@ import java.awt.*;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.*;
 
 /**
@@ -44,7 +43,7 @@ public class MapJPanel extends JPanel {
     private GeoPosition pos1, pos2;
     private final FlatComboBox comboBoxdepart, comboBoxarrive;
     private final FlatJRadioButton trackerButton;
-    private final JButton clearButton;
+    private final FlatJButtonRound clearButton;
 
     private final double paris_latitude = 48.8588548, paris_longitude = 2.347035;
     private final int zoom = 6;
@@ -55,8 +54,8 @@ public class MapJPanel extends JPanel {
         this.waypointPainter = new WaypointPainter<>();
         this.comboBoxdepart = comboBoxdepart;
         this.comboBoxarrive = comboBoxarrive;
-        this.trackerButton = new FlatJRadioButton(Props.cursorImage,"Placer marqueur");
-        this.clearButton = new JButton("Nettoyez la map");
+        this.trackerButton = new FlatJRadioButton(Props.placerMarquer, Color.red, Color.BLACK);
+        this.clearButton = new FlatJButtonRound(15,Props.nettoyerMap);
 
         final Dimension d = new Dimension(800, 900);
         setPreferredSize(d);
@@ -67,26 +66,45 @@ public class MapJPanel extends JPanel {
         eventMouseListener();
         loadImage();
         eventButtonListener();
-
+        styleComposant();
         GroupLayout layoutPrincpal = new GroupLayout(viewer);
 
         layoutPrincpal.setHorizontalGroup(
                 layoutPrincpal.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, trackerButton, 200, 200, 200))
-                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(200).addComponent(false, clearButton, 100, 100, 100))
+                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(240).addComponent(false, clearButton, 200, 200, 200))
 
         );
         /* Y */
         layoutPrincpal.setVerticalGroup(
                 layoutPrincpal.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, trackerButton, 100, 100, 100))
-                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, clearButton, 100, 100, 100))
+                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, trackerButton, 50, 50, 50))
+                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, clearButton, 50, 50, 50))
         );
         setLayout(new GridLayout(1, 1));
         viewer.setLayout(layoutPrincpal);
         add(viewer);
     }
 
+    /**
+     * Style des composants graphiques sur la map
+     */
+    private void styleComposant() {
+        clearButton.setBackground(Color.white);
+        clearButton.setForeground(Color.BLACK);
+        clearButton.setFont(BuilderJComposant.lemontRegularFont(18f));
+        clearButton.setFocusPainted(false);
+        trackerButton.setOpaque(true);
+        trackerButton.setFont(BuilderJComposant.lemontRegularFont(18f));
+        trackerButton.setBackground(Color.white);
+        trackerButton.setForeground(Color.BLACK);
+        trackerButton.setBorderPainted(true);
+        trackerButton.setBorder(new FlatJButtonRound.RoundBorder(10));
+    }
+
+    /**
+     * Event de la souris lié à la map
+     */
     private void eventMouseListener() {
         viewer.addMouseListener(new MouseAdapter(){
             @Override
@@ -209,7 +227,7 @@ public class MapJPanel extends JPanel {
             URL url = App.class.getResource(Props.cursorImage);
             if (url != null) cursor_image = ImageIO.read(new File(url.getFile()));
         }catch (IOException e) {
-            System.out.println("Fichier introuvable");
+            Debug.print(DebugList.ERROR,"Fichier introuvable");
         }
     }
 
