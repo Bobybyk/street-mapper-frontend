@@ -16,13 +16,11 @@ import java.awt.*;
 
 public class MenuSelectionJPanel extends JPanel {
 
-    private final FlatJButton buttonHistory, buttonSearchTrajet;
-    private final JPanel centerPanel;
+    private final FlatJButton buttonHistory, buttonSearchTrajet, buttonSearchHoraire;
     private final RootJPanel rootJPanel;
     private final Controller controller;
     private final ResearchPanel researchPanel;
-    private FlatComboBox startBox;
-    private FlatComboBox arrivalBox;
+    private FlatComboBox startBox, arrivalBox;
     private MapJPanel map;
 
     MenuSelectionJPanel(Controller controller, MapJPanel map, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
@@ -33,19 +31,39 @@ public class MenuSelectionJPanel extends JPanel {
         this.startBox = startBox;
         this.arrivalBox = arrivalBox;
         this.setBackground(new Color(255, 255, 255));
-        this.setLayout(new GridLayout(1, 2));
+        this.setLayout(new GridLayout(1, 3));
         this.rootJPanel = rootJPanel;
-        this.centerPanel = new JPanel();
         this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.recherche, Props.iconPathSearch);
         this.buttonHistory = BuilderJComposant.createJButton(Props.history, Props.iconPathHistory);
+        this.buttonSearchHoraire = BuilderJComposant.createJButton(Props.horaire, Props.iconPathTime);
+
         this.add(buttonSearchTrajet);
+        this.add(buttonSearchHoraire);
         this.add(buttonHistory);
         actionListerner();
     }
 
     private void actionListerner() {
-        buttonHistory.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new HistoryTrajetJPanel()));
-        buttonSearchTrajet.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, map, researchPanel, startBox, arrivalBox)));
+        buttonHistory.addActionListener(actionEvent -> {
+            rootJPanel.updateRootPanel(new HistoryTrajetJPanel());
+        });
+        buttonSearchTrajet.addActionListener(actionEvent -> {
+            resetInput();
+            rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, map, researchPanel, startBox, arrivalBox)));
+        });
+        buttonSearchHoraire.addActionListener(actionEvent -> {
+            resetInput();
+            rootJPanel.updateRootPanel(new SearchHorairePanel(controller, researchPanel, startBox));
+        });
     }
 
+    private void resetInput(){
+        researchPanel.removeAll();
+        startBox.reset(Props.depart);
+        arrivalBox.reset(Props.arrive);
+        startBox.repaint();
+        startBox.revalidate();
+        arrivalBox.repaint();
+        arrivalBox.revalidate();
+    }
 }

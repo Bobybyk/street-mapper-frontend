@@ -25,4 +25,3 @@ public class Route implements Serializable {
         return pathDistOpt;
     }
 }
-
