@@ -55,7 +55,7 @@ public class StationInfo implements Serializable {
         if (obj instanceof StationInfo si) {
             // Pour plus tard: Si la map s'agrandit, peut-etre aussi verifier en fonction de la distance entre les 2 stations
             return stationName.equals(si.stationName) && lines.containsAll(si.lines) && lines.size() == si.lines.size();
-        } 
+        }
         return false;
     }
 

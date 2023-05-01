@@ -11,12 +11,15 @@ public class Props {
 
     public static final String iconPathSearch = "/icon/recherche_icon.png";
     public static final String iconPathHistory = "/icon/history_icon.png";
+    public static final String iconPathTime = "/icon/temps_icon.png";
 
     /**
      * String
      */
     public static final String history = "Historique";
     public static final String recherche = "Rechercher";
+    public static final String horaire = "Horaire";
+
     public static String listTrajets = "La liste des vos derniers trajets recherchées";
     public static String depart = "Depart";
     public static String arrive = "Arrive";
@@ -33,4 +36,6 @@ public class Props {
     public static String optionRecherche = "Option de recherche";
     public static String non = "Non ";
     public static String oui = "Oui ";
+    public static String station = "Station";
+    public static String horaireA = "Horaire à :";
 }
