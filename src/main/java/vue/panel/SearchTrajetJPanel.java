@@ -66,6 +66,10 @@ public class SearchTrajetJPanel extends JPanel {
                 String typeTrajet = "DISTANCE";
                 if (distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
                 else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
+                stationArriveList.getTextField().setText("");
+                stationDepartList.getTextField().setText("");
+                stationArriveList.getTextField().requestFocus();
+                stationDepartList.getTextField().requestFocus();
                 controler.sendRequestRoute(stationDepartList.getTextField().getText(), stationArriveList.getTextField().getText(), typeTrajet, sectionPied.isSelected(), date);
             }
             repaint();
