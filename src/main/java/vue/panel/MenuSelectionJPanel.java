@@ -49,7 +49,7 @@ public class MenuSelectionJPanel extends JPanel {
         });
         buttonSearchTrajet.addActionListener(actionEvent -> {
             resetInput();
-            rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, map, researchPanel, startBox, arrivalBox)));
+            rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, map, researchPanel, startBox, arrivalBox));
         });
         buttonSearchHoraire.addActionListener(actionEvent -> {
             resetInput();
