@@ -1,9 +1,7 @@
 package app.server.data;
 
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,13 +10,12 @@ import java.util.List;
  */
 public class DepartureTimes implements Serializable {
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     private final List<StationTime> times;
 
     public DepartureTimes(List<StationTime> times) {
-        this.times = new ArrayList<>();
-        times.addAll(times);
+        this.times = times;
     }
 
     public List<StationTime> getTimes() {
