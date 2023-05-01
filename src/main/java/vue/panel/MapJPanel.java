@@ -9,6 +9,8 @@ import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.*;
 
 import vue.composant.FlatComboBox;
+import vue.composant.FlatJButton;
+import vue.composant.FlatJRadioButton;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -41,55 +43,86 @@ public class MapJPanel extends JPanel {
     private BufferedImage cursor_image;
     private GeoPosition pos1, pos2;
     private final FlatComboBox comboBoxdepart, comboBoxarrive;
+    private final FlatJRadioButton trackerButton;
+    private final JButton clearButton;
 
     private final double paris_latitude = 48.8588548, paris_longitude = 2.347035;
-    private final int zoom = 8;
+    private final int zoom = 6;
 
     public MapJPanel(FlatComboBox comboBoxdepart,FlatComboBox comboBoxarrive){
-        viewer  = new JXMapViewer();
-        positionsTrajet = new HashSet<>();
-        waypointPainter = new WaypointPainter<>();
+        this.viewer  = new JXMapViewer();
+        this.positionsTrajet = new HashSet<>();
+        this.waypointPainter = new WaypointPainter<>();
         this.comboBoxdepart = comboBoxdepart;
         this.comboBoxarrive = comboBoxarrive;
+        this.trackerButton = new FlatJRadioButton(Props.cursorImage,"Placer marqueur");
+        this.clearButton = new JButton("Nettoyez la map");
+
         final Dimension d = new Dimension(800, 900);
         setPreferredSize(d);
         setMinimumSize(d);
         setMaximumSize(d);
-        setLayout(new GridLayout(1, 1));
         setupMapViewer();
         setupWayPointViewer();
         eventMouseListener();
         loadImage();
-        testCursor();
+        eventButtonListener();
+
+        GroupLayout layoutPrincpal = new GroupLayout(viewer);
+
+        layoutPrincpal.setHorizontalGroup(
+                layoutPrincpal.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, trackerButton, 200, 200, 200))
+                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(200).addComponent(false, clearButton, 100, 100, 100))
+
+        );
+        /* Y */
+        layoutPrincpal.setVerticalGroup(
+                layoutPrincpal.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, trackerButton, 100, 100, 100))
+                        .addGroup(layoutPrincpal.createSequentialGroup().addGap(20).addComponent(false, clearButton, 100, 100, 100))
+        );
+        setLayout(new GridLayout(1, 1));
+        viewer.setLayout(layoutPrincpal);
         add(viewer);
     }
 
     private void eventMouseListener() {
-
         viewer.addMouseListener(new MouseAdapter(){
-
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                if(pos1 == null) {
-                    pos1 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
-                    addPoint(pos1, Props.poseA);
-                    comboBoxdepart.getTextField().setText(pos1.toString());
-                    update();
-                }else{
-                    if(pos2 == null){
-                        pos2 = viewer.getTileFactory().pixelToGeo(mouseEvent.getPoint(), viewer.getZoom());
-                        addPoint(pos2, Props.poseB);
-                        comboBoxarrive.getTextField().setText(pos2.toString());
+                if (trackerButton.isSelected()) {
+                    if (pos1 == null) {
+                        pos1 = viewer.convertPointToGeoPosition(mouseEvent.getPoint());
+                        addPoint(new GeoPosition(pos1.getLatitude(), pos1.getLongitude()), Props.poseA);
+                        comboBoxdepart.setText(pos1.toString().replace("[", "(").replace("]", ")"));
                         update();
-                    }else{
-                        pos1 = null;
-                        pos2 = null;
-                        clearPoint();
+                    } else {
+                        if (pos2 == null) {
+                            pos2 = viewer.convertPointToGeoPosition(mouseEvent.getPoint());
+                            addPoint(new GeoPosition(pos2.getLatitude(), pos2.getLongitude()), Props.poseB);
+                            comboBoxarrive.setText(pos2.toString().replace("[", "(").replace("]", ")"));
+                            trackerButton.setSelected(false);
+                            update();
+                        } else {
+                            pos1 = null;
+                            pos2 = null;
+                            clearPoint();
+                        }
                     }
+                    update();
                 }
-                update();
             }
 
+        });
+    }
+
+    private void eventButtonListener(){
+        clearButton.addActionListener(e->{
+            this.trackerButton.setSelected(false);
+            this.pos1 = null;
+            this.pos2 = null;
+            clearPoint();
         });
     }
 
@@ -106,12 +139,12 @@ public class MapJPanel extends JPanel {
      * Cette fonction permet de setup la wayPointViewer
      */
     private void setupWayPointViewer() {
-        waypointPainter.setRenderer((g, map, waypoint) -> {
+        waypointPainter.setRenderer((graphics2D, map, waypoint) -> {
             Point2D p = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-            g.drawImage(cursor_image, (int) p.getX(), (int)p.getY(), this);
-            g.setFont(BuilderJComposant.lemontRegularFont(20));
-            g.setColor(Color.black);
-            g.drawString(waypoint.getNameStation(), (int) p.getX(), (int)p.getY());
+            graphics2D.drawImage(cursor_image,(int) p.getX()-25, (int)p.getY()-50, this);
+            graphics2D.setFont(BuilderJComposant.lemontRegularFont(20));
+            graphics2D.setColor(Color.black);
+            graphics2D.drawString(waypoint.getNameStation(), (int) p.getX()-30, (int)p.getY()-80);
         });
         viewer.setOverlayPainter(waypointPainter);
     }

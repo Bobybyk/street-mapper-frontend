@@ -31,7 +31,7 @@ public class ListTrajetPanel extends JPanel {
         MapJPanel map = RootJPanel.getInstanceMap();
         voirMap.addActionListener(e->{
            map.clearPoint();
-            map.addPoint(route.getPathDistOpt().getFirst().getStart());
+            map.addPoint(route.getPathDistOpt().get(0).getStart());
             for (Section section : route.getPathDistOpt()) {
                 map.addPoint(section.getArrival());
             }
