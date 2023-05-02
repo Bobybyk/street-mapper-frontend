@@ -19,6 +19,7 @@ import utils.Observer;
 import vue.composant.FlatComboBox;
 import vue.panel.ListTrajetPanel;
 import vue.panel.ResearchPanel;
+import vue.panel.RouteSerializer;
 
 import javax.swing.*;
 
@@ -64,6 +65,7 @@ public class Client implements Runnable, Observer {
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
             resultPanel.add(new ListTrajetPanel(route));
+            RouteSerializer.addRoute(route);
             resultPanel.repaint();
             resultPanel.revalidate();
         }else if(DataList.station instanceof SuggestionStations sugg){

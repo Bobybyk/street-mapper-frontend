@@ -1,11 +1,13 @@
 package vue.panel;
 
+import app.server.data.Route;
 import vue.composant.FlatJScrollPane;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 /**
  *
@@ -24,6 +26,10 @@ public class HistoryTrajetJPanel extends JPanel {
         setBackground(new Color(184, 223, 168));
         setPreferredSize(new Dimension(650, 700));
         panelTrajetHistorique = BuilderJComposant.createPanelBoxLayoutVertical();
+        LinkedList<Route> route = RouteSerializer.getListRoute();
+        for (Route value : route) {
+            panelTrajetHistorique.add(new ListTrajetPanel(value));
+        }
         paneScroll = new FlatJScrollPane(panelTrajetHistorique);
         final JLabel jlabel = new JLabel(Props.listTrajets);
         jlabel.setFont(BuilderJComposant.lemontRegularFont(22));

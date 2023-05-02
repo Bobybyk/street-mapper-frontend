@@ -33,4 +33,6 @@ public class Props {
     public static String optionRecherche = "Option de recherche";
     public static String non = "Non ";
     public static String oui = "Oui ";
+
+    public static String fileSerializeRoute = "history.ser";
 }
