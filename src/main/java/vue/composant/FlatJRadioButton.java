@@ -5,25 +5,23 @@ import java.awt.*;
 
 public class FlatJRadioButton extends JRadioButton {
 
-    private Color hover, release;
+    private final Color hover, release;
 
-    public FlatJRadioButton(String text){
+    public FlatJRadioButton(String text, Color hover, Color release) {
         this.setText(text);
         this.setForeground(Color.GRAY);
         this.setIcon(new ImageIcon(""));
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
-        hover = Color.GREEN;
-        release = Color.gray;
-    }
-
-    public FlatJRadioButton(String text, Color hover, Color release){
-        this(text);
         this.hover = hover;
         this.release = release;
+
     }
 
+    public FlatJRadioButton(String text){
+        this(text, Color.GREEN, Color.gray);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
