@@ -1,5 +1,7 @@
 package vue.composant;
 
+import app.server.data.SuggestionStations;
+import controller.Controller;
 import utils.Observable;
 import utils.Observer;
 import vue.utils.BuilderJComposant;
@@ -8,12 +10,11 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FlatComboBox extends JComboBox<String> implements Observable {
 
@@ -40,7 +41,29 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
         });
     }
 
-    public FlatJTextField getTextField() {
+    public void requestInitComboBox(Controller controler, SuggestionStations.SuggestionKind depart) {
+        getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String word = ((JTextField) getEditor().getEditorComponent()).getText();
+                char c = e.getKeyChar();
+                if (Character.isLetterOrDigit(c)) {
+                    showPopup();
+                    java.util.Timer te = new Timer();
+                    te.purge();
+                    te.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            controler.sendRequestSearch(word, depart);
+                            cancel();
+                        }
+                    }, 0, 400);
+                }
+            }
+        });
+    }
+
+    public FlatJTextField getTextField(){
         return (FlatJTextField) getEditor().getEditorComponent();
     }
 
@@ -57,6 +80,11 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
     public void clearField() {
         getTextField().setText("");
         getTextField().requestFocus();
+    }
+
+    public void reset(String msg) {
+        field.setText(msg);
+        field.setForeground(Color.GRAY);
     }
 
     static class CustomListCellRenderer extends JLabel implements ListCellRenderer<Object> {
@@ -81,7 +109,6 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
     }
 
     private class ComboBoxCustom extends BasicComboBoxEditor {
-
 
         public ComboBoxCustom(String placeHolder) {
             super();
