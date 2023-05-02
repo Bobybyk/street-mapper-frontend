@@ -19,12 +19,11 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
      * l'implementation graphique
      */
 
-    public FlatJButton(String name){
+    public FlatJButton(String name, Dimension d){
         setText(name);
-        setPreferredSize(new Dimension(150, 100));
-        setMinimumSize(new Dimension(150, 100));
-        setMaximumSize(new Dimension(150, 100));
-
+        setPreferredSize(d);
+        setMinimumSize(d);
+        setMaximumSize(d);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBorderPainted(false);
         setContentAreaFilled(false);
@@ -34,6 +33,12 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
         addMouseListener(this);
         addMouseMotionListener(this);
     }
+
+    public FlatJButton(String name){
+      this(name, new Dimension(150, 100));
+    }
+
+
 
     public FlatJButton(String name, String path){
         this(name);

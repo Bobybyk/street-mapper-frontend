@@ -207,7 +207,7 @@ public class MapJPanel extends JPanel {
      * @param station est l'objet station afin de recuperer les coordonnées et le nom de la station
      */
     public void addPoint(Station station){
-        GeoPosition position = new GeoPosition(station.getCoordinate().getLongitude(), station.getCoordinate().getLatitude());
+        GeoPosition position = new GeoPosition(station.getCoordinate().getLatitude(), station.getCoordinate().getLongitude());
         positionsTrajet.add(new WaypointStation(position, station.getName()));
         update();
     }

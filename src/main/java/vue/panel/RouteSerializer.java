@@ -1,6 +1,8 @@
 package vue.panel;
 
 import app.server.data.Route;
+import console.Debug;
+import console.DebugList;
 import vue.utils.Props;
 
 import java.io.*;
@@ -37,8 +39,10 @@ public class RouteSerializer {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
             routeList = (LinkedList<Route>) ois.readObject();
             ois.close();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException ie) {
+            Debug.print(DebugList.ERROR, "IOException : conversion de l'object impossible");
+        } catch (ClassNotFoundException e){
+            Debug.print(DebugList.ERROR, "Classe non trouvé");
         }
         return routeList;
     }

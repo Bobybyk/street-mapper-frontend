@@ -19,15 +19,16 @@ public class ListTrajetPanel extends JPanel {
 
     public ListTrajetPanel(Route route) {
         setBorder(BorderFactory.createEmptyBorder());
-        setLayout(new GridLayout(2, 1));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(new Color(238, 238, 238));
         StringBuilder trajetString = new StringBuilder();
+
         if(route.getPathDistOpt().size() > 0){
-            for (Section section : route.getPathDistOpt()) trajetString.append("Station: ").append("<li>").append(section).append("</li>");
+            for (Section section :  Section.sectionsToTrajet(route.getPathDistOpt())) trajetString.append("<li>").append(section).append("</li>");
         }else trajetString.append("Vous etes déjà à destination");
-        JLabel htmlJLabel = new JLabel("<html>Mon trajet:" + "<ul>" + trajetString + "</html>");
-        htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(18f));
-        FlatJButton voirMap = new FlatJButton("Voir sur la map");
+        JLabel htmlJLabel = new JLabel("<html>Mon trajet:" + "<ul>" + trajetString + "<br> Uniquement les sections sont affichés ici.</html>");
+        htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(16f));
+        FlatJButton voirMap = new FlatJButton("Voir sur la map toutes les stations", new Dimension(400, 150));
         MapJPanel map = RootJPanel.getInstanceMap();
         voirMap.addActionListener(e->{
            map.clearPoint();
