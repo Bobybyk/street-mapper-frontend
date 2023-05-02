@@ -90,7 +90,7 @@ public class Console extends Thread {
     /**
      * @param command commande provenant de l'entrée standard
      */
-    private void handleCommand(String command, String separator) {
+    public void handleCommand(String command, String separator) {
         String[] segmentedCommand = segmentsCommand(command, separator);
         String commandIndex = segmentedCommand[0];
         if (requestExists(commandIndex)) {
@@ -99,11 +99,10 @@ public class Console extends Thread {
                 try {
                     buildedRequest = requestList.get(commandIndex).commandBuilder(segmentedCommand);
                     client.setNextRequest(buildedRequest, commandIndex);
-
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments manquants pour la requête, elle ne sera pas envoyé");
                 } catch (NumberFormatException e) {
                     Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments invalides pour la requête, elle ne sera pas envoyé");
+                } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
+                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments manquants pour la requête, elle ne sera pas envoyé");
                 }
             } else {
                 Debug.print(DebugList.WARNING, "[WARNING/Console] Aucune connexion au serveur, la requête ne pourra être envoyée");
