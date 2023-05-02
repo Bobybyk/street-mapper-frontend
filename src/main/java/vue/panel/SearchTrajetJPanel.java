@@ -31,11 +31,12 @@ public class SearchTrajetJPanel extends JPanel {
     private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
     private Date date;
 
-    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
+    SearchTrajetJPanel(Controller controler, MapJPanel map, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setPreferredSize(new Dimension(650, 700));
         this.stationArriveList = arrivalBox;
         this.stationDepartList = startBox;
         this.resultPanel = researchPanelB;
+
         this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(160, 60));
         this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal(Props.optionRecherche);
         optionPanel.setOpaque(false);
@@ -105,8 +106,8 @@ public class SearchTrajetJPanel extends JPanel {
 
     private void optionPanelLoad() {
         final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        distanceRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.distance);
-        entempsRadioButton = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.temps);
+        distanceRadioButton = BuilderJComposant.createJRadioButton(Props.distance);
+        entempsRadioButton = BuilderJComposant.createJRadioButton(Props.temps);
 
         final ButtonGroup groupe = new ButtonGroup();
         distanceRadioButton.setSelected(true);
@@ -123,7 +124,7 @@ public class SearchTrajetJPanel extends JPanel {
 
     private void sectionAPied() {
         final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        sectionPied = BuilderJComposant.createJRadioButton(Props.iconPathSearch, Props.non);
+        sectionPied = BuilderJComposant.createJRadioButton(Props.non);
         sectionPied.addActionListener(e -> {
             if (sectionPied.isSelected()) sectionPied.setText(Props.oui);
             else sectionPied.setText(Props.non);
