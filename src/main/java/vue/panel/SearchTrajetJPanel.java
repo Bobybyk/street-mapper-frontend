@@ -2,18 +2,18 @@ package vue.panel;
 
 import app.server.data.SuggestionStations;
 import controller.Controller;
-import vue.composant.FlatJRadioButton;
 import vue.composant.FlatComboBox;
+import vue.composant.FlatJRadioButton;
 import vue.composant.FlatJScrollPane;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Calendar;
-import java.util.Date;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,9 +26,9 @@ import static vue.utils.Props.depart;
 
 public class SearchTrajetJPanel extends JPanel {
 
-    private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
     private final FlatComboBox stationDepartList, stationArriveList;
     private final JPanel resultPanel, typeDeplacementPanel, optionPanel;
+    private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
     private Date date;
 
     SearchTrajetJPanel(Controller controler, MapJPanel map, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
@@ -65,6 +65,8 @@ public class SearchTrajetJPanel extends JPanel {
                 String typeTrajet = "DISTANCE";
                 if (distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
                 else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
+                stationArriveList.clearField();
+                stationDepartList.clearField();
                 controler.sendRequestRoute(stationDepartList.getTextField().getText(), stationArriveList.getTextField().getText(), typeTrajet, sectionPied.isSelected(), date);
             }
             repaint();
