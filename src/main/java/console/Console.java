@@ -20,27 +20,27 @@ public class Console extends Thread {
      * objet contenant toutes les méthodes et paramètres nécessaires à la
      * communication avec le serveur
      */
-    private Client client;
+    private final Client client;
     /**
      * pour lire les entrées standard
      */
-    private Scanner sc;
+    private final Scanner sc;
     /**
      * liste des requêtes disponibles, triées par index
      */
-    private static HashMap<String, RequestTcp> requestList;
+    private static final HashMap<String, RequestTcp> requestList;
     /**
      * liste des commandes disponibles, triées par index
      */
-    private static HashMap<String, CommandDebug> commandList;
+    private static final HashMap<String, CommandDebug> commandList;
     /**
      * true si la console est en cours d'exécution, false sinon
      */
     private boolean isRunning;
 
     static {
-        requestList = new HashMap<String, RequestTcp>();
-        commandList = new HashMap<String, CommandDebug>();
+        requestList = new HashMap<>();
+        commandList = new HashMap<>();
 
         // initialisation des commandes et requêtes
         requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
@@ -83,16 +83,15 @@ public class Console extends Thread {
      * @param command command provenant de l'entrée standard
      * @return la commande segmentées
      */
-    private String[] segmentsCommand(String command) {
-        String[] args = command.split(" ");
-        return args;
+    private String[] segmentsCommand(String command, String separator) {
+        return command.split(separator);
     }
 
     /**
      * @param command commande provenant de l'entrée standard
      */
-    private void handleCommand(String command) {
-        String[] segmentedCommand = segmentsCommand(command);
+    public void handleCommand(String command, String separator) {
+        String[] segmentedCommand = segmentsCommand(command, separator);
         String commandIndex = segmentedCommand[0];
         if (requestExists(commandIndex)) {
             if (client != null) {
@@ -100,11 +99,10 @@ public class Console extends Thread {
                 try {
                     buildedRequest = requestList.get(commandIndex).commandBuilder(segmentedCommand);
                     client.setNextRequest(buildedRequest, commandIndex);
-
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments manquants pour la requête, elle ne sera pas envoyé");
                 } catch (NumberFormatException e) {
                     Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments invalides pour la requête, elle ne sera pas envoyé");
+                } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
+                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments manquants pour la requête, elle ne sera pas envoyé");
                 }
             } else {
                 Debug.print(DebugList.WARNING, "[WARNING/Console] Aucune connexion au serveur, la requête ne pourra être envoyée");
@@ -117,7 +115,7 @@ public class Console extends Thread {
     }
 
     /**
-     * affiche le layout de la console
+     * Affiche le layout de la console
      */
     public static void layout() {
         System.out.print("\u001B[31m");
@@ -129,7 +127,7 @@ public class Console extends Thread {
     public void run() {
         while (isRunning) {
             layout();
-            handleCommand(sc.nextLine());
+            handleCommand(sc.nextLine(), " ");
         }
         sc.close();
     }
@@ -142,7 +140,7 @@ public class Console extends Thread {
     }
 
     /**
-     * @param b
+     * @param b indique si le client est encore actif
      */
     public void setRunning(boolean b) {
         isRunning = b;

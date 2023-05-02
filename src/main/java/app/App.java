@@ -5,6 +5,8 @@ package app;
 
 import client.Client;
 import console.Console;
+import console.Debug;
+import console.DebugList;
 import controller.Controller;
 import vue.MainWindowJFrame;
 import vue.composant.FlatComboBox;
@@ -30,16 +32,18 @@ public class App {
         FlatComboBox stationDepartList = new FlatComboBox(Props.depart);
         FlatComboBox stationArriveList = new FlatComboBox(Props.arrive);
         Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
-        Controller controller = new Controller(client);
+        Console console = new Console(client);
+        Controller controller = new Controller(console);
         researchPanel.addObserver(client);
         stationDepartList.addObserver(client);
         stationArriveList.addObserver(client);
         if (client.isConnected()) {
             client.start();
             SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel, stationDepartList, stationArriveList));
-            new Console(client).start();
+            console.start();
         } else {
-            new Console(null).start();
+            Debug.print(DebugList.NETWORK, Props.clientInvalide);
+            client.kill();
         }
     }
 }

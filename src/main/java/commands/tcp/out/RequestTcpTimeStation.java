@@ -7,7 +7,8 @@ public class RequestTcpTimeStation implements RequestTcp {
 
     @Override
     public String commandBuilder(String[] args) throws ArrayIndexOutOfBoundsException, NumberFormatException {
-        return RequestIndexesList.TIME + ";" + args[1] + ";" + Integer.parseInt(args[2]) + ";" + Integer.parseInt(args[3]);
+        if (!isTimeFormat(args[2])) throw new NumberFormatException();
+        return RequestIndexesList.TIME + ";" + args[1] + ";" + args[2];
     }
     
 }

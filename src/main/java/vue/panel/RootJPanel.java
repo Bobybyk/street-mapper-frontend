@@ -22,8 +22,8 @@ public class RootJPanel extends JPanel {
         map = (new MapJPanel(startBox, arrivalBox));
         verticalRootJPanel = new JPanel();
         verticalRootJPanel.setLayout(new BoxLayout(verticalRootJPanel, BoxLayout.Y_AXIS));
-        rootJPanel.add(new SearchTrajetJPanel(controller, map, panel, startBox, arrivalBox));
-        selectionJPanel = new MenuSelectionJPanel(controller, map,this, panel, startBox, arrivalBox);
+        rootJPanel.add(new SearchTrajetJPanel(controller, panel, startBox, arrivalBox));
+        selectionJPanel = new MenuSelectionJPanel(controller,this, panel, startBox, arrivalBox);
         verticalRootJPanel.add(rootJPanel);
         verticalRootJPanel.add(selectionJPanel);
         add(verticalRootJPanel);
