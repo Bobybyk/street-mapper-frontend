@@ -20,8 +20,10 @@ import utils.Observer;
 import vue.composant.FlatComboBox;
 import vue.panel.ListHorairePanel;
 import vue.panel.ListTrajetPanel;
+import vue.panel.MapJPanel;
 import vue.panel.ResearchPanel;
 import vue.panel.RouteSerializer;
+import vue.panel.RootJPanel;
 
 import javax.swing.*;
 import javax.xml.crypto.Data;
