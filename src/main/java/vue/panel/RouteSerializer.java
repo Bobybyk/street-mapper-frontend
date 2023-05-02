@@ -35,7 +35,7 @@ public class RouteSerializer {
         LinkedList<Route> routeList = new LinkedList<>();
         try {
             File f = new File(Props.fileSerializeRoute);
-            f.createNewFile();
+            if (f.createNewFile()) return routeList;
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
             routeList = (LinkedList<Route>) ois.readObject();
             ois.close();
