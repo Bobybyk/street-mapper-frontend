@@ -5,7 +5,6 @@ import controller.Controller;
 import vue.composant.FlatJRadioButton;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJScrollPane;
-import vue.composant.FlatJTextField;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -17,7 +16,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
 
 import static vue.utils.Props.depart;
 
@@ -53,8 +51,8 @@ public class SearchTrajetJPanel extends JPanel {
         researchPanel.add(valideJbutton);
         valideJbutton.setOpaque(true);
 
-        setJcomboBox(controler, stationArriveList, SuggestionStations.SuggestionKind.ARRIVAL);
-        setJcomboBox(controler, stationDepartList, SuggestionStations.SuggestionKind.DEPART);
+        stationArriveList.requestInitComboBox(controler, SuggestionStations.SuggestionKind.ARRIVAL);
+        stationDepartList.requestInitComboBox(controler, SuggestionStations.SuggestionKind.DEPART);
 
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
@@ -134,26 +132,6 @@ public class SearchTrajetJPanel extends JPanel {
         optionPanel.add(panelTypeTrajet);
     }
 
-    private void setJcomboBox(Controller controler, FlatComboBox field, SuggestionStations.SuggestionKind depart) {
-        field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                String word = ((JTextField) field.getEditor().getEditorComponent()).getText();
-                char c = e.getKeyChar();
-                if (Character.isLetterOrDigit(c)) {
-                    field.showPopup();
-                    Timer te = new Timer();
-                    te.purge();
-                    te.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            controler.sendRequestSearch(word, depart);
-                            cancel();
-                        }
-                    }, 0, 400);
-                }
-            }
-        });
-    }
+
 
 }

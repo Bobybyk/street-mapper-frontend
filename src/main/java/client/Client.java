@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import app.map.StationInfo;
+import app.server.data.DepartureTimes;
 import app.server.data.ErrorServer;
 import app.server.data.Route;
 import app.server.data.SuggestionStations;
@@ -17,11 +18,13 @@ import console.DebugList;
 import data.DataList;
 import utils.Observer;
 import vue.composant.FlatComboBox;
+import vue.panel.ListHorairePanel;
 import vue.panel.ListTrajetPanel;
 import vue.panel.ResearchPanel;
 import vue.panel.RouteSerializer;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 
 public class Client implements Runnable, Observer {
 
@@ -61,14 +64,23 @@ public class Client implements Runnable, Observer {
 
     @Override
     public void update(Object researchPanel) {
-        if(DataList.route instanceof Route route){
-            JPanel resultPanel = (JPanel) researchPanel;
-            resultPanel.removeAll();
-            resultPanel.add(new ListTrajetPanel(route));
-            RouteSerializer.addRoute(route);
-            resultPanel.repaint();
-            resultPanel.revalidate();
-        }else if(DataList.station instanceof SuggestionStations sugg){
+        System.out.println(DataList.data.getClass());
+        if(DataList.data instanceof DepartureTimes departureTimes){
+                JPanel resultPanel = (JPanel) researchPanel;
+                resultPanel.removeAll();
+                resultPanel.add(new ListHorairePanel(departureTimes));
+                resultPanel.repaint();
+                resultPanel.revalidate();
+        }else if(DataList.data instanceof Route route){
+            if(researchPanel instanceof ResearchPanel) {
+                JPanel resultPanel = (JPanel) researchPanel;
+                resultPanel.removeAll();
+                resultPanel.add(new ListTrajetPanel(route));
+                RouteSerializer.addRoute(route);
+                resultPanel.repaint();
+                resultPanel.revalidate();
+            }
+        }else if(DataList.data instanceof SuggestionStations sugg){
             String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
             if (sugg.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
                 SwingUtilities.invokeLater(() -> {
@@ -85,7 +97,7 @@ public class Client implements Runnable, Observer {
                     }
                 });
             }
-        }else if(DataList.route instanceof ErrorServer error){
+        }else if(DataList.data instanceof ErrorServer error){
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur: " + error.getError().toLowerCase()));
@@ -118,6 +130,7 @@ public class Client implements Runnable, Observer {
             Debug.print(DebugList.NETWORK, "Numero de PORT INDISPONIBLE ou IP INCONNUE");
             Debug.print(DebugList.NETWORK, "...la connexion au serveur a échoué");
         }
+        DataList.data = null;
     }
 
     /**
@@ -144,13 +157,13 @@ public class Client implements Runnable, Observer {
      */
     private void handleReceivedData(Serializable serverData) {
         switch (expectedDataIndex) {
-            case RequestIndexesList.ROUTE -> {
-                DataList.route = serverData;
+            case RequestIndexesList.ROUTE, RequestIndexesList.TIME -> {
+                DataList.data = serverData;
                 researchPanel.notifyObservers();
             }
             case RequestIndexesList.SEARCH -> {
-                DataList.station = serverData;
-                if(DataList.station instanceof SuggestionStations sugg){
+                DataList.data = serverData;
+                if(DataList.data instanceof SuggestionStations sugg){
                     if (sugg.getKind()== SuggestionStations.SuggestionKind.ARRIVAL){
                         arrivalBox.notifyObservers();
                     }else{
@@ -158,7 +171,6 @@ public class Client implements Runnable, Observer {
                     }
                 }
             }
-            case RequestIndexesList.TIME -> DataList.timeStation = serverData;
             default -> Debug.print(DebugList.WARNING, "[WARNING/Client] Les données attendues sont inconnues et seront ignorées");
         }
     }
