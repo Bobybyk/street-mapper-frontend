@@ -22,6 +22,7 @@ import vue.panel.ListHorairePanel;
 import vue.panel.ListTrajetPanel;
 import vue.panel.MapJPanel;
 import vue.panel.ResearchPanel;
+import vue.panel.RouteSerializer;
 import vue.panel.RootJPanel;
 
 import javax.swing.*;
@@ -77,6 +78,7 @@ public class Client implements Runnable, Observer {
                 JPanel resultPanel = (JPanel) researchPanel;
                 resultPanel.removeAll();
                 resultPanel.add(new ListTrajetPanel(route));
+                RouteSerializer.addRoute(route);
                 resultPanel.repaint();
                 resultPanel.revalidate();
             }

@@ -39,10 +39,18 @@ public class Props {
     public static String optionRecherche = "Option de recherche";
     public static String non = "Non ";
     public static String oui = "Oui ";
+
     public static String poseA = "Position A";
     public static String poseB = "Position B";
     public static String placerMarquer = "Placez marqueur";
     public static String nettoyerMap = "Nettoyez la map";
+    
     public static String station = "Station";
     public static String horaireA = "Horaire à :";
+
+    public static String fileSerializeRoute = "history.ser";
+    public static String destination = "Vous êtes déjà à destination.";
+    public static String buttonVoirMap = "Voir sur la map toutes les stations";
+    public static String uniquementSections = "Uniquement les sections sont affichées ici";
+    public static String monTrakjet = "Mon trajet:";
 }
