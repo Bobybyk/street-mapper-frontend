@@ -83,16 +83,15 @@ public class Console extends Thread {
      * @param command command provenant de l'entrée standard
      * @return la commande segmentées
      */
-    private String[] segmentsCommand(String command) {
-        String[] args = command.split(" ");
-        return args;
+    private String[] segmentsCommand(String command, String separator) {
+        return command.split(separator);
     }
 
     /**
      * @param command commande provenant de l'entrée standard
      */
-    private void handleCommand(String command) {
-        String[] segmentedCommand = segmentsCommand(command);
+    private void handleCommand(String command, String separator) {
+        String[] segmentedCommand = segmentsCommand(command, separator);
         String commandIndex = segmentedCommand[0];
         if (requestExists(commandIndex)) {
             if (client != null) {
@@ -129,7 +128,7 @@ public class Console extends Thread {
     public void run() {
         while (isRunning) {
             layout();
-            handleCommand(sc.nextLine());
+            handleCommand(sc.nextLine(), " ");
         }
         sc.close();
     }
