@@ -49,4 +49,8 @@ public class Props {
     public static String horaireA = "Horaire à :";
 
     public static String fileSerializeRoute = "history.ser";
+    public static String destination = "Vous êtes déjà à destination.";
+    public static String buttonVoirMap = "Voir sur la map toutes les stations";
+    public static String uniquementSections = "Uniquement les sections sont affichées ici";
+    public static String monTrakjet = "Mon trajet:";
 }
