@@ -20,27 +20,27 @@ public class Console extends Thread {
      * objet contenant toutes les méthodes et paramètres nécessaires à la
      * communication avec le serveur
      */
-    private Client client;
+    private final Client client;
     /**
      * pour lire les entrées standard
      */
-    private Scanner sc;
+    private final Scanner sc;
     /**
      * liste des requêtes disponibles, triées par index
      */
-    private static HashMap<String, RequestTcp> requestList;
+    private static final HashMap<String, RequestTcp> requestList;
     /**
      * liste des commandes disponibles, triées par index
      */
-    private static HashMap<String, CommandDebug> commandList;
+    private static final HashMap<String, CommandDebug> commandList;
     /**
      * true si la console est en cours d'exécution, false sinon
      */
     private boolean isRunning;
 
     static {
-        requestList = new HashMap<String, RequestTcp>();
-        commandList = new HashMap<String, CommandDebug>();
+        requestList = new HashMap<>();
+        commandList = new HashMap<>();
 
         // initialisation des commandes et requêtes
         requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
@@ -116,7 +116,7 @@ public class Console extends Thread {
     }
 
     /**
-     * affiche le layout de la console
+     * Affiche le layout de la console
      */
     public static void layout() {
         System.out.print("\u001B[31m");
@@ -141,7 +141,7 @@ public class Console extends Thread {
     }
 
     /**
-     * @param b
+     * @param b indique si le client est encore actif
      */
     public void setRunning(boolean b) {
         isRunning = b;
