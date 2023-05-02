@@ -1,9 +1,11 @@
 package app.server.data;
 
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import app.map.Section;
+
 
 /**
  * Class route qui represente le trajet pris par l'utilisateur

@@ -148,4 +148,9 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
             return this;
         }
     }
+
+    public void setText(String text){
+        this.field.setText(text);
+        this.field.setForeground(Color.black);
+    }
 }

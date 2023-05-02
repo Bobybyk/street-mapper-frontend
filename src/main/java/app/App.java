@@ -25,6 +25,8 @@ public class App {
 
     public static void main(String[] args) {
         ResearchPanel researchPanel = new ResearchPanel();
+        researchPanel.setOpaque(false);
+        researchPanel.setLayout(new BoxLayout(researchPanel, BoxLayout.Y_AXIS));
         FlatComboBox stationDepartList = new FlatComboBox(Props.depart);
         FlatComboBox stationArriveList = new FlatComboBox(Props.arrive);
         Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
