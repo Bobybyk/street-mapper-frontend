@@ -1,7 +1,7 @@
 package controller;
 
-import app.server.data.SuggestionStations;
 import console.Console;
+import server.data.SuggestionStations;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

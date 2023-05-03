@@ -1,11 +1,13 @@
 package vue.panel;
 
-import app.server.data.Route;
 import vue.composant.FlatJScrollPane;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
 import javax.swing.*;
+
+import server.data.Route;
+
 import java.awt.*;
 import java.util.LinkedList;
 

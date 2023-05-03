@@ -1,17 +1,22 @@
-package app.server.data;
+package server.data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-import app.map.Time;
 
+import server.map.Time;
+
+
+/**
+ * Classe représentant les horaires d'une ligne dans une certaine direction
+ */
 public class StationTime implements Serializable {
     private final String line;
     private final String station;
     private final Time time;
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     public StationTime(String line, String station, Time time) {
         this.line = line;
@@ -39,7 +44,8 @@ public class StationTime implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof StationTime s)
-            return s.line.equals(line) && s.station.equals(station) && s.time.equals(time);
+            return (line == s.line || (s.line != null && s.line.equals(line)))
+                    && s.station.equals(station) && s.time.equals(time);
         return false;
     }
 

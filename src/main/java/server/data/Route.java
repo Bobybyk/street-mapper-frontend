@@ -1,19 +1,19 @@
-package app.server.data;
-
+package server.data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import app.map.Section;
+
+import server.map.Section;
 
 
 /**
- * Class route qui represente le trajet pris par l'utilisateur
+ * Classe représentant le trajet pris par l'utilisateur
  */
 public class Route implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 4L;
 
     private final List<Section> pathDistOpt;
 
