@@ -7,7 +7,7 @@ public class RequestTcpSearchStation implements RequestTcp {
 
     @Override
     public String commandBuilder(String[] args) throws ArrayIndexOutOfBoundsException {
-        return RequestIndexesList.SEARCH + ";" + args[1];
+        return RequestIndexesList.SEARCH + ";" + args[1] + ";" + args[2];
     }
-    
+
 }

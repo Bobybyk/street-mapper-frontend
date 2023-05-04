@@ -153,27 +153,6 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
 
     }
 
-    static class CustomListCellRenderer extends JLabel implements ListCellRenderer<Object> {
-        public CustomListCellRenderer() {
-            setOpaque(true);
-        }
-
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            setText(value.toString());
-            setFont(BuilderJComposant.lemontRegularFont(14));
-            if (isSelected) {
-                setBackground(new Color(127, 177, 50));
-                setForeground(Color.BLACK);
-            } else {
-                setBackground(list.getBackground());
-                setForeground(list.getForeground());
-            }
-
-            return this;
-        }
-    }
-
     public void setText(String text){
         this.field.setText(text);
         this.field.setForeground(Color.black);

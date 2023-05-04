@@ -20,12 +20,10 @@ public class MenuSelectionJPanel extends JPanel {
     private final RootJPanel rootJPanel;
     private final Controller controller;
     private final ResearchPanel researchPanel;
-    private FlatComboBox startBox, arrivalBox;
-    private MapJPanel map;
+    private final FlatComboBox startBox, arrivalBox;
 
-    MenuSelectionJPanel(Controller controller, MapJPanel map, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
+    MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         this.controller = controller;
-        this.map = map;
         this.researchPanel = researchPanel;
         this.setPreferredSize(new Dimension(250, 100));
         this.startBox = startBox;
@@ -44,12 +42,10 @@ public class MenuSelectionJPanel extends JPanel {
     }
 
     private void actionListerner() {
-        buttonHistory.addActionListener(actionEvent -> {
-            rootJPanel.updateRootPanel(new HistoryTrajetJPanel());
-        });
+        buttonHistory.addActionListener(actionEvent -> rootJPanel.updateRootPanel(new HistoryTrajetJPanel()));
         buttonSearchTrajet.addActionListener(actionEvent -> {
             resetInput();
-            rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, map, researchPanel, startBox, arrivalBox));
+            rootJPanel.updateRootPanel(new SearchTrajetJPanel(controller, researchPanel, startBox, arrivalBox));
         });
         buttonSearchHoraire.addActionListener(actionEvent -> {
             resetInput();

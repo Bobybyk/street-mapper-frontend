@@ -10,12 +10,8 @@ import vue.utils.Props;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static vue.utils.Props.depart;
 
@@ -31,7 +27,7 @@ public class SearchTrajetJPanel extends JPanel {
     private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
     private Date date;
 
-    SearchTrajetJPanel(Controller controler, MapJPanel map, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
+    SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setPreferredSize(new Dimension(650, 700));
         this.stationArriveList = arrivalBox;
         this.stationDepartList = startBox;
@@ -65,9 +61,9 @@ public class SearchTrajetJPanel extends JPanel {
                 String typeTrajet = "DISTANCE";
                 if (distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
                 else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
+                controler.sendRequestRoute(stationDepartList.getTextField().getText(), stationArriveList.getTextField().getText(), typeTrajet, sectionPied.isSelected(), date);
                 stationArriveList.clearField();
                 stationDepartList.clearField();
-                controler.sendRequestRoute(stationDepartList.getTextField().getText(), stationArriveList.getTextField().getText(), typeTrajet, sectionPied.isSelected(), date);
             }
             repaint();
             revalidate();
@@ -134,7 +130,6 @@ public class SearchTrajetJPanel extends JPanel {
         panelTypeTrajet.setOpaque(false);
         optionPanel.add(panelTypeTrajet);
     }
-
 
 
 }
