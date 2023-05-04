@@ -7,26 +7,24 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import app.map.StationInfo;
-import app.server.data.DepartureTimes;
-import app.server.data.ErrorServer;
-import app.server.data.Route;
-import app.server.data.SuggestionStations;
 import commands.tcp.RequestIndexesList;
 import console.Debug;
 import console.DebugList;
 import data.DataList;
+import server.data.DepartureTimes;
+import server.data.ErrorServer;
+import server.data.Route;
+import server.data.SuggestionStations;
+import server.map.StationInfo;
 import utils.Observer;
 import vue.composant.FlatComboBox;
 import vue.panel.ListHorairePanel;
 import vue.panel.ListTrajetPanel;
-import vue.panel.MapJPanel;
+
 import vue.panel.ResearchPanel;
 import vue.panel.RouteSerializer;
-import vue.panel.RootJPanel;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 
 public class Client implements Runnable, Observer {
 
