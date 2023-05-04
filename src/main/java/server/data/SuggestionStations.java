@@ -1,9 +1,10 @@
-package app.server.data;
+package server.data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
-import app.map.StationInfo;
+
+import server.map.StationInfo;
 
 /**
  * Classe représentant l'ensemble des stations (station + ligne) correspondant la demande du client
