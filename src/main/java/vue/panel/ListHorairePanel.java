@@ -1,10 +1,12 @@
 package vue.panel;
 
-import app.server.data.DepartureTimes;
-import app.server.data.StationTime;
 import vue.utils.BuilderJComposant;
 
 import javax.swing.*;
+
+import server.data.DepartureTimes;
+import server.data.StationTime;
+
 import java.awt.*;
 
 public class ListHorairePanel extends JPanel {

@@ -1,7 +1,7 @@
 package vue.composant;
 
-import app.server.data.SuggestionStations;
 import controller.Controller;
+import server.data.SuggestionStations;
 import utils.Observable;
 import utils.Observer;
 import vue.utils.BuilderJComposant;

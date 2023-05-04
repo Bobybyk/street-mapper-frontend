@@ -1,12 +1,14 @@
 package vue.panel;
 
-import app.map.Section;
-import app.server.data.Route;
 import vue.composant.FlatJButton;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
 import javax.swing.*;
+
+import server.data.Route;
+import server.map.Section;
+
 import java.awt.*;
 
 /**

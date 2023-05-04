@@ -1,7 +1,7 @@
 package vue.panel;
 
 import app.App;
-import app.map.Station;
+
 import console.Debug;
 import console.DebugList;
 import org.jxmapviewer.JXMapViewer;
@@ -10,6 +10,7 @@ import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.*;
 
+import server.map.Station;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJButtonRound;
 import vue.composant.FlatJRadioButton;

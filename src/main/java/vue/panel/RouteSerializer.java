@@ -1,8 +1,8 @@
 package vue.panel;
 
-import app.server.data.Route;
 import console.Debug;
 import console.DebugList;
+import server.data.Route;
 import vue.utils.Props;
 
 import java.io.*;

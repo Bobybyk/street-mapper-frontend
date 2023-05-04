@@ -1,19 +1,17 @@
-package app.server.data;
-
-import app.map.StationInfo;
+package server.data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
 
+import server.map.StationInfo;
+
 /**
- * Classe représentant l'ensemble des stations (station + ligne) correspondant
- * la demande du client
- *
+ * Classe représentant l'ensemble des stations (station + ligne) correspondant la demande du client
  */
 public class SuggestionStations implements Serializable {
 
-    public static enum SuggestionKind {
+    public enum SuggestionKind {
         DEPART, ARRIVAL;
 
         /**
@@ -32,7 +30,7 @@ public class SuggestionStations implements Serializable {
     }
 
     @Serial
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 4L;
 
     private final Set<StationInfo> stations;
     private final SuggestionKind kind;

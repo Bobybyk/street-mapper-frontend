@@ -1,7 +1,7 @@
 package vue.panel;
 
-import app.server.data.SuggestionStations;
 import controller.Controller;
+import server.data.SuggestionStations;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJRadioButton;
 import vue.composant.FlatJScrollPane;
