@@ -13,17 +13,39 @@ import vue.composant.FlatComboBox;
 import vue.panel.ResearchPanel;
 import vue.utils.Props;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.swing.*;
+import javax.json.*;
 
 public class App {
     /**
      * The host to connect to.
      */
-    private static final String HOST = "localhost";
+    private static final String HOST;
     /**
      * The port to connect to.
      */
-    private static final int PORT = 12345;
+    private static final int PORT;
+
+    static {
+        try (InputStream stream = App.class.getResourceAsStream("/config/network.json")) {
+            // Création d'un objet JsonReader
+            JsonReader jsonReader = Json.createReader(stream);
+            // Récupération de l'objet racine JSON
+            JsonObject jsonObject = jsonReader.readObject();
+   
+            // Récupération des champs du fichier JSON
+            HOST = jsonObject.getString("host");
+            PORT = jsonObject.getInt("port");
+            System.out.println("host: " + HOST + " port: " + PORT);
+        } catch (IOException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
     public static void main(String[] args) {
         ResearchPanel researchPanel = new ResearchPanel();
