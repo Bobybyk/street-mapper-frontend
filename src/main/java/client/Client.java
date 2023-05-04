@@ -64,7 +64,6 @@ public class Client implements Runnable, Observer {
 
     @Override
     public void update(Object researchPanel) {
-        System.out.println(DataList.data.getClass());
         if(DataList.data instanceof DepartureTimes departureTimes){
                 JPanel resultPanel = (JPanel) researchPanel;
                 resultPanel.removeAll();
