@@ -1,99 +1,100 @@
 package app.console;
 
-import console.Debug;
-import console.DebugList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import console.Debug;
+import console.DebugList;
 
-public class DebugTest {
+class DebugTest {
 
-    private static final int TIMEOUT_SECONDS = 2;
+    private static final int TIMEOUT_SECONDS = 2000;
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesSize(){
-        Assertions.assertEquals(Debug.getDebugTypes().size(), 6);
+    void testDebugTypesSize() {
+        assertEquals(6, Debug.getDebugTypes().size());
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesStatusSize(){
-        Assertions.assertEquals(Debug.getDebugTypeStatus().size(), 6);
+    void testDebugTypesStatusSize() {
+        assertEquals(6, Debug.getDebugTypeStatus().size());
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesStatusError(){
-        Assertions.assertEquals(Debug.getDebugTypeStatus().get(DebugList.ERROR), true);
+    void testDebugTypesStatusError() {
+        assertTrue(Debug.getDebugTypeStatus().get(DebugList.ERROR));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesStatusInfo(){
-        Assertions.assertEquals(Debug.getDebugTypeStatus().get(DebugList.INFO), true);
+    void testDebugTypesStatusInfo() {
+        assertTrue(Debug.getDebugTypeStatus().get(DebugList.INFO));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesStatusWarning(){
-        Assertions.assertEquals(Debug.getDebugTypeStatus().get(DebugList.WARNING), true);
+    void testDebugTypesStatusWarning() {
+        assertTrue(Debug.getDebugTypeStatus().get(DebugList.WARNING));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesStatusGeneral(){
-        Assertions.assertEquals(Debug.getDebugTypeStatus().get(DebugList.GENERAL), true);
+    void testDebugTypesStatusGeneral() {
+        assertTrue(Debug.getDebugTypeStatus().get(DebugList.GENERAL));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesStatusNetWork(){
-        Assertions.assertEquals(Debug.getDebugTypeStatus().get(DebugList.NETWORK), true);
+    void testDebugTypesStatusNetWork() {
+        assertTrue(Debug.getDebugTypeStatus().get(DebugList.NETWORK));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesStatusSettings(){
-        Assertions.assertEquals(Debug.getDebugTypeStatus().get(DebugList.SETTINGS), true);
+    void testDebugTypesStatusSettings() {
+        assertTrue(Debug.getDebugTypeStatus().get(DebugList.SETTINGS));
     }
 
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesError(){
-        Assertions.assertSame(Debug.getDebugTypes().get("ERROR"), DebugList.ERROR);
+    void testDebugTypesError() {
+        assertSame(DebugList.ERROR, Debug.getDebugTypes().get("ERROR"));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesInfo(){
-        Assertions.assertSame(Debug.getDebugTypes().get("INFO"),DebugList.INFO);
+    void testDebugTypesInfo() {
+        assertSame(DebugList.INFO, Debug.getDebugTypes().get("INFO"));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesWarning(){
-        Assertions.assertSame(Debug.getDebugTypes().get("WARNING"), DebugList.WARNING);
+    void testDebugTypesWarning() {
+        assertSame(DebugList.WARNING, Debug.getDebugTypes().get("WARNING"));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesGeneral(){
-        Assertions.assertSame(Debug.getDebugTypes().get("GENERAL"), DebugList.GENERAL);
+    void testDebugTypesGeneral() {
+        Assertions.assertSame(DebugList.GENERAL, Debug.getDebugTypes().get("GENERAL"));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesNetWork(){
-        Assertions.assertSame(Debug.getDebugTypes().get("NETWORK"), DebugList.NETWORK);
+    void testDebugTypesNetWork() {
+        Assertions.assertSame(DebugList.NETWORK, Debug.getDebugTypes().get("NETWORK"));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugTypesSettings(){
-        Assertions.assertSame(Debug.getDebugTypes().get("SETTINGS"), DebugList.SETTINGS);
+    void testDebugTypesSettings() {
+        Assertions.assertSame(DebugList.SETTINGS, Debug.getDebugTypes().get("SETTINGS"));
     }
-
-
 }

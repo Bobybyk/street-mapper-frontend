@@ -1,23 +1,28 @@
 package utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+import java.util.LinkedList;
+import java.util.List;
 import console.Debug;
 import console.DebugList;
 import server.data.Route;
 import vue.utils.Props;
 
-import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
-
 public class RouteSerializer {
 
     private static final RouteList LIST_ROUTE = deserializeRoutes();
 
-    private RouteSerializer() {
-    }
+    private RouteSerializer() {}
 
     public static void serializeRoute() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(Props.FILE_SERIALIZE_ROUTE))) {
+        try (ObjectOutputStream oos =
+                new ObjectOutputStream(new FileOutputStream(Props.FILE_SERIALIZE_ROUTE))) {
             oos.writeObject(LIST_ROUTE);
         } catch (IOException e) {
             Debug.print(DebugList.ERROR, "IOException : création de l'objet impossible");
@@ -37,7 +42,8 @@ public class RouteSerializer {
         RouteList routeList = new RouteList();
         try {
             File f = new File(Props.FILE_SERIALIZE_ROUTE);
-            if (f.createNewFile()) return routeList;
+            if (f.createNewFile())
+                return routeList;
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
                 routeList = (RouteList) ois.readObject();
             }
@@ -49,7 +55,7 @@ public class RouteSerializer {
         return routeList;
     }
 
-    public static class RouteList extends LinkedList<Route> implements Serializable {
+    public static class RouteList extends LinkedList<Route> {
         @Serial
         private static final long serialVersionUID = 1L;
     }

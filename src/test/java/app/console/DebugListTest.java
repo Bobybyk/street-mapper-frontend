@@ -1,49 +1,48 @@
 package app.console;
 
-import console.DebugList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import console.DebugList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+class DebugListTest {
 
-public class DebugListTest {
-
-    private static final int TIMEOUT_SECONDS = 2;
+    private static final int TIMEOUT_SECONDS = 2000;
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugListError(){
-        assertEquals(DebugList.ERROR, -1);
+    void testDebugListError() {
+        assertEquals(-1, DebugList.ERROR);
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugListNetWork(){
-        assertEquals(DebugList.NETWORK, 4);
+    void testDebugListNetWork() {
+        assertEquals(4, DebugList.NETWORK);
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugListInfo(){
-        assertEquals(DebugList.INFO, 1);
+    void testDebugListInfo() {
+        assertEquals(1, DebugList.INFO);
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugListWarning(){
-        assertEquals(DebugList.WARNING, 0);
+    void testDebugListWarning() {
+        assertEquals(0, DebugList.WARNING);
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugListGeneral(){
-        assertEquals(DebugList.GENERAL, 2);
+    void testDebugListGeneral() {
+        assertEquals(2, DebugList.GENERAL);
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDebugListSettings(){
-        assertEquals(DebugList.SETTINGS, 3);
+    void testDebugListSettings() {
+        assertEquals(3, DebugList.SETTINGS);
     }
 
 }

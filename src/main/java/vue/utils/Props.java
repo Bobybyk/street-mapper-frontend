@@ -10,7 +10,7 @@ public class Props {
         return "/icon/" + font;
     }
 
-    private Props(){}
+    private Props() {}
 
     /**
      * Path
@@ -21,7 +21,7 @@ public class Props {
     public static final String ICON_PATH_SEARCH = getIcon("recherche_icon.png");
     public static final String ICON_PATH_HISTORY = getIcon("history_icon.png");
     public static final String ICON_PATH_TIME = getIcon("temps_icon.png");
-    public static final String logo_icon = getIcon("traingo_icon.png");
+    public static final String LOGO_ICON = getIcon("traingo_icon.png");
 
     /**
      * String
@@ -58,7 +58,8 @@ public class Props {
     public static final String FILE_SERIALIZE_ROUTE = "history.ser";
     public static final String DESTINATION = "Vous êtes déjà à destination.";
     public static final String BUTTON_VOIR_MAP = "Voir sur la map toutes les stations";
-    public static final String UNIQUEMENT_SECTIONS = "Uniquement les sections sur une même ligne sont affichées ici";
+    public static final String UNIQUEMENT_SECTIONS =
+            "Uniquement les sections sur une même ligne sont affichées ici";
     public static final String MON_TRAJET = "Mon trajet:";
 
     public static final String CLIENT_INVALID = "Impossible de se connecter au serveur";

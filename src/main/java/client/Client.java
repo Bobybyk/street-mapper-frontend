@@ -5,7 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import commands.tcp.RequestIndexesList;
 import console.Debug;
 import console.DebugList;
@@ -17,14 +19,11 @@ import server.data.ServerResponse;
 import server.data.SuggestionStations;
 import server.map.StationInfo;
 import utils.Observer;
+import utils.RouteSerializer;
 import vue.composant.FlatComboBox;
 import vue.panel.ListHorairePanel;
 import vue.panel.ListTrajetPanel;
-
 import vue.panel.ResearchPanel;
-import utils.RouteSerializer;
-
-import javax.swing.*;
 
 public class Client implements Runnable, Observer {
 
@@ -66,7 +65,7 @@ public class Client implements Runnable, Observer {
     }
 
     private void updateRoute(JPanel resultPanel, Route route) {
-        if(researchPanel != null) {
+        if (researchPanel != null) {
             resultPanel.removeAll();
             resultPanel.add(new ListTrajetPanel(route));
             RouteSerializer.addRoute(route);
@@ -76,15 +75,16 @@ public class Client implements Runnable, Observer {
     }
 
     private void updateSuggestionStations(SuggestionStations suggestionStations) {
-        String[] arr = suggestionStations.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
-        if (suggestionStations.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
+        String[] arr = suggestionStations.getStations().stream().map(StationInfo::getStationName)
+                .toArray(String[]::new);
+        if (suggestionStations.getKind() == SuggestionStations.SuggestionKind.ARRIVAL) {
             SwingUtilities.invokeLater(() -> {
                 arrivalBox.removeAllItems();
                 for (String s : arr) {
                     arrivalBox.addItem(s);
                 }
             });
-        }else{
+        } else {
             SwingUtilities.invokeLater(() -> {
                 startBox.removeAllItems();
                 for (String s : arr) {
@@ -103,29 +103,31 @@ public class Client implements Runnable, Observer {
 
     @Override
     public void update(Object researchPanel) {
-        
-        if(DataList.getData() instanceof DepartureTimes departureTimes){
+
+        if (DataList.getData() instanceof DepartureTimes departureTimes) {
             JPanel resultPanel = (JPanel) researchPanel;
             updateDepartureTimes(resultPanel, departureTimes);
-        } else if (DataList.getData() instanceof Route route){
+        } else if (DataList.getData() instanceof Route route) {
             JPanel resultPanel = (JPanel) researchPanel;
             updateRoute(resultPanel, route);
-        } else if (DataList.getData() instanceof SuggestionStations suggestionStations){
+        } else if (DataList.getData() instanceof SuggestionStations suggestionStations) {
             updateSuggestionStations(suggestionStations);
-        } else if (DataList.getData() instanceof ErrorServer error){
+        } else if (DataList.getData() instanceof ErrorServer error) {
             JPanel resultPanel = (JPanel) researchPanel;
             updateErrorServer(resultPanel, error);
         } else {
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur"));
-            Debug.print(DebugList.WARNING, "[WARNING/Client] données reçues du serveur non reconnues");
+            Debug.print(DebugList.WARNING,
+                    "[WARNING/Client] données reçues du serveur non reconnues");
             resultPanel.repaint();
             resultPanel.revalidate();
         }
     }
 
-    public Client(String ip, int port, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
+    public Client(String ip, int port, ResearchPanel researchPanel, FlatComboBox startBox,
+            FlatComboBox arrivalBox) {
         this.researchPanel = researchPanel;
         this.startBox = startBox;
         this.arrivalBox = arrivalBox;
@@ -151,13 +153,15 @@ public class Client implements Runnable, Observer {
     private ServerResponse readServerData() {
         try {
             Debug.print(DebugList.NETWORK, "En attente de données du serveur");
-            ois = new ObjectInputStream(socket.getInputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             return (ServerResponse) ois.readObject();
         } catch (ClassNotFoundException e) {
-            Debug.print(DebugList.ERROR, "[ERREUR/Client] Erreur lors de la récupération des données");
+            Debug.print(DebugList.ERROR,
+                    "[ERREUR/Client] Erreur lors de la récupération des données");
             kill();
         } catch (IOException e) {
-            Debug.print(DebugList.ERROR, "[ERREUR/Client] Erreur lors de la récupération des données");
+            Debug.print(DebugList.ERROR,
+                    "[ERREUR/Client] Erreur lors de la récupération des données");
         }
         return null;
     }
@@ -175,15 +179,16 @@ public class Client implements Runnable, Observer {
             }
             case RequestIndexesList.SEARCH -> {
                 DataList.setData(serverData);
-                if(DataList.getData() instanceof SuggestionStations sugg){
-                    if (sugg.getKind()== SuggestionStations.SuggestionKind.ARRIVAL){
+                if (DataList.getData() instanceof SuggestionStations sugg) {
+                    if (sugg.getKind() == SuggestionStations.SuggestionKind.ARRIVAL) {
                         arrivalBox.notifyObservers();
-                    }else{
+                    } else {
                         startBox.notifyObservers();
                     }
                 }
             }
-            default -> Debug.print(DebugList.WARNING, "[WARNING/Client] Les données attendues sont inconnues et seront ignorées");
+            default -> Debug.print(DebugList.WARNING,
+                    "[WARNING/Client] Les données attendues sont inconnues et seront ignorées");
         }
     }
 
@@ -195,7 +200,8 @@ public class Client implements Runnable, Observer {
             ServerResponse serverData = readServerData();
             Debug.print(DebugList.INFO, "Nouvelles données reçues du serveur !");
             if (serverData == null) {
-                Debug.print(DebugList.ERROR, "[ERREUR/Client] erreur lors de la récupération des données");
+                Debug.print(DebugList.ERROR,
+                        "[ERREUR/Client] erreur lors de la récupération des données");
                 kill();
             }
             handleReceivedData(serverData);
@@ -203,8 +209,7 @@ public class Client implements Runnable, Observer {
     }
 
     /**
-     * envoie au serveur la dernière requête enregistrée si aucunes données sont en
-     * transfert
+     * envoie au serveur la dernière requête enregistrée si aucunes données sont en transfert
      */
     public synchronized void sendRequest() {
         while (nextRequestToSend == null || nextExpectedDataIndex == null) {
@@ -225,9 +230,8 @@ public class Client implements Runnable, Observer {
     }
 
     /**
-     * @param request   prochaine requête à envoyer au serveur l'ObjectInputStream
-     * @param dataIndex index de la donnée attendue en lecture sur
-     *                  l'ObjectInputStream
+     * @param request prochaine requête à envoyer au serveur l'ObjectInputStream
+     * @param dataIndex index de la donnée attendue en lecture sur l'ObjectInputStream
      */
     public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;

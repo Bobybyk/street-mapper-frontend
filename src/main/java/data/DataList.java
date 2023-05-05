@@ -6,15 +6,15 @@ public class DataList {
     /**
      * informations relativent à la derniere requete reçu du serveur
      */
-    public static ServerResponse data = null;
+    private static ServerResponse data = null;
 
     private DataList() {}
 
-    public static Serializable getData() {
+    public static ServerResponse getData() {
         return data;
     }
 
-    public static void setData(Serializable data) {
+    public static void setData(ServerResponse data) {
         DataList.data = data;
     }
 }

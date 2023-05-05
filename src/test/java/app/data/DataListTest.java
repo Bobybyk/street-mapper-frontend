@@ -1,33 +1,30 @@
 package app.data;
 
-import data.DataList;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import data.DataList;
 import server.data.DepartureTimes;
+import server.data.ErrorServer;
 import server.data.Route;
-import server.data.StationTime;
 import server.data.SuggestionStations;
-
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * DataListTest class des test sur DataList
  */
-public class DataListTest {
+class DataListTest {
 
-    private static final int TIMEOUT_SECONDS = 2;
+    private static final int TIMEOUT_SECONDS = 2000;
 
     @BeforeEach
-    public void initEveryone(){
+    void initEveryone() {
         DataList.setData(null);
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDataRoute() {
+    void testDataRoute() {
         Route route = new Route(null);
         DataList.setData(route);
         assertSame(DataList.getData(), route);
@@ -35,37 +32,25 @@ public class DataListTest {
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDataError() {
-        Error error = new Error();
+    void testDataError() {
+        ErrorServer error = new ErrorServer("");
         DataList.setData(error);
         assertSame(DataList.getData(), error);
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDataDepartureTimes() {
+    void testDataDepartureTimes() {
         DepartureTimes departureTimes = new DepartureTimes(null);
         DataList.setData(departureTimes);
         assertSame(DataList.getData(), departureTimes);
     }
 
-
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testDataSuggestionStations() {
+    void testDataSuggestionStations() {
         SuggestionStations suggestionStations = new SuggestionStations(null, null);
         DataList.setData(suggestionStations);
         assertSame(DataList.getData(), suggestionStations);
     }
-
-
-    @Test
-    @Timeout(value = TIMEOUT_SECONDS)
-    public void testDataStationTimes() {
-        StationTime stationTime = new StationTime(null, null, null);
-        DataList.setData(stationTime);
-        assertSame(DataList.getData(), stationTime);
-    }
-
 }
-

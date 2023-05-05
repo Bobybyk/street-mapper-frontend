@@ -1,5 +1,8 @@
 package app.console;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import commands.debug.CommandHelp;
 import commands.debug.CommandIndexesList;
 import commands.debug.CommandKill;
@@ -9,51 +12,61 @@ import commands.tcp.out.RequestTcpRoute;
 import commands.tcp.out.RequestTcpSearchStation;
 import commands.tcp.out.RequestTcpTimeStation;
 import console.Console;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class ConsoleTest {
-
+class ConsoleTest {
+    private static final int TIMEOUT_SECONDS = 2000;
 
     @Test
-    public void testCommandSize(){
-        assertEquals(Console.getCommandList().size(), 3);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testCommandSize() {
+        assertEquals(3, Console.getCommandList().size());
     }
 
     @Test
-    public void testRequestSize(){
-        assertEquals(Console.getRequestList().size(), 3);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testRequestSize() {
+        assertEquals(3, Console.getRequestList().size());
     }
 
     @Test
-    public void testRequestRoute(){
-        assertEquals(Console.getRequestList().get(RequestIndexesList.ROUTE).getClass(), RequestTcpRoute.class);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testRequestRoute() {
+        assertEquals(RequestTcpRoute.class,
+                Console.getRequestList().get(RequestIndexesList.ROUTE).getClass());
     }
 
     @Test
-    public void testRequestSearch(){
-        assertEquals(Console.getRequestList().get(RequestIndexesList.SEARCH).getClass(), RequestTcpSearchStation.class);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testRequestSearch() {
+        assertEquals(RequestTcpSearchStation.class,
+                Console.getRequestList().get(RequestIndexesList.SEARCH).getClass());
     }
 
     @Test
-    public void testRequestTime(){
-        assertEquals(Console.getRequestList().get(RequestIndexesList.TIME).getClass(), RequestTcpTimeStation.class);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testRequestTime() {
+        assertEquals(RequestTcpTimeStation.class,
+                Console.getRequestList().get(RequestIndexesList.TIME).getClass());
     }
 
     @Test
-    public void testCommandKill(){
-        assertEquals(Console.getCommandList().get(CommandIndexesList.KILL).getClass(), CommandKill.class);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testCommandKill() {
+        assertEquals(CommandKill.class,
+                Console.getCommandList().get(CommandIndexesList.KILL).getClass());
     }
 
     @Test
-    public void testCommandHelp(){
-        assertEquals(Console.getCommandList().get(CommandIndexesList.HELP).getClass(), CommandHelp.class);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testCommandHelp() {
+        assertEquals(CommandHelp.class,
+                Console.getCommandList().get(CommandIndexesList.HELP).getClass());
     }
 
     @Test
-    public void testCommandDebug(){
-        assertEquals(Console.getCommandList().get(CommandIndexesList.DEBUG).getClass(), CommandSettings.class);
+    @Timeout(value = TIMEOUT_SECONDS)
+    void testCommandDebug() {
+        assertEquals(CommandSettings.class,
+                Console.getCommandList().get(CommandIndexesList.DEBUG).getClass());
     }
-
 }
