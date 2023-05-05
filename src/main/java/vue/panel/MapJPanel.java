@@ -26,7 +26,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
@@ -222,7 +221,7 @@ public class MapJPanel extends JPanel {
     private void loadImage() {
         try {
             URL url = App.class.getResource(Props.CURSOR_IMAGE);
-            if (url != null) cursorImage = ImageIO.read(new File(url.getFile()));
+            if (url != null) cursorImage = ImageIO.read(url);
         } catch (IOException e) {
             Debug.print(DebugList.ERROR, "Fichier introuvable");
         }
