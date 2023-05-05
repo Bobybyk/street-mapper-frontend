@@ -20,7 +20,6 @@ import javax.json.JsonReader;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 public class App {
     /**
@@ -31,6 +30,10 @@ public class App {
      * The port to connect to.
      */
     private static final int PORT;
+    private static final FlatComboBox stationDepartList = new FlatComboBox(Props.DEPART);
+    private static final FlatComboBox stationArriveList = new FlatComboBox(Props.ARRIVE);
+    private static final ResearchPanel researchPanel = new ResearchPanel();
+    private static final MapJPanel map = new MapJPanel(stationDepartList, stationArriveList);
 
     static {
         try (InputStream stream = App.class.getResourceAsStream("/config/network.json")) {
@@ -42,17 +45,11 @@ public class App {
             // Récupération des champs du fichier JSON
             HOST = jsonObject.getString("host");
             PORT = jsonObject.getInt("port");
-            
+
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
     }
-
-
-    private static final FlatComboBox stationDepartList = new FlatComboBox(Props.DEPART);
-    private static final FlatComboBox stationArriveList = new FlatComboBox(Props.ARRIVE);
-    private static final ResearchPanel researchPanel = new ResearchPanel();
-    private static final MapJPanel map = new MapJPanel(stationDepartList, stationArriveList);
 
     static {
         researchPanel.setOpaque(false);
@@ -75,6 +72,7 @@ public class App {
             client.kill();
         }
     }
+
     public static MapJPanel getInstanceMap() {
         return map;
     }

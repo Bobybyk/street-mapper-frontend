@@ -1,15 +1,16 @@
 package vue.panel;
 
 import app.App;
-
 import console.Debug;
 import console.DebugList;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
-import org.jxmapviewer.viewer.*;
-
+import org.jxmapviewer.viewer.DefaultTileFactory;
+import org.jxmapviewer.viewer.DefaultWaypoint;
+import org.jxmapviewer.viewer.GeoPosition;
+import org.jxmapviewer.viewer.WaypointPainter;
 import server.map.Station;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJButtonRound;
@@ -21,7 +22,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -29,7 +29,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class MapJpanel est une class jpanel incluant la map JXmapViewer (qui est un composant jpanel)
@@ -37,29 +38,28 @@ import java.util.*;
  */
 public class MapJPanel extends JPanel {
 
+    private static final double PARIS_LATITUDE = 48.8588548;
+    private static final double PARIS_LONGITUDE = 2.347035;
+    private static final int ZOOM = 6;
     private final JXMapViewer viewer;
-    private final Set<WaypointStation> positionsTrajet;
-    private final WaypointPainter<WaypointStation> waypointPainter;
-    private BufferedImage cursorImage;
-    private GeoPosition pos1;
-    private GeoPosition pos2;
+    private final transient Set<WaypointStation> positionsTrajet;
+    private final transient WaypointPainter<WaypointStation> waypointPainter;
     private final FlatComboBox comboBoxdepart;
     private final FlatComboBox comboBoxarrive;
     private final FlatJRadioButton trackerButton;
     private final FlatJButtonRound clearButton;
+    private transient BufferedImage cursorImage;
+    private GeoPosition pos1;
+    private GeoPosition pos2;
 
-    private static final double PARIS_LATITUDE = 48.8588548;
-    private static final double PARIS_LONGITUDE = 2.347035;
-    private static final int ZOOM = 6;
-
-    public MapJPanel(FlatComboBox comboBoxdepart,FlatComboBox comboBoxarrive){
-        this.viewer  = new JXMapViewer();
+    public MapJPanel(FlatComboBox comboBoxdepart, FlatComboBox comboBoxarrive) {
+        this.viewer = new JXMapViewer();
         this.positionsTrajet = new HashSet<>();
         this.waypointPainter = new WaypointPainter<>();
         this.comboBoxdepart = comboBoxdepart;
         this.comboBoxarrive = comboBoxarrive;
         this.trackerButton = new FlatJRadioButton(Props.PLACER_MARQUER, Color.red, Color.BLACK);
-        this.clearButton = new FlatJButtonRound(15,Props.NETTOYER_MAP);
+        this.clearButton = new FlatJButtonRound(15, Props.NETTOYER_MAP);
 
         final Dimension d = new Dimension(800, 900);
         setPreferredSize(d);
@@ -110,7 +110,7 @@ public class MapJPanel extends JPanel {
      * Event de la souris lié à la map
      */
     private void eventMouseListener() {
-        viewer.addMouseListener(new MouseAdapter(){
+        viewer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (trackerButton.isSelected()) {
@@ -139,8 +139,8 @@ public class MapJPanel extends JPanel {
         });
     }
 
-    private void eventButtonListener(){
-        clearButton.addActionListener(e->{
+    private void eventButtonListener() {
+        clearButton.addActionListener(e -> {
             this.trackerButton.setSelected(false);
             this.pos1 = null;
             this.pos2 = null;
@@ -149,24 +149,15 @@ public class MapJPanel extends JPanel {
     }
 
     /**
-     * Fonction de test d'affichage simple
-     */
-    private void testCursor(){
-        GeoPosition position = new GeoPosition(PARIS_LATITUDE,PARIS_LONGITUDE);
-        positionsTrajet.add(new WaypointStation(position, "Station de test"));
-        waypointPainter.setWaypoints(positionsTrajet);
-    }
-
-    /**
      * Cette fonction permet de setup la wayPointViewer
      */
     private void setupWayPointViewer() {
         waypointPainter.setRenderer((graphics2D, map, waypoint) -> {
             Point2D p = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-            graphics2D.drawImage(cursorImage,(int) p.getX()-25, (int)p.getY()-50, this);
+            graphics2D.drawImage(cursorImage, (int) p.getX() - 25, (int) p.getY() - 50, this);
             graphics2D.setFont(BuilderJComposant.lemontRegularFont(20));
             graphics2D.setColor(Color.black);
-            graphics2D.drawString(waypoint.getNameStation(), (int) p.getX()-30, (int)p.getY()-80);
+            graphics2D.drawString(waypoint.getNameStation(), (int) p.getX() - 30, (int) p.getY() - 80);
         });
         viewer.setOverlayPainter(waypointPainter);
     }
@@ -190,7 +181,7 @@ public class MapJPanel extends JPanel {
     /**
      * Cette fonction supprime tous les points
      */
-    public void clearPoint(){
+    public void clearPoint() {
         positionsTrajet.clear();
         update();
     }
@@ -198,7 +189,7 @@ public class MapJPanel extends JPanel {
     /**
      * Fonction de mise à jour graphique
      */
-    private void update(){
+    private void update() {
         waypointPainter.setWaypoints(positionsTrajet);
         repaint();
         revalidate();
@@ -208,9 +199,10 @@ public class MapJPanel extends JPanel {
 
     /**
      * Fonction qui ajout un point à la liste
+     *
      * @param station est l'objet station afin de recuperer les coordonnées et le nom de la station
      */
-    public void addPoint(Station station){
+    public void addPoint(Station station) {
         GeoPosition position = new GeoPosition(station.getCoordinate().getLatitude(), station.getCoordinate().getLongitude());
         positionsTrajet.add(new WaypointStation(position, station.getName()));
         update();
@@ -218,10 +210,11 @@ public class MapJPanel extends JPanel {
 
     /**
      * Fonction qui ajout un point à la liste
+     *
      * @param position position locale
-     * @param msg Position à afficher
+     * @param msg      Position à afficher
      */
-    public void addPoint(GeoPosition position, String msg){
+    public void addPoint(GeoPosition position, String msg) {
         positionsTrajet.add(new WaypointStation(position, msg));
         update();
     }
@@ -230,8 +223,8 @@ public class MapJPanel extends JPanel {
         try {
             URL url = App.class.getResource(Props.CURSOR_IMAGE);
             if (url != null) cursorImage = ImageIO.read(new File(url.getFile()));
-        }catch (IOException e) {
-            Debug.print(DebugList.ERROR,"Fichier introuvable");
+        } catch (IOException e) {
+            Debug.print(DebugList.ERROR, "Fichier introuvable");
         }
     }
 
@@ -243,7 +236,7 @@ public class MapJPanel extends JPanel {
 
         private final String nameStation;
 
-        WaypointStation(GeoPosition position, String nameStation){
+        WaypointStation(GeoPosition position, String nameStation) {
             super(position);
             this.nameStation = nameStation;
         }

@@ -10,13 +10,12 @@ import java.awt.geom.RoundRectangle2D;
  * FlatJScrollPane est une class JScrollPane
  * avec des parametres graphiques déjà fait pour facilité
  * l'implementation graphique
- *
  */
 
 public class FlatJScrollPanel extends JScrollPane {
 
 
-    public FlatJScrollPanel(JPanel panel){
+    public FlatJScrollPanel(JPanel panel) {
         super(panel);
         setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         setViewportBorder(BorderFactory.createEmptyBorder());
@@ -60,24 +59,6 @@ public class FlatJScrollPanel extends JScrollPane {
             g2.dispose();
         }
 
-
-        @Override
-        protected void paintDecreaseHighlight(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            int size = 20;
-            g2.setColor(Color.blue);
-            g2.fill(new RoundRectangle2D.Double(trackRect.x, trackRect.y, trackRect.width, size, size, size));
-            g2.dispose();
-        }
-
-        @Override
-        protected void paintIncreaseHighlight(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            int size = 20;
-            g2.setColor(Color.blue);
-            g2.fill(new RoundRectangle2D.Double(trackRect.x, trackRect.y, trackRect.width, size, size, size));
-            g2.dispose();
-        }
     }
 
 }

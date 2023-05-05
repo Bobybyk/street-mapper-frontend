@@ -20,7 +20,7 @@ public class MenuSelectionJPanel extends JPanel {
     private final FlatJButton buttonSearchTrajet;
     private final FlatJButton buttonSearchHoraire;
     private final RootJPanel rootJPanel;
-    private final Controller controller;
+    private final transient Controller controller;
     private final ResearchPanel researchPanel;
     private final FlatComboBox startBox;
     private final FlatComboBox arrivalBox;
