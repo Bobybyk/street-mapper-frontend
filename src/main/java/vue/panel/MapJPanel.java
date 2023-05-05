@@ -48,9 +48,9 @@ public class MapJPanel extends JPanel {
     private final FlatJRadioButton trackerButton;
     private final FlatJButtonRound clearButton;
 
-    private final static double PARIS_LATITUDE = 48.8588548;
-    private final static double PARIS_LONGITUDE = 2.347035;
-    private final static int zoom = 6;
+    private static final double PARIS_LATITUDE = 48.8588548;
+    private static final double PARIS_LONGITUDE = 2.347035;
+    private static final int ZOOM = 6;
 
     public MapJPanel(FlatComboBox comboBoxdepart,FlatComboBox comboBoxarrive){
         this.viewer  = new JXMapViewer();
@@ -179,7 +179,7 @@ public class MapJPanel extends JPanel {
         GeoPosition position = new GeoPosition(PARIS_LATITUDE, PARIS_LONGITUDE);
         DefaultTileFactory tileFactory = new DefaultTileFactory(new OSMTileFactoryInfo());
         viewer.setTileFactory(tileFactory);
-        viewer.setZoom(zoom);
+        viewer.setZoom(ZOOM);
         viewer.setAddressLocation(position);
         MouseInputListener mn = new PanMouseInputListener(viewer);
         viewer.addMouseListener(mn);

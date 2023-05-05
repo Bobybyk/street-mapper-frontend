@@ -55,11 +55,22 @@ public class Debug {
     public static void print(int type, String message) {
         try {
             if (DEBUG_TYPE_STATUS.get(type) || type == DebugList.GENERAL) {
-                System.out.println(message);
+                writeln(message);
                 LOGGER.info(message);
             }
         } catch (NullPointerException e) {
             LOGGER.info("[ERREUR/Debug] type de debug inconnu");
         }
+    }
+
+
+    public static void write(String message) {
+        System.out.print(message);
+        System.out.flush();
+    }
+
+    public static void writeln(String message) {
+        System.out.println(message);
+        System.out.flush();
     }
 }

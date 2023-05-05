@@ -76,11 +76,11 @@ public class BuilderJComposant {
 
     public static JPanel createPanelBoxLayoutHorizontalRounded(Dimension dimension) {
         Border roundedBorder = new Border() {
-            private final static int radius = 12;
+            private static final int RADIUS = 12;
 
             @Override
             public Insets getBorderInsets(Component c) {
-                return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
+                return new Insets(RADIUS + 1, RADIUS + 1, RADIUS + 2, RADIUS);
             }
 
             @Override
@@ -91,7 +91,7 @@ public class BuilderJComposant {
             @Override
             public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
                 g.setColor(Color.BLACK);
-                g.drawRoundRect(x + 12, y + 12, width - 24, height - 26, radius, radius);
+                g.drawRoundRect(x + 12, y + 12, width - 24, height - 26, RADIUS, RADIUS);
             }
         };
 
@@ -127,11 +127,11 @@ public class BuilderJComposant {
 
     public static JPanel createPanelGridPanelRounded(int rows, int cols) {
         Border roundedBorder = new Border() {
-            private final static int radius = 12;
+            private static final int RADIUS = 12;
 
             @Override
             public Insets getBorderInsets(Component c) {
-                return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
+                return new Insets(RADIUS + 1, RADIUS + 1, RADIUS + 2, RADIUS);
             }
 
             @Override
@@ -142,7 +142,7 @@ public class BuilderJComposant {
             @Override
             public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
                 g.setColor(Color.BLACK);
-                g.drawRoundRect(x+12, y+12, width - 24, height - 26, radius, radius);
+                g.drawRoundRect(x+12, y+12, width - 24, height - 26, RADIUS, RADIUS);
             }
         };
 

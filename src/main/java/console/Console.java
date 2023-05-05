@@ -118,9 +118,9 @@ public class Console extends Thread {
      * Affiche le layout de la console
      */
     public static void layout() {
-        System.out.print("\u001B[31m");
-        System.out.print("map_debug> ");
-        System.out.print("\u001B[37m");
+        Debug.write("\u001B[31m");
+        Debug.write("map_debug> ");
+        Debug.write("\u001B[37m");
     }
 
     @Override

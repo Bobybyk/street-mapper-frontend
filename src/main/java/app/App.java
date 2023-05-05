@@ -63,7 +63,7 @@ public class App {
             SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel, stationDepartList, stationArriveList));
             console.start();
         } else {
-            Debug.print(DebugList.NETWORK, Props.clientInvalide);
+            Debug.print(DebugList.NETWORK, Props.CLIENT_INVALID);
             client.kill();
         }
     }

@@ -46,10 +46,10 @@ public class Props {
     public static final String HORAIRE_A = "Horaire à :";
 
     public static final String FILE_SERIALIZE_ROUTE = "history.ser";
-    public static final String destination = "Vous êtes déjà à destination.";
-    public static final String buttonVoirMap = "Voir sur la map toutes les stations";
-    public static final String uniquementSections = "Uniquement les sections sont affichées ici";
-    public static final String monTrakjet = "Mon trajet:";
+    public static final String DESTINATION = "Vous êtes déjà à destination.";
+    public static final String BUTTON_VOIR_MAP = "Voir sur la map toutes les stations";
+    public static final String UNIQUEMENT_SECTIONS = "Uniquement les sections sont affichées ici";
+    public static final String MON_TRAJET = "Mon trajet:";
 
-    public static final String clientInvalide = "Impossible de se connecter au serveur";
+    public static final String CLIENT_INVALID = "Impossible de se connecter au serveur";
 }
