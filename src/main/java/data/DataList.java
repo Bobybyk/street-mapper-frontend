@@ -1,12 +1,20 @@
 package data;
 
-import app.server.data.Route;
-
-import java.io.Serializable;
+import server.data.ServerResponse;
 
 public class DataList {
     /**
-     * informations relativent au dernier trajet reçu du serveur
+     * informations relativent à la derniere requete reçu du serveur
      */
-    public static Serializable route = null;
+    private static ServerResponse data = null;
+
+    private DataList() {}
+
+    public static ServerResponse getData() {
+        return data;
+    }
+
+    public static void setData(ServerResponse data) {
+        DataList.data = data;
+    }
 }

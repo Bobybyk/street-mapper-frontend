@@ -1,13 +1,16 @@
 package vue.panel;
 
-import app.map.Section;
-import app.server.data.Route;
+import app.App;
+import vue.composant.FlatJButton;
 import vue.utils.BuilderJComposant;
+import vue.utils.Props;
 
 import javax.swing.*;
+
+import server.data.Route;
+import server.map.Section;
+
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /**
  * ListTrajetPanel est un jpanel
@@ -15,59 +18,33 @@ import java.awt.event.MouseListener;
  *
  */
 
-public class ListTrajetPanel extends JPanel implements MouseListener {
+public class ListTrajetPanel extends JPanel {
 
 
-    private final JLabel htmlJLabel;
-
-    ListTrajetPanel(Route route) {
-        setBorder(BorderFactory.createLineBorder(new Color(100, 166, 74)));
-        setBackground(new Color(169,223, 191));
-       // final Dimension d = new Dimension(650, 30*route.getPathDistOpt().size());
-      //  setPreferredSize(d);
-       // setMaximumSize(d);
-       // setMinimumSize(d);
+    public ListTrajetPanel(Route route) {
+        setBorder(BorderFactory.createEmptyBorder());
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(new Color(238, 238, 238));
         StringBuilder trajetString = new StringBuilder();
-        if(route.getPathDistOpt().size() > 0){
-            for (Section section : route.getPathDistOpt()) trajetString.append("Station: ").append("<li>").append(section).append("</li>");
-        }else trajetString.append("Vous etes déjà à destination");
-        this.htmlJLabel = new JLabel("<html>Mon trajet:" +
-                "<ul>" +
-                trajetString +
-                "</html>");
-        this.htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(14f));
+
+        if(!route.getPathDistOpt().isEmpty()){
+            for (Section section :  Section.sectionsToTrajet(route.getPathDistOpt())) {
+                trajetString.append("<li>").append(section).append("</li>");
+            }
+        }else trajetString.append(Props.DESTINATION);
+        JLabel htmlJLabel = new JLabel("<html>" + Props.MON_TRAJET + "<ul>" + trajetString + "<br>" + Props.UNIQUEMENT_SECTIONS +".</html>");
+        htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(16f));
+        FlatJButton voirMap = new FlatJButton(Props.BUTTON_VOIR_MAP, new Dimension(400, 150));
+        MapJPanel map = App.getInstanceMap();
+        voirMap.addActionListener(e->{
+           map.clearPoint();
+            map.addPoint(route.getPathDistOpt().get(0).getStart());
+            for (Section section : route.getPathDistOpt()) {
+                map.addPoint(section.getArrival());
+            }
+        });
         this.add(htmlJLabel);
-        addMouseListener(this);
+        this.add(voirMap);
     }
 
-    @Override
-    public void mouseClicked(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent mouseEvent) {
-        this.setBackground(new Color(125, 206, 160));
-        this.setForeground(Color.white);
-        revalidate();
-        repaint();
-    }
-
-    @Override
-    public void mouseExited(MouseEvent mouseEvent) {
-        this.setBackground(new Color(169, 223, 191));
-        this.setForeground(Color.black);
-        revalidate();
-        repaint();
-    }
 }

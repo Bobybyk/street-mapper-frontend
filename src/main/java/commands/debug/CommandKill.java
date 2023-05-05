@@ -1,6 +1,8 @@
 package commands.debug;
 
 import console.Console;
+import console.Debug;
+import console.DebugList;
 
 public class CommandKill implements CommandDebug {
 
@@ -11,7 +13,7 @@ public class CommandKill implements CommandDebug {
         } else if (console.getClient().kill()) {
             console.setRunning(false);
         } else {
-            System.out.println("Impossible de fermer la connexion...");
+            Debug.print(DebugList.WARNING, "[WARNING/CommandKill] Impossible de fermer la connexion...");
         }
     }
 

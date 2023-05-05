@@ -3,34 +3,72 @@
  */
 package app;
 
-import controller.Controller;
-import vue.MainWindowJFrame;
-
-import javax.swing.*;
-
 import client.Client;
 import console.Console;
+import console.Debug;
+import console.DebugList;
+import controller.Controller;
+import vue.MainWindowJFrame;
+import vue.composant.FlatComboBox;
+import vue.panel.MapJPanel;
+import vue.panel.ResearchPanel;
+import vue.utils.Props;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.swing.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class App {
     /**
      * The host to connect to.
      */
-    private static final String HOST = "localhost";
+    private static final String HOST;
     /**
      * The port to connect to.
      */
-    private static final int PORT = 12345;
+    private static final int PORT;
+    private static final FlatComboBox stationDepartList = new FlatComboBox(Props.DEPART);
+    private static final FlatComboBox stationArriveList = new FlatComboBox(Props.ARRIVE);
+    private static final ResearchPanel researchPanel = new ResearchPanel();
+    private static final MapJPanel map = new MapJPanel(stationDepartList, stationArriveList);
+
+    static {
+        try (InputStream stream = App.class.getResourceAsStream("/config/network.json")) {
+            JsonReader jsonReader = Json.createReader(stream);
+            JsonObject jsonObject = jsonReader.readObject();
+            HOST = jsonObject.getString("host");
+            PORT = jsonObject.getInt("port");
+        } catch (IOException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
+
+    static {
+        researchPanel.setOpaque(false);
+        researchPanel.setLayout(new BoxLayout(researchPanel, BoxLayout.Y_AXIS));
+    }
 
     public static void main(String[] args) {
-        Client client = new Client(HOST, PORT);
-        Controller controller = new Controller(client);
-
+        Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
+        Console console = new Console(client);
+        Controller controller = new Controller(console);
+        researchPanel.addObserver(client);
+        stationDepartList.addObserver(client);
+        stationArriveList.addObserver(client);
         if (client.isConnected()) {
             client.start();
-            SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller));
-            new Console(client).start();
+            SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel, stationDepartList, stationArriveList));
+            console.run();
         } else {
-            new Console(null).start();
+            Debug.print(DebugList.NETWORK, Props.CLIENT_INVALID);
+            client.kill();
         }
+    }
+
+    public static MapJPanel getInstanceMap() {
+        return map;
     }
 }

@@ -1,6 +1,10 @@
 package commands.debug;
 
 public class CommandIndexesList {
-    public final static String KILL = "kill";
-    public final static String HELP = "help";
+
+    public static final String KILL = "kill";
+    public static final String HELP = "help";
+    public static final String DEBUG = "debug";
+
+    private CommandIndexesList() { }
 }

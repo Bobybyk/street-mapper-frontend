@@ -19,21 +19,26 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
      * l'implementation graphique
      */
 
-    public FlatJButton(String name){
+    public FlatJButton(String name, Dimension d){
         setText(name);
-        setPreferredSize(new Dimension(150, 100));
-        setMinimumSize(new Dimension(150, 100));
-        setMaximumSize(new Dimension(150, 100));
-
+        setPreferredSize(d);
+        setMinimumSize(d);
+        setMaximumSize(d);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBorderPainted(false);
         setContentAreaFilled(false);
-        setBackground(new Color(195, 255, 104));
+        setBackground(new Color(127, 177, 50));
         setFont(BuilderJComposant.lemontRegularFont(20f));
         setFocusPainted(false);
         addMouseListener(this);
         addMouseMotionListener(this);
     }
+
+    public FlatJButton(String name){
+      this(name, new Dimension(150, 100));
+    }
+
+
 
     public FlatJButton(String name, String path){
         this(name);
@@ -48,42 +53,39 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-    }
-
-    @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
+        setBackground(new Color(127, 177, 128));
         setForeground(new Color(127,178,49));
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
+        setBackground(new Color(127, 177, 30));
         setForeground(Color.BLACK);
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 }

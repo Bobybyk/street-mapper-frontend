@@ -3,23 +3,39 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import app.server.data.Route;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import commands.tcp.RequestIndexesList;
+import console.Debug;
+import console.DebugList;
 import data.DataList;
+import server.data.DepartureTimes;
+import server.data.ErrorServer;
+import server.data.Route;
+import server.data.ServerResponse;
+import server.data.SuggestionStations;
+import server.map.StationInfo;
+import utils.Observer;
+import utils.RouteSerializer;
+import vue.composant.FlatComboBox;
+import vue.panel.ListHorairePanel;
+import vue.panel.ListTrajetPanel;
+import vue.panel.ResearchPanel;
 
-public class Client implements Runnable {
+public class Client implements Runnable, Observer {
+
+    private final ResearchPanel researchPanel;
+
+    private final FlatComboBox startBox;
+
+    private final FlatComboBox arrivalBox;
     /**
      * socket pour assurer la communication TCP avec le serveur
      */
     private Socket socket;
-    /**
-     * pour lecture des objets émis par le serveur
-     */
-    private ObjectInputStream ois;
     /**
      * pour écriture des requêtes TCP au serveur
      */
@@ -41,39 +57,111 @@ public class Client implements Runnable {
      */
     private boolean isConnected;
 
-    public Client(String ip, int port) {
+    private void updateDepartureTimes(JPanel resultPanel, DepartureTimes departureTimes) {
+        resultPanel.removeAll();
+        resultPanel.add(new ListHorairePanel(departureTimes));
+        resultPanel.repaint();
+        resultPanel.revalidate();
+    }
+
+    private void updateRoute(JPanel resultPanel, Route route) {
+        if (researchPanel != null) {
+            resultPanel.removeAll();
+            resultPanel.add(new ListTrajetPanel(route));
+            RouteSerializer.addRoute(route);
+            resultPanel.repaint();
+            resultPanel.revalidate();
+        }
+    }
+
+    private void updateSuggestionStations(SuggestionStations suggestionStations) {
+        String[] arr = suggestionStations.getStations().stream().map(StationInfo::getStationName)
+                .toArray(String[]::new);
+        if (suggestionStations.getKind() == SuggestionStations.SuggestionKind.ARRIVAL) {
+            SwingUtilities.invokeLater(() -> {
+                arrivalBox.removeAllItems();
+                for (String s : arr) {
+                    arrivalBox.addItem(s);
+                }
+            });
+        } else {
+            SwingUtilities.invokeLater(() -> {
+                startBox.removeAllItems();
+                for (String s : arr) {
+                    startBox.addItem(s);
+                }
+            });
+        }
+    }
+
+    private void updateErrorServer(JPanel resultPanel, ErrorServer error) {
+        resultPanel.removeAll();
+        resultPanel.add(new JLabel("Erreur: " + error.getError().toLowerCase()));
+        resultPanel.repaint();
+        resultPanel.revalidate();
+    }
+
+    @Override
+    public void update(Object researchPanel) {
+
+        if (DataList.getData() instanceof DepartureTimes departureTimes) {
+            JPanel resultPanel = (JPanel) researchPanel;
+            updateDepartureTimes(resultPanel, departureTimes);
+        } else if (DataList.getData() instanceof Route route) {
+            JPanel resultPanel = (JPanel) researchPanel;
+            updateRoute(resultPanel, route);
+        } else if (DataList.getData() instanceof SuggestionStations suggestionStations) {
+            updateSuggestionStations(suggestionStations);
+        } else if (DataList.getData() instanceof ErrorServer error) {
+            JPanel resultPanel = (JPanel) researchPanel;
+            updateErrorServer(resultPanel, error);
+        } else {
+            JPanel resultPanel = (JPanel) researchPanel;
+            resultPanel.removeAll();
+            resultPanel.add(new JLabel("Erreur"));
+            Debug.print(DebugList.WARNING,
+                    "[WARNING/Client] données reçues du serveur non reconnues");
+            resultPanel.repaint();
+            resultPanel.revalidate();
+        }
+    }
+
+    public Client(String ip, int port, ResearchPanel researchPanel, FlatComboBox startBox,
+            FlatComboBox arrivalBox) {
+        this.researchPanel = researchPanel;
+        this.startBox = startBox;
+        this.arrivalBox = arrivalBox;
         try {
-            System.out.println("Création de la connection TCP avec le serveur...");
+            Debug.print(DebugList.NETWORK, "Création de la connection TCP avec le serveur...");
             socket = new Socket(ip, port);
             out = new PrintWriter(socket.getOutputStream());
             isConnected = true;
-            System.out.println("...succès");
+            Debug.print(DebugList.NETWORK, "...succès");
         } catch (UnknownHostException e) {
-            System.out.println("[ERREUR] : L'adresse IP de l'hôte ne peut être déterminée");
-            System.out.println("La connexion au serveur a échoué");
+            Debug.print(DebugList.NETWORK, "L'adresse IP de l'hôte ne peut être déterminée");
+            Debug.print(DebugList.NETWORK, "...la connexion au serveur a échoué");
         } catch (IOException e) {
-            System.out.println("[ERREUR] : Numero de PORT INDISPONIBLE ou IP INCONNUE");
-            System.out.println("...la connexion au serveur a échoué");
+            Debug.print(DebugList.NETWORK, "Numero de PORT INDISPONIBLE ou IP INCONNUE");
+            Debug.print(DebugList.NETWORK, "...la connexion au serveur a échoué");
         }
+        DataList.setData(null);
     }
 
     /**
      * lit les données envoyées par le serveur et gère les erreurs
      */
-    private Serializable readServerData() {
+    private ServerResponse readServerData() {
         try {
-            System.out.println("En attente de données du serveur");
-            // TODO : remettre ois dans le constructeur une fois que la déclaration de l'ObjectOutputStream du server sera correctement placée
-            ois = new ObjectInputStream(socket.getInputStream());
-            return (Serializable) ois.readObject();
+            Debug.print(DebugList.NETWORK, "En attente de données du serveur");
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            return (ServerResponse) ois.readObject();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la récupération des données");
+            Debug.print(DebugList.ERROR,
+                    "[ERREUR/Client] Erreur lors de la récupération des données");
             kill();
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la récupération des données");
-            kill();
+            Debug.print(DebugList.ERROR,
+                    "[ERREUR/Client] Erreur lors de la récupération des données");
         }
         return null;
     }
@@ -83,26 +171,37 @@ public class Client implements Runnable {
      *
      * @param serverData données envoyées par le serveur
      */
-    private void handleReceivedData(Serializable serverData) {
+    private void handleReceivedData(ServerResponse serverData) {
         switch (expectedDataIndex) {
-            case RequestIndexesList.ROUTE:
-                DataList.route = serverData;
-                break;
-            default:
-                System.out.println("Les données envoyées par le serveur sont inconnues et seront ignorées");
-                break;
+            case RequestIndexesList.ROUTE, RequestIndexesList.TIME -> {
+                DataList.setData(serverData);
+                researchPanel.notifyObservers();
+            }
+            case RequestIndexesList.SEARCH -> {
+                DataList.setData(serverData);
+                if (DataList.getData() instanceof SuggestionStations sugg) {
+                    if (sugg.getKind() == SuggestionStations.SuggestionKind.ARRIVAL) {
+                        arrivalBox.notifyObservers();
+                    } else {
+                        startBox.notifyObservers();
+                    }
+                }
+            }
+            default -> Debug.print(DebugList.WARNING,
+                    "[WARNING/Client] Les données attendues sont inconnues et seront ignorées");
         }
     }
 
     @Override
     public void run() {
-        System.out.println("Début de l'écoute TCP");
+        Debug.print(DebugList.NETWORK, "Début de l'écoute TCP");
         while (isConnected) {
             sendRequest();
-            Serializable serverData = readServerData();
-            System.out.println("Données reçues du serveur : ");
+            ServerResponse serverData = readServerData();
+            Debug.print(DebugList.INFO, "Nouvelles données reçues du serveur !");
             if (serverData == null) {
-                System.out.println("Erreur lors de la récupération des données");
+                Debug.print(DebugList.ERROR,
+                        "[ERREUR/Client] erreur lors de la récupération des données");
                 kill();
             }
             handleReceivedData(serverData);
@@ -110,15 +209,16 @@ public class Client implements Runnable {
     }
 
     /**
-     * envoie au serveur la dernière requête enregistrée si aucunes données sont en
-     * transfert
+     * envoie au serveur la dernière requête enregistrée si aucunes données sont en transfert
      */
     public synchronized void sendRequest() {
         while (nextRequestToSend == null || nextExpectedDataIndex == null) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+
+                // gerer si il faut appeler à nouveau this.wait(); ?
+                Debug.print(DebugList.WARNING, e.getMessage());
             }
         }
         expectedDataIndex = nextExpectedDataIndex;
@@ -126,19 +226,18 @@ public class Client implements Runnable {
         nextRequestToSend = null;
         nextExpectedDataIndex = null;
         out.flush();
-        System.out.println("Requête envoyée au serveur : " + expectedDataIndex);
+        Debug.print(DebugList.INFO, "Requête envoyée au serveur : " + expectedDataIndex);
     }
 
     /**
-     * @param request   prochaine requête à envoyer au serveur l'ObjectInputStream
-     * @param dataIndex index de la donnée attendue en lecture sur
-     *                  l'ObjectInputStream
+     * @param request prochaine requête à envoyer au serveur l'ObjectInputStream
+     * @param dataIndex index de la donnée attendue en lecture sur l'ObjectInputStream
      */
     public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
-        this.notify();
-        System.out.println("Nouvelle requête enregistrée : " + request);
+        this.notifyAll();
+        Debug.print(DebugList.INFO, "Nouvelle requête enregistrée : " + request);
     }
 
     /**
@@ -155,10 +254,10 @@ public class Client implements Runnable {
         try {
             this.socket.close();
             this.isConnected = false;
-            System.out.println("Client déconnecté !");
+            Debug.print(DebugList.NETWORK, "Client déconnecté !");
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Debug.print(DebugList.WARNING, e.getMessage());
         }
         return false;
     }
