@@ -1,5 +1,6 @@
 package vue.panel;
 
+import app.App;
 import controller.Controller;
 import vue.composant.FlatComboBox;
 
@@ -12,27 +13,19 @@ import javax.swing.*;
 
 public class RootJPanel extends JPanel {
 
-    private final JPanel verticalRootJPanel;
     private final JPanel attRootJPanel;
-    private final MenuSelectionJPanel selectionJPanel;
-    private static MapJPanel map = null;
 
     public RootJPanel(Controller controller, ResearchPanel panel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         attRootJPanel = new JPanel();
-        map = (new MapJPanel(startBox, arrivalBox));
-        verticalRootJPanel = new JPanel();
+        JPanel verticalRootJPanel = new JPanel();
         verticalRootJPanel.setLayout(new BoxLayout(verticalRootJPanel, BoxLayout.Y_AXIS));
         attRootJPanel.add(new SearchTrajetJPanel(controller, panel, startBox, arrivalBox));
-        selectionJPanel = new MenuSelectionJPanel(controller,this, panel, startBox, arrivalBox);
+        MenuSelectionJPanel selectionJPanel = new MenuSelectionJPanel(controller, this, panel, startBox, arrivalBox);
         verticalRootJPanel.add(attRootJPanel);
         verticalRootJPanel.add(selectionJPanel);
         add(verticalRootJPanel);
-        add(map);
-    }
-
-    public static MapJPanel getInstanceMap() {
-        return map;
+        add(App.getInstanceMap());
     }
 
     public void updateRootPanel(JComponent rootJPanel) {

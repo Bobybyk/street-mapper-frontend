@@ -10,6 +10,7 @@ import console.DebugList;
 import controller.Controller;
 import vue.MainWindowJFrame;
 import vue.composant.FlatComboBox;
+import vue.panel.MapJPanel;
 import vue.panel.ResearchPanel;
 import vue.utils.Props;
 
@@ -19,6 +20,7 @@ import javax.json.JsonReader;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 public class App {
     /**
@@ -46,12 +48,18 @@ public class App {
         }
     }
 
-    public static void main(String[] args) {
-        ResearchPanel researchPanel = new ResearchPanel();
+
+    private static final FlatComboBox stationDepartList = new FlatComboBox(Props.DEPART);
+    private static final FlatComboBox stationArriveList = new FlatComboBox(Props.ARRIVE);
+    private static final ResearchPanel researchPanel = new ResearchPanel();
+    private static final MapJPanel map = new MapJPanel(stationDepartList, stationArriveList);
+
+    static {
         researchPanel.setOpaque(false);
         researchPanel.setLayout(new BoxLayout(researchPanel, BoxLayout.Y_AXIS));
-        FlatComboBox stationDepartList = new FlatComboBox(Props.DEPART);
-        FlatComboBox stationArriveList = new FlatComboBox(Props.ARRIVE);
+    }
+
+    public static void main(String[] args) {
         Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
         Console console = new Console(client);
         Controller controller = new Controller(console);
@@ -66,5 +74,8 @@ public class App {
             Debug.print(DebugList.NETWORK, Props.CLIENT_INVALID);
             client.kill();
         }
+    }
+    public static MapJPanel getInstanceMap() {
+        return map;
     }
 }

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class StationInfo implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 4L;
+    private static final long serialVersionUID = 3L;
 
     /**
      * Le nom de la station
@@ -66,8 +66,6 @@ public class StationInfo implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        return sb.append("ligne : ").append(stationName).append(", station : { ")
-                .append(lines.stream().collect(Collectors.joining(", "))).append(" }").toString();
+        return "ligne : " + stationName + ", station : { " + String.join(", ", lines) + " }";
     }
 }

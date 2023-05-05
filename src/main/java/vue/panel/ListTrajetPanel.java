@@ -1,5 +1,6 @@
 package vue.panel;
 
+import app.App;
 import vue.composant.FlatJButton;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
@@ -34,7 +35,7 @@ public class ListTrajetPanel extends JPanel {
         JLabel htmlJLabel = new JLabel("<html>" + Props.MON_TRAJET + "<ul>" + trajetString + "<br>" + Props.UNIQUEMENT_SECTIONS +".</html>");
         htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(16f));
         FlatJButton voirMap = new FlatJButton(Props.BUTTON_VOIR_MAP, new Dimension(400, 150));
-        MapJPanel map = RootJPanel.getInstanceMap();
+        MapJPanel map = App.getInstanceMap();
         voirMap.addActionListener(e->{
            map.clearPoint();
             map.addPoint(route.getPathDistOpt().get(0).getStart());
