@@ -10,6 +10,10 @@ un certain nombre d'options. Découvrons ensemble toutes les possibilités :
 
 -----
 
+Vidéo de présentation disponible ici : https://youtu.be/X42i4c2UqQs 
+
+-----
+
 ## Execution des tests
 
 L'exécution des tests pour la partie graphiques est moins interessant que notre partie serveur
