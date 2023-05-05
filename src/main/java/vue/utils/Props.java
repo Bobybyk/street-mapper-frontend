@@ -2,24 +2,32 @@ package vue.utils;
 
 public class Props {
 
+    private static String getFont(String font) {
+        return new StringBuilder("/font/").append(font).toString();
+    }
+
+    private static String getIcon(String font) {
+        return new StringBuilder("/icon/").append(font).toString();
+    }
+
     private Props(){}
 
     /**
      * Path
      */
-    public static final String FONT_PATH_NORMAL = "/font/Roboto-Regular.ttf";
-    public static final String FONT_PATH_LIGHT = "/font/Roboto-Light.ttf";
+    public static final String FONT_PATH_NORMAL = getFont("Roboto-Regular.ttf");
+    public static final String FONT_PATH_LIGHT = getFont("Roboto-Light.ttf");
 
-    public static final String ICON_PATH_SEARCH = "/icon/recherche_icon.png";
-    public static final String ICON_PATH_HISTORY = "/icon/history_icon.png";
-    public static final String ICON_PATH_TIME = "/icon/temps_icon.png";
+    public static final String ICON_PATH_SEARCH = getIcon("recherche_icon.png");
+    public static final String ICON_PATH_HISTORY = getIcon("history_icon.png");
+    public static final String ICON_PATH_TIME = getIcon("temps_icon.png");
     /**
      * String
      */
     public static final String HISTORY = "Historique";
     public static final String RECHERCHE = "Rechercher";
     public static final String HORAIRE = "Horaire";
-    public static final String CURSOR_IMAGE = "/icon/pointeurMap.png";
+    public static final String CURSOR_IMAGE = getIcon("pointeurMap.png");
     public static final String LIST_TRAJETS = "La liste des vos derniers trajets recherchées";
     public static final String DEPART = "Depart";
     public static final String ARRIVE = "Arrive";
