@@ -38,10 +38,6 @@ public class Client implements Runnable, Observer {
      */
     private Socket socket;
     /**
-     * pour lecture des objets émis par le serveur
-     */
-    private ObjectInputStream ois;
-    /**
      * pour écriture des requêtes TCP au serveur
      */
     private PrintWriter out;
@@ -62,48 +58,61 @@ public class Client implements Runnable, Observer {
      */
     private boolean isConnected;
 
-    @Override
-    public void update(Object researchPanel) {
-        if(DataList.getData() instanceof DepartureTimes departureTimes){
-                JPanel resultPanel = (JPanel) researchPanel;
-                resultPanel.removeAll();
-                resultPanel.add(new ListHorairePanel(departureTimes));
-                resultPanel.repaint();
-                resultPanel.revalidate();
-        }else if(DataList.getData() instanceof Route route){
-            if(researchPanel instanceof ResearchPanel) {
-                JPanel resultPanel = (JPanel) researchPanel;
-                resultPanel.removeAll();
-                resultPanel.add(new ListTrajetPanel(route));
-                RouteSerializer.addRoute(route);
-                resultPanel.repaint();
-                resultPanel.revalidate();
-            }
-        }else if(DataList.getData() instanceof SuggestionStations sugg){
-            String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
-            if (sugg.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
-                SwingUtilities.invokeLater(() -> {
-                    arrivalBox.removeAllItems();
-                    for (String s : arr) {
-                        arrivalBox.addItem(s);
-                    }
-                });
-            }else{
-                SwingUtilities.invokeLater(() -> {
-                    startBox.removeAllItems();
-                    for (String s : arr) {
-                        startBox.addItem(s);
-                    }
-                });
-            }
-        }else if(DataList.getData() instanceof ErrorServer error){
-            JPanel resultPanel = (JPanel) researchPanel;
+    private void updateDepartureTimes(JPanel resultPanel, DepartureTimes departureTimes) {
+        resultPanel.removeAll();
+        resultPanel.add(new ListHorairePanel(departureTimes));
+        resultPanel.repaint();
+        resultPanel.revalidate();
+    }
+
+    private void updateRoute(JPanel resultPanel, Route route) {
+        if(researchPanel instanceof ResearchPanel) {
             resultPanel.removeAll();
-            resultPanel.add(new JLabel("Erreur: " + error.getError().toLowerCase()));
+            resultPanel.add(new ListTrajetPanel(route));
+            RouteSerializer.addRoute(route);
             resultPanel.repaint();
             resultPanel.revalidate();
+        }
+    }
+
+    private void updateSuggestionStations(SuggestionStations suggestionStations) {
+        String[] arr = suggestionStations.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
+        if (suggestionStations.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
+            SwingUtilities.invokeLater(() -> {
+                arrivalBox.removeAllItems();
+                for (String s : arr) {
+                    arrivalBox.addItem(s);
+                }
+            });
         }else{
-            JPanel resultPanel = (JPanel) researchPanel;
+            SwingUtilities.invokeLater(() -> {
+                startBox.removeAllItems();
+                for (String s : arr) {
+                    startBox.addItem(s);
+                }
+            });
+        }
+    }
+
+    private void updateErrorServer(JPanel resultPanel, ErrorServer error) {
+        resultPanel.removeAll();
+        resultPanel.add(new JLabel("Erreur: " + error.getError().toLowerCase()));
+        resultPanel.repaint();
+        resultPanel.revalidate();
+    }
+
+    @Override
+    public void update(Object researchPanel) {
+        JPanel resultPanel = (JPanel) researchPanel;
+        if(DataList.getData() instanceof DepartureTimes departureTimes){
+            updateDepartureTimes(resultPanel, departureTimes);
+        } else if (DataList.getData() instanceof Route route){
+            updateRoute(resultPanel, route);
+        } else if (DataList.getData() instanceof SuggestionStations suggestionStations){
+            updateSuggestionStations(suggestionStations);
+        } else if (DataList.getData() instanceof ErrorServer error){
+            updateErrorServer(resultPanel, error);
+        } else {
             resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur"));
             Debug.print(DebugList.WARNING, "[WARNING/Client] données reçues du serveur non reconnues");
@@ -138,7 +147,7 @@ public class Client implements Runnable, Observer {
     private Serializable readServerData() {
         try {
             Debug.print(DebugList.NETWORK, "En attente de données du serveur");
-            ois = new ObjectInputStream(socket.getInputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             return (Serializable) ois.readObject();
         } catch (ClassNotFoundException e) {
             Debug.print(DebugList.ERROR, "[ERREUR/Client] Erreur lors de la récupération des données");
