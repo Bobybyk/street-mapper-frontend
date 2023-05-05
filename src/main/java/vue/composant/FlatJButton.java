@@ -53,23 +53,18 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-    }
-
-    @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
@@ -86,11 +81,11 @@ public class FlatJButton extends JButton implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-
+        // Non utilisée
     }
 }

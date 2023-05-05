@@ -6,7 +6,7 @@ import commands.tcp.RequestTcp;
 public class RequestTcpRoute implements RequestTcp {
 
     public RequestTcpRoute() {
-
+        // Doit etre construit pour appeler commandBuilder
     }
 
     /**

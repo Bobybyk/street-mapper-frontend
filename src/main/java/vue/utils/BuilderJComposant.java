@@ -19,6 +19,8 @@ import java.io.InputStream;
  */
 public class BuilderJComposant {
 
+    private BuilderJComposant() {}
+
     public static FlatJButton createJButton(String buttonName) {
         return new FlatJButton(buttonName);
     }

@@ -10,7 +10,7 @@ import javax.swing.*;
 public class MainWindowJFrame extends JFrame {
 
     public MainWindowJFrame(Controller controller, ResearchPanel panel, FlatComboBox startBox, FlatComboBox arrivalBox) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);
         setContentPane(new RootJPanel(controller, panel, startBox, arrivalBox));

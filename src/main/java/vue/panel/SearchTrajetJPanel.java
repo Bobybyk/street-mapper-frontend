@@ -4,7 +4,7 @@ import controller.Controller;
 import server.data.SuggestionStations;
 import vue.composant.FlatComboBox;
 import vue.composant.FlatJRadioButton;
-import vue.composant.FlatJScrollPane;
+import vue.composant.FlatJScrollPanel;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -71,7 +71,7 @@ public class SearchTrajetJPanel extends JPanel {
             repaint();
             revalidate();
         });
-        final JScrollPane paneScroll = new FlatJScrollPane(resultPanel);
+        final JScrollPane paneScroll = new FlatJScrollPanel(resultPanel);
         paneScroll.setBorder(BorderFactory.createEmptyBorder());
         add(researchPanel);
         add(optionPanel);

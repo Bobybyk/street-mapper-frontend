@@ -8,6 +8,8 @@ public class DataList {
      */
     private static Serializable data = null;
 
+    private DataList() {}
+
     public static Serializable getData() {
         return data;
     }

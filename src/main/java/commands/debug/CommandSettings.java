@@ -1,5 +1,7 @@
 package commands.debug;
 
+import java.util.Map.Entry;
+
 import console.Console;
 import console.Debug;
 import console.DebugList;
@@ -10,8 +12,13 @@ public class CommandSettings implements CommandDebug {
     public void execute(String[] args, Console console) {
 
         if (args.length == 1) {
-            for (String key : Debug.getDebugTypes().keySet()) {
-                Debug.print(DebugList.SETTINGS, "Débogage " + key + " : " + (Debug.getDebugTypeStatus().get(Debug.getDebugTypes().get(key)) ? "activé" : "désactivé"));
+
+            for (Entry<String, Integer> entry : Debug.getDebugTypes().entrySet()) {
+                String key = entry.getKey();
+                Integer debugType = entry.getValue();
+                boolean isEnable = Debug.getDebugTypeStatus().get(debugType).booleanValue();
+                String isEnableString = isEnable ? "activé" : "désactivé";
+                Debug.print(DebugList.SETTINGS, "Débogage " + key + " : " + isEnableString);
             }
             return;
         }

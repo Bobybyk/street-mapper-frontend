@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class StationInfo implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 4L;
 
     /**
      * Le nom de la station
@@ -26,7 +26,7 @@ public class StationInfo implements Serializable {
      */
     private final Set<String> lines;
 
-    public StationInfo(String stationName, Collection<? extends String> collection) {
+    public StationInfo(String stationName, Collection<String> collection) {
         this.stationName = stationName;
         this.lines = new HashSet<>(collection);
     }

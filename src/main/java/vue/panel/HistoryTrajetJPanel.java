@@ -1,6 +1,6 @@
 package vue.panel;
 
-import vue.composant.FlatJScrollPane;
+import vue.composant.FlatJScrollPanel;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
 
@@ -32,7 +32,7 @@ public class HistoryTrajetJPanel extends JPanel {
         for (Route value : route) {
             panelTrajetHistorique.add(new ListTrajetPanel(value));
         }
-        paneScroll = new FlatJScrollPane(panelTrajetHistorique);
+        paneScroll = new FlatJScrollPanel(panelTrajetHistorique);
         final JLabel jlabel = new JLabel(Props.LIST_TRAJETS);
         jlabel.setFont(BuilderJComposant.lemontRegularFont(22));
         add(jlabel);

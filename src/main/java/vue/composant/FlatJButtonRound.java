@@ -25,7 +25,7 @@ public class FlatJButtonRound extends JButton {
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            RoundRectangle2D roundRect = new RoundRectangle2D.Float(x, y, width - 1, height - 1, radius, radius);
+            RoundRectangle2D roundRect = new RoundRectangle2D.Float(x, y, width - 1f, height - 1f, radius, radius);
             g2d.setColor(c.getForeground());
             g2d.draw(roundRect);
             g2d.dispose();

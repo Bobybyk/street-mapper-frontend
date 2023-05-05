@@ -54,7 +54,7 @@ public class Debug {
      */
     public static void print(int type, String message) {
         try {
-            if (DEBUG_TYPE_STATUS.get(type) || type == DebugList.GENERAL) {
+            if (DEBUG_TYPE_STATUS.get(type).booleanValue() || type == DebugList.GENERAL) {
                 writeln(message);
                 LOGGER.info(message);
             }

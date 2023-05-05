@@ -11,7 +11,7 @@ public class Controller {
 
     private final Console console;
 
-    private final static String SEPARATOR = ";";
+    private static final String SEPARATOR = ";";
 
     public Controller(Console console) {
         this.console = console;
