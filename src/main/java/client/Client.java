@@ -211,7 +211,9 @@ public class Client implements Runnable, Observer {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+
+                // gerer si il faut appeler à nouveau this.wait(); ?
+                Debug.print(DebugList.WARNING, e.getMessage());
             }
         }
         expectedDataIndex = nextExpectedDataIndex;
@@ -251,7 +253,7 @@ public class Client implements Runnable, Observer {
             Debug.print(DebugList.NETWORK, "Client déconnecté !");
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Debug.print(DebugList.WARNING, e.getMessage());
         }
         return false;
     }
