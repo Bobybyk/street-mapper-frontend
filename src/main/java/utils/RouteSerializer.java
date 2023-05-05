@@ -1,4 +1,4 @@
-package vue.panel;
+package utils;
 
 import console.Debug;
 import console.DebugList;

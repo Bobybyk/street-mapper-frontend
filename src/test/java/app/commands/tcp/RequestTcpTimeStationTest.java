@@ -14,6 +14,15 @@ public class RequestTcpTimeStationTest {
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
+    public void testRequestNotGoodNumberTime(){
+        RequestTcpTimeStation timeStation = new RequestTcpTimeStation();
+        String[] args ={ "test", "test", "dzdz"};
+        assertThrows(NumberFormatException.class, () -> timeStation.commandBuilder(args), "Not number in arg[3]");
+    }
+
+
+    @Test
+    @Timeout(value = TIMEOUT_SECONDS)
     public void testRequestTimeTooManyArgs(){
         RequestTcpTimeStation timeStation = new RequestTcpTimeStation();
         String[] args ={ "test", "test", "test", "11:15", "test", "test", "test", "test"};
@@ -22,7 +31,7 @@ public class RequestTcpTimeStationTest {
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteNotTime(){
+    public void testRequestNotTime(){
         RequestTcpTimeStation timeStation = new RequestTcpTimeStation();
         String[] args ={ "test", "test", "test"};
         assertThrows(IllegalArgumentException.class, () -> timeStation.commandBuilder(args), "Not hours in arg[3]");
@@ -30,18 +39,18 @@ public class RequestTcpTimeStationTest {
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteTimeOk(){
+    public void testRequestTimeOk(){
         RequestTcpTimeStation timeStation = new RequestTcpTimeStation();
         String[] args ={ "TIME", "STATIONA", "11:12"};
-        assertSame("TIME;STATIONA;11:12", timeStation.commandBuilder(args));
+        assertEquals("TIME;STATIONA;11:12", timeStation.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteTime(){
+    public void testRequestTime(){
         RequestTcpTimeStation timeStation = new RequestTcpTimeStation();
         String[] args ={ "TIME", "STATIONA", "11:12"};
-        assertNotEquals("ROUTE;STATIONA;STATIONB;11:12;TIME", timeStation.commandBuilder(args));
+        assertNotEquals("ROUTE;STATIONA;STATIONB;11:12;TEMPS", timeStation.commandBuilder(args));
     }
 
 }

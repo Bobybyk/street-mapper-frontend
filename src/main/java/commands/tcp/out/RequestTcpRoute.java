@@ -17,6 +17,7 @@ public class RequestTcpRoute implements RequestTcp {
      */
     @Override
     public String commandBuilder(String[] args) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
+        if (args.length > 6) throw new ArrayIndexOutOfBoundsException();
         if (isTimeFormat(args[3])) {
             String request = RequestIndexesList.ROUTE + ";" + args[1] + ";" + args[2] + ";" + args[3] + ";";
             request += (args[4].equals("DISTANCE")) ? "DISTANCE" : "TEMPS";

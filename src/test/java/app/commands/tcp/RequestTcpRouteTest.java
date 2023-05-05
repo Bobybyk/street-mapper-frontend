@@ -30,66 +30,66 @@ public class RequestTcpRouteTest {
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteDistanceNotOk(){
+    public void testRequestRouteDistanceNotOk(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
         String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "DISTANCE"};
-        assertNotEquals("ROUTE;STATIONB;STATIONA;11:12;DISTANCE", requestTcpRoute.commandBuilder(args));
+        assertNotEquals("ROUTE;STATIONB;STATIONA;11:12;DISTANCE;", requestTcpRoute.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteTimeNotOk(){
+    public void testRequestRouteTimeNotOk(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
-        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TIME"};
-        assertNotEquals("ROUTE;STATIONB;STATIONB;1212;TIME", requestTcpRoute.commandBuilder(args));
+        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TEMPS"};
+        assertNotEquals("ROUTE;STATIONB;STATIONB;12:12;TEMPS;", requestTcpRoute.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteDistanceFootNotOk(){
+    public void testRequestRouteDistanceFootNotOk(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
         String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "DISTANCE", "FOOT"};
-        assertSame("ROUTE;STATIONA;STATIONB;11:12;DISTANCE", requestTcpRoute.commandBuilder(args));
+        assertNotEquals("ROUTE;STATIONA;STATIONB;11:12;DISTANCE;", requestTcpRoute.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteTimeFootNotOk(){
+    public void testRequestRouteTimeFootNotOk(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
-        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TIME", "FOOT"};
+        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TEMPS", "FOOT"};
         assertNotEquals("ROUTE;STATIONA;STATIONB;11:12;DISTANCE;FOOT", requestTcpRoute.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteDistance(){
+    public void testRequestRouteDistance(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
         String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "DISTANCE"};
-        assertSame("ROUTE;STATIONA;STATIONB;11:12;DISTANCE", requestTcpRoute.commandBuilder(args));
+        assertEquals("ROUTE;STATIONA;STATIONB;11:12;DISTANCE;", requestTcpRoute.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteTime(){
+    public void testRequestRouteTime(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
-        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TIME"};
-        assertSame("ROUTE;STATIONA;STATIONB;11:12;TIME", requestTcpRoute.commandBuilder(args));
+        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TEMPS"};
+        assertEquals("ROUTE;STATIONA;STATIONB;11:12;TEMPS;", requestTcpRoute.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteDistanceFoot(){
+    public void testRequestRouteDistanceFoot(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
         String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "DISTANCE", "FOOT"};
-        assertSame("ROUTE;STATIONA;STATIONB;11:12;DISTANCE;FOOT", requestTcpRoute.commandBuilder(args));
+        assertEquals("ROUTE;STATIONA;STATIONB;11:12;DISTANCE;FOOT", requestTcpRoute.commandBuilder(args));
     }
 
     @Test
     @Timeout(value = TIMEOUT_SECONDS)
-    public void testRequestRouteRouteTimeFoot(){
+    public void testRequestRouteTimeFoot(){
         RequestTcpRoute requestTcpRoute = new RequestTcpRoute();
-        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TIME", "FOOT"};
-        assertSame("ROUTE;STATIONA;STATIONB;11:12;TIME;FOOT", requestTcpRoute.commandBuilder(args));
+        String[] args ={ "ROUTE", "STATIONA", "STATIONB", "11:12", "TEMPS", "FOOT"};
+        assertEquals("ROUTE;STATIONA;STATIONB;11:12;TEMPS;FOOT", requestTcpRoute.commandBuilder(args));
     }
 
 }

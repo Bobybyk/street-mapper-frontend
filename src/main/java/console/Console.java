@@ -15,7 +15,7 @@ import commands.tcp.out.RequestTcpRoute;
 import commands.tcp.out.RequestTcpSearchStation;
 import commands.tcp.out.RequestTcpTimeStation;
 
-public class Console extends Thread {
+public class Console implements Runnable {
     /**
      * objet contenant toutes les méthodes et paramètres nécessaires à la
      * communication avec le serveur
@@ -146,4 +146,12 @@ public class Console extends Thread {
         isRunning = b;
     }
 
+
+    public static HashMap<String, CommandDebug> getCommandList() {
+        return new HashMap<>(commandList);
+    }
+
+    public static HashMap<String, RequestTcp> getRequestList() {
+        return new HashMap<>(requestList);
+    }
 }

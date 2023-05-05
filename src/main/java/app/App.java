@@ -61,7 +61,7 @@ public class App {
         if (client.isConnected()) {
             client.start();
             SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel, stationDepartList, stationArriveList));
-            console.start();
+            console.run();
         } else {
             Debug.print(DebugList.NETWORK, Props.CLIENT_INVALID);
             client.kill();
