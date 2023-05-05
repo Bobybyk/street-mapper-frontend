@@ -66,8 +66,6 @@ public class StationInfo implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        return sb.append("ligne : ").append(stationName).append(", station : { ")
-                .append(lines.stream().collect(Collectors.joining(", "))).append(" }").toString();
+        return "ligne : " + stationName + ", station : { " + String.join(", ", lines) + " }";
     }
 }

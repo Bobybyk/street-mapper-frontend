@@ -11,7 +11,7 @@ public class Controller {
 
     private final Console console;
 
-    private final String separator = ";";
+    private static final String SEPARATOR = ";";
 
     public Controller(Console console) {
         this.console = console;
@@ -31,7 +31,7 @@ public class Controller {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime = time.format(formatter);
         String arguments = "ROUTE;" + depart + ";" + arrive + ";" + formattedTime + ";" + typeTrajet + ";" + (sectionAPied ? "FOOT" : "");
-        console.handleCommand(arguments, separator);
+        console.handleCommand(arguments, SEPARATOR);
     }
 
     /**
@@ -42,7 +42,7 @@ public class Controller {
      */
     public void sendRequestSearch(String word, SuggestionStations.SuggestionKind depart) {
         String arguments = "SEARCH;" + word + ";" + depart;
-        console.handleCommand(arguments, separator);
+        console.handleCommand(arguments, SEPARATOR);
     }
 
     /**
@@ -56,7 +56,7 @@ public class Controller {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime = time.format(formatter);
         String arguments = "TIME;" + station + ";" + formattedTime;
-        console.handleCommand(arguments, separator);
+        console.handleCommand(arguments, SEPARATOR);
     }
 
 }

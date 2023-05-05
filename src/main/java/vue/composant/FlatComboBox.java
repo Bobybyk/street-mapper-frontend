@@ -94,7 +94,7 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
 
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            setText(value.toString());
+            super.setText(value.toString());
             setFont(BuilderJComposant.lemontRegularFont(14));
             if (isSelected) {
                 setBackground(new Color(127, 177, 50));
@@ -114,6 +114,7 @@ public class FlatComboBox extends JComboBox<String> implements Observable {
             super();
             field = BuilderJComposant.createFlatJTextField(placeHolder, new Dimension(150, 70));
             field.addFocusListener(new FocusAdapter() {
+                @Override
                 public void focusGained(FocusEvent e) {
                     if (field.getText().length() > 0) field.selectAll();
                 }

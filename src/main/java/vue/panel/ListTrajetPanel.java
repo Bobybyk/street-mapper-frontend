@@ -1,5 +1,6 @@
 package vue.panel;
 
+import app.App;
 import vue.composant.FlatJButton;
 import vue.utils.BuilderJComposant;
 import vue.utils.Props;
@@ -26,15 +27,15 @@ public class ListTrajetPanel extends JPanel {
         setBackground(new Color(238, 238, 238));
         StringBuilder trajetString = new StringBuilder();
 
-        if(route.getPathDistOpt().size() > 0){
+        if(!route.getPathDistOpt().isEmpty()){
             for (Section section :  Section.sectionsToTrajet(route.getPathDistOpt())) {
                 trajetString.append("<li>").append(section).append("</li>");
             }
-        }else trajetString.append(Props.destination);
-        JLabel htmlJLabel = new JLabel("<html>"+Props.monTrakjet+ "<ul>" + trajetString + "<br>" + Props.uniquementSections+".</html>");
+        }else trajetString.append(Props.DESTINATION);
+        JLabel htmlJLabel = new JLabel("<html>" + Props.MON_TRAJET + "<ul>" + trajetString + "<br>" + Props.UNIQUEMENT_SECTIONS +".</html>");
         htmlJLabel.setFont(BuilderJComposant.lemontRegularFont(16f));
-        FlatJButton voirMap = new FlatJButton(Props.buttonVoirMap, new Dimension(400, 150));
-        MapJPanel map = RootJPanel.getInstanceMap();
+        FlatJButton voirMap = new FlatJButton(Props.BUTTON_VOIR_MAP, new Dimension(400, 150));
+        MapJPanel map = App.getInstanceMap();
         voirMap.addActionListener(e->{
            map.clearPoint();
             map.addPoint(route.getPathDistOpt().get(0).getStart());

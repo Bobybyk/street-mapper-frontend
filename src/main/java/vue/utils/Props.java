@@ -2,53 +2,65 @@ package vue.utils;
 
 public class Props {
 
+    private static String getFont(String font) {
+        return "/font/" + font;
+    }
+
+    private static String getIcon(String font) {
+        return "/icon/" + font;
+    }
+
+    private Props() {}
 
     /**
      * Path
      */
-    public static final String fontPathNormal = "/font/Roboto-Regular.ttf";
-    public static final String fontPathLight = "/font/Roboto-Light.ttf";
+    public static final String FONT_PATH_NORMAL = getFont("Roboto-Regular.ttf");
+    public static final String FONT_PATH_LIGHT = getFont("Roboto-Light.ttf");
 
-    public static final String iconPathSearch = "/icon/recherche_icon.png";
-    public static final String iconPathHistory = "/icon/history_icon.png";
-    public static final String iconPathTime = "/icon/temps_icon.png";
+    public static final String ICON_PATH_SEARCH = getIcon("recherche_icon.png");
+    public static final String ICON_PATH_HISTORY = getIcon("history_icon.png");
+    public static final String ICON_PATH_TIME = getIcon("temps_icon.png");
+    public static final String LOGO_ICON = getIcon("traingo_icon.png");
+
     /**
      * String
      */
-    public static final String history = "Historique";
-    public static final String recherche = "Rechercher";
-    public static final String horaire = "Horaire";
-    public static String cursorImage = "/icon/pointeurMap.png";
-    public static String listTrajets = "La liste des vos derniers trajets recherchées";
-    public static String depart = "Depart";
-    public static String arrive = "Arrive";
-    public static String valider = "Valider";
+    public static final String HISTORY = "Historique";
+    public static final String RECHERCHE = "Rechercher";
+    public static final String HORAIRE = "Horaire";
+    public static final String CURSOR_IMAGE = getIcon("pointeurMap.png");
+    public static final String LIST_TRAJETS = "La liste des vos derniers trajets recherchées";
+    public static final String DEPART = "Depart";
+    public static final String ARRIVE = "Arrive";
+    public static final String VALIDER = "Valider";
 
-    public static String typeTrajet = "Type de trajet :";
-    public static String sectionAPied = "Section à pied : ";
-    public static String departA = "Depart à :";
-    public static String distance = "Distance";
-    public static String temps = "Temps ";
+    public static final String TYPE_TRAJET = "Type de trajet :";
+    public static final String SECTION_A_PIED = "Section à pied : ";
+    public static final String DEPART_A = "Depart à :";
+    public static final String DISTANCE = "Distance";
+    public static final String TEMPS = "Temps ";
 
-    public static String champsIncorrect = "Erreur champs incorrect";
-    public static String rechercheEnCours = "Recherche en attente ...";
-    public static String optionRecherche = "Option de recherche";
-    public static String non = "Non ";
-    public static String oui = "Oui ";
+    public static final String CHAMPS_INCORRECT = "Erreur champs incorrect";
+    public static final String RECHERCHE_EN_COURS = "Recherche en attente ...";
+    public static final String OPTION_RECHERCHE = "Option de recherche";
+    public static final String NON = "Non ";
+    public static final String OUI = "Oui ";
 
-    public static String poseA = "Position A";
-    public static String poseB = "Position B";
-    public static String placerMarquer = "Placez marqueur";
-    public static String nettoyerMap = "Nettoyez la map";
+    public static final String POSE_A = "Position A";
+    public static final String POSE_B = "Position B";
+    public static final String PLACER_MARQUER = "Placez marqueur";
+    public static final String NETTOYER_MAP = "Nettoyez la map";
 
-    public static String station = "Station";
-    public static String horaireA = "Horaire à :";
+    public static final String STATION = "Station";
+    public static final String HORAIRE_A = "Horaire à :";
 
-    public static String fileSerializeRoute = "history.ser";
-    public static String destination = "Vous êtes déjà à destination.";
-    public static String buttonVoirMap = "Voir sur la map toutes les stations";
-    public static String uniquementSections = "Uniquement les sections sont affichées ici";
-    public static String monTrakjet = "Mon trajet:";
+    public static final String FILE_SERIALIZE_ROUTE = "history.ser";
+    public static final String DESTINATION = "Vous êtes déjà à destination.";
+    public static final String BUTTON_VOIR_MAP = "Voir sur la map toutes les stations";
+    public static final String UNIQUEMENT_SECTIONS =
+            "Uniquement les sections sur une même ligne sont affichées ici";
+    public static final String MON_TRAJET = "Mon trajet:";
 
-    public static String clientInvalide = "Impossible de se connecter au serveur";
+    public static final String CLIENT_INVALID = "Impossible de se connecter au serveur";
 }

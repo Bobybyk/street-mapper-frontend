@@ -10,16 +10,16 @@ import console.DebugList;
 import controller.Controller;
 import vue.MainWindowJFrame;
 import vue.composant.FlatComboBox;
+import vue.panel.MapJPanel;
 import vue.panel.ResearchPanel;
 import vue.utils.Props;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.swing.*;
-import javax.json.*;
 
 public class App {
     /**
@@ -30,29 +30,28 @@ public class App {
      * The port to connect to.
      */
     private static final int PORT;
+    private static final FlatComboBox stationDepartList = new FlatComboBox(Props.DEPART);
+    private static final FlatComboBox stationArriveList = new FlatComboBox(Props.ARRIVE);
+    private static final ResearchPanel researchPanel = new ResearchPanel();
+    private static final MapJPanel map = new MapJPanel(stationDepartList, stationArriveList);
 
     static {
         try (InputStream stream = App.class.getResourceAsStream("/config/network.json")) {
-            // Création d'un objet JsonReader
             JsonReader jsonReader = Json.createReader(stream);
-            // Récupération de l'objet racine JSON
             JsonObject jsonObject = jsonReader.readObject();
-   
-            // Récupération des champs du fichier JSON
             HOST = jsonObject.getString("host");
             PORT = jsonObject.getInt("port");
-            System.out.println("host: " + HOST + " port: " + PORT);
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
     }
 
-    public static void main(String[] args) {
-        ResearchPanel researchPanel = new ResearchPanel();
+    static {
         researchPanel.setOpaque(false);
         researchPanel.setLayout(new BoxLayout(researchPanel, BoxLayout.Y_AXIS));
-        FlatComboBox stationDepartList = new FlatComboBox(Props.depart);
-        FlatComboBox stationArriveList = new FlatComboBox(Props.arrive);
+    }
+
+    public static void main(String[] args) {
         Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
         Console console = new Console(client);
         Controller controller = new Controller(console);
@@ -62,10 +61,14 @@ public class App {
         if (client.isConnected()) {
             client.start();
             SwingUtilities.invokeLater(() -> new MainWindowJFrame(controller, researchPanel, stationDepartList, stationArriveList));
-            console.start();
+            console.run();
         } else {
-            Debug.print(DebugList.NETWORK, Props.clientInvalide);
+            Debug.print(DebugList.NETWORK, Props.CLIENT_INVALID);
             client.kill();
         }
+    }
+
+    public static MapJPanel getInstanceMap() {
+        return map;
     }
 }

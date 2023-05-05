@@ -1,8 +1,8 @@
 package console;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
-
 import client.Client;
 import commands.debug.CommandDebug;
 import commands.debug.CommandHelp;
@@ -15,10 +15,10 @@ import commands.tcp.out.RequestTcpRoute;
 import commands.tcp.out.RequestTcpSearchStation;
 import commands.tcp.out.RequestTcpTimeStation;
 
-public class Console extends Thread {
+public class Console implements Runnable {
     /**
-     * objet contenant toutes les méthodes et paramètres nécessaires à la
-     * communication avec le serveur
+     * objet contenant toutes les méthodes et paramètres nécessaires à la communication avec le
+     * serveur
      */
     private final Client client;
     /**
@@ -28,11 +28,11 @@ public class Console extends Thread {
     /**
      * liste des requêtes disponibles, triées par index
      */
-    private static final HashMap<String, RequestTcp> requestList;
+    private static final Map<String, RequestTcp> requestList;
     /**
      * liste des commandes disponibles, triées par index
      */
-    private static final HashMap<String, CommandDebug> commandList;
+    private static final Map<String, CommandDebug> commandList;
     /**
      * true si la console est en cours d'exécution, false sinon
      */
@@ -46,15 +46,15 @@ public class Console extends Thread {
         requestList.put(RequestIndexesList.ROUTE, new RequestTcpRoute());
         requestList.put(RequestIndexesList.SEARCH, new RequestTcpSearchStation());
         requestList.put(RequestIndexesList.TIME, new RequestTcpTimeStation());
-        
+
         commandList.put(CommandIndexesList.KILL, new CommandKill());
         commandList.put(CommandIndexesList.HELP, new CommandHelp());
         commandList.put(CommandIndexesList.DEBUG, new CommandSettings());
     }
 
     /**
-     * @param client objet contenant toutes les méthodes et paramètres nécessaires à
-     *               la communication avec le serveur
+     * @param client objet contenant toutes les méthodes et paramètres nécessaires à la
+     *        communication avec le serveur
      */
     public Console(Client client) {
         this.client = client;
@@ -100,17 +100,21 @@ public class Console extends Thread {
                     buildedRequest = requestList.get(commandIndex).commandBuilder(segmentedCommand);
                     client.setNextRequest(buildedRequest, commandIndex);
                 } catch (NumberFormatException e) {
-                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments invalides pour la requête, elle ne sera pas envoyé");
+                    Debug.print(DebugList.WARNING,
+                            "[WARNING/Console] Arguments invalides pour la requête, elle ne sera pas envoyé");
                 } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
-                    Debug.print(DebugList.WARNING, "[WARNING/Console] Arguments manquants pour la requête, elle ne sera pas envoyé");
+                    Debug.print(DebugList.WARNING,
+                            "[WARNING/Console] Arguments manquants pour la requête, elle ne sera pas envoyé");
                 }
             } else {
-                Debug.print(DebugList.WARNING, "[WARNING/Console] Aucune connexion au serveur, la requête ne pourra être envoyée");
+                Debug.print(DebugList.WARNING,
+                        "[WARNING/Console] Aucune connexion au serveur, la requête ne pourra être envoyée");
             }
         } else if (commandExists(commandIndex)) {
             commandList.get(commandIndex).execute(segmentedCommand, this);
         } else {
-            Debug.print(DebugList.WARNING, "[WARNING/Console] Commande non définie dans le protocole");
+            Debug.print(DebugList.WARNING,
+                    "[WARNING/Console] Commande non définie dans le protocole");
         }
     }
 
@@ -118,9 +122,9 @@ public class Console extends Thread {
      * Affiche le layout de la console
      */
     public static void layout() {
-        System.out.print("\u001B[31m");
-        System.out.print("map_debug> ");
-        System.out.print("\u001B[37m");
+        Debug.write("\u001B[31m");
+        Debug.write("map_debug> ");
+        Debug.write("\u001B[37m");
     }
 
     @Override
@@ -146,4 +150,12 @@ public class Console extends Thread {
         isRunning = b;
     }
 
+
+    public static Map<String, CommandDebug> getCommandList() {
+        return new HashMap<>(commandList);
+    }
+
+    public static Map<String, RequestTcp> getRequestList() {
+        return new HashMap<>(requestList);
+    }
 }

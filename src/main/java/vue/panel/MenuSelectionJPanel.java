@@ -16,11 +16,14 @@ import java.awt.*;
 
 public class MenuSelectionJPanel extends JPanel {
 
-    private final FlatJButton buttonHistory, buttonSearchTrajet, buttonSearchHoraire;
+    private final FlatJButton buttonHistory;
+    private final FlatJButton buttonSearchTrajet;
+    private final FlatJButton buttonSearchHoraire;
     private final RootJPanel rootJPanel;
-    private final Controller controller;
+    private final transient Controller controller;
     private final ResearchPanel researchPanel;
-    private final FlatComboBox startBox, arrivalBox;
+    private final FlatComboBox startBox;
+    private final FlatComboBox arrivalBox;
 
     MenuSelectionJPanel(Controller controller, RootJPanel rootJPanel, ResearchPanel researchPanel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         this.controller = controller;
@@ -31,9 +34,9 @@ public class MenuSelectionJPanel extends JPanel {
         this.setBackground(new Color(255, 255, 255));
         this.setLayout(new GridLayout(1, 3));
         this.rootJPanel = rootJPanel;
-        this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.recherche, Props.iconPathSearch);
-        this.buttonHistory = BuilderJComposant.createJButton(Props.history, Props.iconPathHistory);
-        this.buttonSearchHoraire = BuilderJComposant.createJButton(Props.horaire, Props.iconPathTime);
+        this.buttonSearchTrajet = BuilderJComposant.createJButton(Props.RECHERCHE, Props.ICON_PATH_SEARCH);
+        this.buttonHistory = BuilderJComposant.createJButton(Props.HISTORY, Props.ICON_PATH_HISTORY);
+        this.buttonSearchHoraire = BuilderJComposant.createJButton(Props.HORAIRE, Props.ICON_PATH_TIME);
 
         this.add(buttonSearchTrajet);
         this.add(buttonSearchHoraire);
@@ -55,8 +58,8 @@ public class MenuSelectionJPanel extends JPanel {
 
     private void resetInput(){
         researchPanel.removeAll();
-        startBox.reset(Props.depart);
-        arrivalBox.reset(Props.arrive);
+        startBox.reset(Props.DEPART);
+        arrivalBox.reset(Props.ARRIVE);
         startBox.repaint();
         startBox.revalidate();
         arrivalBox.repaint();

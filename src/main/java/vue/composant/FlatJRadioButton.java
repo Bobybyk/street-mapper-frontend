@@ -5,7 +5,9 @@ import java.awt.*;
 
 public class FlatJRadioButton extends JRadioButton {
 
-    private final Color hover, release;
+    private final Color hover;
+
+    private final Color release;
 
     public FlatJRadioButton(String text, Color hover, Color release) {
         this.setText(text);

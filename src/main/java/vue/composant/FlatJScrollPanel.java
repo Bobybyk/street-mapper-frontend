@@ -10,13 +10,12 @@ import java.awt.geom.RoundRectangle2D;
  * FlatJScrollPane est une class JScrollPane
  * avec des parametres graphiques déjà fait pour facilité
  * l'implementation graphique
- *
  */
 
-public class FlatJScrollPane extends JScrollPane {
+public class FlatJScrollPanel extends JScrollPane {
 
 
-    public FlatJScrollPane(JPanel panel){
+    public FlatJScrollPanel(JPanel panel) {
         super(panel);
         setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         setViewportBorder(BorderFactory.createEmptyBorder());
@@ -25,7 +24,7 @@ public class FlatJScrollPane extends JScrollPane {
 
     }
 
-    private class FlatJScrollBarUI extends BasicScrollBarUI {
+    private static class FlatJScrollBarUI extends BasicScrollBarUI {
 
 
         @Override
@@ -48,36 +47,18 @@ public class FlatJScrollPane extends JScrollPane {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(Color.white);
             int size = 35;
-            if (scrollbar.getOrientation() == JSlider.HORIZONTAL) {
-                int x = 0;
-                int y = (trackRect.height - size) / 2;
+            if (scrollbar.getOrientation() == javax.swing.SwingConstants.HORIZONTAL) {
+                double x = 0;
+                double y = (trackRect.height - size) / 2d;
                 g2.fill(new RoundRectangle2D.Double(trackRect.x + x, trackRect.y + y, trackRect.width, size, size, size));
             } else {
-                int x = (trackRect.width - size) / 2;
-                int y = 0;
+                double x = (trackRect.width - size) / 2d;
+                double y = 0;
                 g2.fill(new RoundRectangle2D.Double(trackRect.x + x, trackRect.y + y, size, trackRect.height, size, size));
             }
             g2.dispose();
         }
 
-
-        @Override
-        protected void paintDecreaseHighlight(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            int size = 20;
-            g2.setColor(Color.blue);
-            g2.fill(new RoundRectangle2D.Double(trackRect.x, trackRect.y, trackRect.width, size, size, size));
-            g2.dispose();
-        }
-
-        @Override
-        protected void paintIncreaseHighlight(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            int size = 20;
-            g2.setColor(Color.blue);
-            g2.fill(new RoundRectangle2D.Double(trackRect.x, trackRect.y, trackRect.width, size, size, size));
-            g2.dispose();
-        }
     }
 
 }

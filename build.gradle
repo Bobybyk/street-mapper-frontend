@@ -22,6 +22,7 @@ plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'idea'
+    id 'jacoco'
 }
 
 repositories {
@@ -34,6 +35,7 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
 
     implementation 'javax.json:javax.json-api:1.1.4'
     implementation 'org.glassfish:javax.json:1.1.4'
@@ -46,4 +48,10 @@ application {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    sourceDirectories.from files(sourceSets.main.allJava.srcDirs)
 }
