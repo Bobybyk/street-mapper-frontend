@@ -103,16 +103,20 @@ public class Client implements Runnable, Observer {
 
     @Override
     public void update(Object researchPanel) {
-        JPanel resultPanel = (JPanel) researchPanel;
+        
         if(DataList.getData() instanceof DepartureTimes departureTimes){
+            JPanel resultPanel = (JPanel) researchPanel;
             updateDepartureTimes(resultPanel, departureTimes);
         } else if (DataList.getData() instanceof Route route){
+            JPanel resultPanel = (JPanel) researchPanel;
             updateRoute(resultPanel, route);
         } else if (DataList.getData() instanceof SuggestionStations suggestionStations){
             updateSuggestionStations(suggestionStations);
         } else if (DataList.getData() instanceof ErrorServer error){
+            JPanel resultPanel = (JPanel) researchPanel;
             updateErrorServer(resultPanel, error);
         } else {
+            JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur"));
             Debug.print(DebugList.WARNING, "[WARNING/Client] données reçues du serveur non reconnues");
