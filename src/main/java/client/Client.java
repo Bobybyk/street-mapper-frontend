@@ -3,7 +3,6 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -14,6 +13,7 @@ import data.DataList;
 import server.data.DepartureTimes;
 import server.data.ErrorServer;
 import server.data.Route;
+import server.data.ServerResponse;
 import server.data.SuggestionStations;
 import server.map.StationInfo;
 import utils.Observer;
@@ -135,11 +135,11 @@ public class Client implements Runnable, Observer {
     /**
      * lit les données envoyées par le serveur et gère les erreurs
      */
-    private Serializable readServerData() {
+    private ServerResponse readServerData() {
         try {
             Debug.print(DebugList.NETWORK, "En attente de données du serveur");
             ois = new ObjectInputStream(socket.getInputStream());
-            return (Serializable) ois.readObject();
+            return (ServerResponse) ois.readObject();
         } catch (ClassNotFoundException e) {
             Debug.print(DebugList.ERROR, "[ERREUR/Client] Erreur lors de la récupération des données");
             kill();
@@ -154,7 +154,7 @@ public class Client implements Runnable, Observer {
      *
      * @param serverData données envoyées par le serveur
      */
-    private void handleReceivedData(Serializable serverData) {
+    private void handleReceivedData(ServerResponse serverData) {
         switch (expectedDataIndex) {
             case RequestIndexesList.ROUTE, RequestIndexesList.TIME -> {
                 DataList.data = serverData;
@@ -179,7 +179,7 @@ public class Client implements Runnable, Observer {
         Debug.print(DebugList.NETWORK, "Début de l'écoute TCP");
         while (isConnected) {
             sendRequest();
-            Serializable serverData = readServerData();
+            ServerResponse serverData = readServerData();
             Debug.print(DebugList.INFO, "Nouvelles données reçues du serveur !");
             if (serverData == null) {
                 Debug.print(DebugList.ERROR, "[ERREUR/Client] erreur lors de la récupération des données");
