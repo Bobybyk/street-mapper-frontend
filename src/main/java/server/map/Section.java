@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Section implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 10L;
+    private static final long serialVersionUID = 11L;
 
     /**
      * La station de départ
@@ -51,7 +51,8 @@ public class Section implements Serializable {
      * @throws IllegalArgumentException si {@code start} ou {@code arrival} ou {@code line} est
      *         {@code null}
      */
-    public Section(Station start, Station arrival, String line, Time time, int distance, int duration) {
+    public Section(Station start, Station arrival, String line, Time time, int distance,
+            int duration) {
         if (start == null || arrival == null)
             throw new IllegalArgumentException();
         this.start = start;
@@ -114,7 +115,10 @@ public class Section implements Serializable {
     }
 
     public void setTime(Time time) {
-        this.time = time;
+        if (time == null)
+            this.time = null;
+        else
+            this.time = new Time(time);
     }
 
     /**
@@ -186,7 +190,7 @@ public class Section implements Serializable {
                 distance += s.distance;
                 duration += s.duration;
             } else {
-                Section toAdd = new Section(start, arrival, line, null, distance, duration);
+                Section toAdd = new Section(start, arrival, line, distance, duration);
                 toAdd.setTime(time);
                 trajet.add(toAdd);
                 start = s.start;
@@ -197,7 +201,7 @@ public class Section implements Serializable {
                 duration = s.duration;
             }
         }
-        Section toAdd = new Section(start, arrival, line, null, distance, duration);
+        Section toAdd = new Section(start, arrival, line, distance, duration);
         toAdd.setTime(time);
         trajet.add(toAdd);
         return trajet;
