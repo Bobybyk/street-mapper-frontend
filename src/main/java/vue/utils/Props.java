@@ -21,6 +21,8 @@ public class Props {
     public static final String ICON_PATH_SEARCH = getIcon("recherche_icon.png");
     public static final String ICON_PATH_HISTORY = getIcon("history_icon.png");
     public static final String ICON_PATH_TIME = getIcon("temps_icon.png");
+    public static final String logo_icon = getIcon("traingo_icon.png");
+
     /**
      * String
      */
