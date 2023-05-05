@@ -1,12 +1,12 @@
 package data;
 
-import java.io.Serializable;
+import server.data.ServerResponse;
 
 public class DataList {
     /**
      * informations relativent à la derniere requete reçu du serveur
      */
-    private static Serializable data = null;
+    public static ServerResponse data = null;
 
     private DataList() {}
 
