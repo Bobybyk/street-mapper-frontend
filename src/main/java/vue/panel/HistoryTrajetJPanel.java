@@ -28,12 +28,12 @@ public class HistoryTrajetJPanel extends JPanel {
         setBackground(new Color(184, 223, 168));
         setPreferredSize(new Dimension(650, 700));
         panelTrajetHistorique = BuilderJComposant.createPanelBoxLayoutVertical();
-        LinkedList<Route> route = RouteSerializer.getListRoute();
+        LinkedList<Route> route = new LinkedList<>(RouteSerializer.getListRoute());
         for (Route value : route) {
             panelTrajetHistorique.add(new ListTrajetPanel(value));
         }
         paneScroll = new FlatJScrollPane(panelTrajetHistorique);
-        final JLabel jlabel = new JLabel(Props.listTrajets);
+        final JLabel jlabel = new JLabel(Props.LIST_TRAJETS);
         jlabel.setFont(BuilderJComposant.lemontRegularFont(22));
         add(jlabel);
         add(paneScroll);

@@ -64,13 +64,13 @@ public class Client implements Runnable, Observer {
 
     @Override
     public void update(Object researchPanel) {
-        if(DataList.data instanceof DepartureTimes departureTimes){
+        if(DataList.getData() instanceof DepartureTimes departureTimes){
                 JPanel resultPanel = (JPanel) researchPanel;
                 resultPanel.removeAll();
                 resultPanel.add(new ListHorairePanel(departureTimes));
                 resultPanel.repaint();
                 resultPanel.revalidate();
-        }else if(DataList.data instanceof Route route){
+        }else if(DataList.getData() instanceof Route route){
             if(researchPanel instanceof ResearchPanel) {
                 JPanel resultPanel = (JPanel) researchPanel;
                 resultPanel.removeAll();
@@ -79,7 +79,7 @@ public class Client implements Runnable, Observer {
                 resultPanel.repaint();
                 resultPanel.revalidate();
             }
-        }else if(DataList.data instanceof SuggestionStations sugg){
+        }else if(DataList.getData() instanceof SuggestionStations sugg){
             String[] arr = sugg.getStations().stream().map(StationInfo::getStationName).toArray(String[]::new);
             if (sugg.getKind()==SuggestionStations.SuggestionKind.ARRIVAL){
                 SwingUtilities.invokeLater(() -> {
@@ -96,7 +96,7 @@ public class Client implements Runnable, Observer {
                     }
                 });
             }
-        }else if(DataList.data instanceof ErrorServer error){
+        }else if(DataList.getData() instanceof ErrorServer error){
             JPanel resultPanel = (JPanel) researchPanel;
             resultPanel.removeAll();
             resultPanel.add(new JLabel("Erreur: " + error.getError().toLowerCase()));
@@ -129,7 +129,7 @@ public class Client implements Runnable, Observer {
             Debug.print(DebugList.NETWORK, "Numero de PORT INDISPONIBLE ou IP INCONNUE");
             Debug.print(DebugList.NETWORK, "...la connexion au serveur a échoué");
         }
-        DataList.data = null;
+        DataList.setData(null);
     }
 
     /**
@@ -157,12 +157,12 @@ public class Client implements Runnable, Observer {
     private void handleReceivedData(Serializable serverData) {
         switch (expectedDataIndex) {
             case RequestIndexesList.ROUTE, RequestIndexesList.TIME -> {
-                DataList.data = serverData;
+                DataList.setData(serverData);
                 researchPanel.notifyObservers();
             }
             case RequestIndexesList.SEARCH -> {
-                DataList.data = serverData;
-                if(DataList.data instanceof SuggestionStations sugg){
+                DataList.setData(serverData);
+                if(DataList.getData() instanceof SuggestionStations sugg){
                     if (sugg.getKind()== SuggestionStations.SuggestionKind.ARRIVAL){
                         arrivalBox.notifyObservers();
                     }else{
@@ -170,7 +170,7 @@ public class Client implements Runnable, Observer {
                     }
                 }
             }
-            default -> Debug.print(DebugList.WARNING, "[WARNING/Client] Les données attendues sont inconnues et seront ignorées");
+            default -> Debug.print(DebugList.WARNING, "[WARNING/Client] Les données attendues sont inconnues et seront ignorées");
         }
     }
 

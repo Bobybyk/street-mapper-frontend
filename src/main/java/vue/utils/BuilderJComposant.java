@@ -29,7 +29,7 @@ public class BuilderJComposant {
 
     public static Font lemontRegularFont(float value) {
         try {
-            InputStream stream = App.class.getResourceAsStream(Props.fontPathNormal);
+            InputStream stream = App.class.getResourceAsStream(Props.FONT_PATH_NORMAL);
             if (stream == null) throw new IOException();
             return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
@@ -40,7 +40,7 @@ public class BuilderJComposant {
 
     public static Font lemonLightFont(float value) {
         try {
-            InputStream stream = App.class.getResourceAsStream(Props.fontPathLight);
+            InputStream stream = App.class.getResourceAsStream(Props.FONT_PATH_LIGHT);
             if (stream == null) throw new IOException();
             return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(value);
         } catch (FontFormatException | IOException e) {
@@ -76,7 +76,7 @@ public class BuilderJComposant {
 
     public static JPanel createPanelBoxLayoutHorizontalRounded(Dimension dimension) {
         Border roundedBorder = new Border() {
-            private final int radius = 12;
+            private final static int radius = 12;
 
             @Override
             public Insets getBorderInsets(Component c) {
@@ -127,7 +127,7 @@ public class BuilderJComposant {
 
     public static JPanel createPanelGridPanelRounded(int rows, int cols) {
         Border roundedBorder = new Border() {
-            private final int radius = 12;
+            private final static int radius = 12;
 
             @Override
             public Insets getBorderInsets(Component c) {

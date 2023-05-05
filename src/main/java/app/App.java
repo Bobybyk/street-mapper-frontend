@@ -13,13 +13,12 @@ import vue.composant.FlatComboBox;
 import vue.panel.ResearchPanel;
 import vue.utils.Props;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.swing.*;
-import javax.json.*;
 
 public class App {
     /**
@@ -37,11 +36,11 @@ public class App {
             JsonReader jsonReader = Json.createReader(stream);
             // Récupération de l'objet racine JSON
             JsonObject jsonObject = jsonReader.readObject();
-   
+
             // Récupération des champs du fichier JSON
             HOST = jsonObject.getString("host");
             PORT = jsonObject.getInt("port");
-            System.out.println("host: " + HOST + " port: " + PORT);
+            
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
@@ -51,8 +50,8 @@ public class App {
         ResearchPanel researchPanel = new ResearchPanel();
         researchPanel.setOpaque(false);
         researchPanel.setLayout(new BoxLayout(researchPanel, BoxLayout.Y_AXIS));
-        FlatComboBox stationDepartList = new FlatComboBox(Props.depart);
-        FlatComboBox stationArriveList = new FlatComboBox(Props.arrive);
+        FlatComboBox stationDepartList = new FlatComboBox(Props.DEPART);
+        FlatComboBox stationArriveList = new FlatComboBox(Props.ARRIVE);
         Client client = new Client(HOST, PORT, researchPanel, stationDepartList, stationArriveList);
         Console console = new Console(client);
         Controller controller = new Controller(console);

@@ -7,34 +7,37 @@ import vue.utils.Props;
 
 import java.io.*;
 import java.util.LinkedList;
+import java.util.List;
 
 public class RouteSerializer {
 
-    private static final LinkedList<Route> listRoute = deserializeRoutes();
+    private static final LinkedList<Route> LIST_ROUTE = deserializeRoutes();
+
+    private RouteSerializer(){}
 
     public static void serializeRoute() {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(Props.fileSerializeRoute));
-            oos.writeObject(listRoute);
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(Props.FILE_SERIALIZE_ROUTE));
+            oos.writeObject(LIST_ROUTE);
             oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static LinkedList<Route> getListRoute() {
-        return listRoute;
+    public static List<Route> getListRoute() {
+        return LIST_ROUTE;
     }
 
     public static void addRoute(Route route) {
-        listRoute.add(route);
+        LIST_ROUTE.add(route);
         serializeRoute();
     }
 
     private static LinkedList<Route> deserializeRoutes() {
         LinkedList<Route> routeList = new LinkedList<>();
         try {
-            File f = new File(Props.fileSerializeRoute);
+            File f = new File(Props.FILE_SERIALIZE_ROUTE);
             if (f.createNewFile()) return routeList;
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
             routeList = (LinkedList<Route>) ois.readObject();

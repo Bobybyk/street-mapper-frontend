@@ -26,7 +26,7 @@ public class ListTrajetPanel extends JPanel {
         setBackground(new Color(238, 238, 238));
         StringBuilder trajetString = new StringBuilder();
 
-        if(route.getPathDistOpt().size() > 0){
+        if(!route.getPathDistOpt().isEmpty()){
             for (Section section :  Section.sectionsToTrajet(route.getPathDistOpt())) {
                 trajetString.append("<li>").append(section).append("</li>");
             }

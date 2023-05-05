@@ -13,8 +13,6 @@ import java.awt.*;
 import java.util.Calendar;
 import java.util.Date;
 
-import static vue.utils.Props.depart;
-
 /**
  * SearchTrajetJPanel est un jpanel
  * c'est ici qu'on affiche le resultat de recherche
@@ -22,9 +20,14 @@ import static vue.utils.Props.depart;
 
 public class SearchTrajetJPanel extends JPanel {
 
-    private final FlatComboBox stationDepartList, stationArriveList;
-    private final JPanel resultPanel, typeDeplacementPanel, optionPanel;
-    private FlatJRadioButton sectionPied, distanceRadioButton, entempsRadioButton;
+    private final FlatComboBox stationDepartList;
+    private final FlatComboBox  stationArriveList;
+    private final JPanel resultPanel;
+    private final JPanel typeDeplacementPanel;
+    private final JPanel optionPanel;
+    private FlatJRadioButton sectionPied;
+    private FlatJRadioButton distanceRadioButton;
+    private FlatJRadioButton entempsRadioButton;
     private Date date;
 
     SearchTrajetJPanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox startBox, FlatComboBox arrivalBox) {
@@ -34,14 +37,14 @@ public class SearchTrajetJPanel extends JPanel {
         this.resultPanel = researchPanelB;
 
         this.typeDeplacementPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(160, 60));
-        this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal(Props.optionRecherche);
+        this.optionPanel = BuilderJComposant.createPanelBoxLayoutHorizontal(Props.OPTION_RECHERCHE);
         optionPanel.setOpaque(false);
         optionPanelLoad();
         sectionAPied();
         datePanelLoad();
 
         final JPanel researchPanel = BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(645, 100));
-        final JButton valideJbutton = BuilderJComposant.createJButton(Props.valider);
+        final JButton valideJbutton = BuilderJComposant.createJButton(Props.VALIDER);
         researchPanel.setBackground(Color.getHSBColor(23, 312, 3));
         researchPanel.add(stationDepartList);
         researchPanel.add(stationArriveList);
@@ -53,11 +56,11 @@ public class SearchTrajetJPanel extends JPanel {
 
         valideJbutton.addActionListener(e -> {
             resultPanel.removeAll();
-            if (((stationDepartList.getTextField().getText().isBlank() || stationDepartList.getTextField().getText().isEmpty()) || stationDepartList.getTextField().getText().equalsIgnoreCase(depart) ||
-                    stationArriveList.getTextField().getText().isBlank() || stationArriveList.getTextField().getText().isEmpty() || stationArriveList.getTextField().getText().equalsIgnoreCase(Props.arrive))) {
-                resultPanel.add(BuilderJComposant.createJLabelStyle(Props.champsIncorrect, 18f, Color.RED));
+            if (((stationDepartList.getTextField().getText().isBlank() || stationDepartList.getTextField().getText().isEmpty()) || stationDepartList.getTextField().getText().equalsIgnoreCase(Props.DEPART) ||
+                    stationArriveList.getTextField().getText().isBlank() || stationArriveList.getTextField().getText().isEmpty() || stationArriveList.getTextField().getText().equalsIgnoreCase(Props.ARRIVE))) {
+                resultPanel.add(BuilderJComposant.createJLabelStyle(Props.CHAMPS_INCORRECT, 18f, Color.RED));
             } else {
-                resultPanel.add(BuilderJComposant.createJLabelStyle(Props.rechercheEnCours, 18f, Color.black));
+                resultPanel.add(BuilderJComposant.createJLabelStyle(Props.RECHERCHE_EN_COURS, 18f, Color.black));
                 String typeTrajet = "DISTANCE";
                 if (distanceRadioButton.isSelected()) typeTrajet = "DISTANCE";
                 else if (entempsRadioButton.isSelected()) typeTrajet = "TIME";
@@ -86,7 +89,7 @@ public class SearchTrajetJPanel extends JPanel {
         JSpinner.DateEditor editor = new JSpinner.DateEditor(new JSpinner(model), "HH:mm");
         editor.getTextField().setEditable(false);
         editor.getTextField().setBackground(java.awt.Color.WHITE);
-        editor.getTextField().setHorizontalAlignment(JTextField.CENTER);
+        editor.getTextField().setHorizontalAlignment(SwingConstants.CENTER);
         final JSpinner spinner = new JSpinner(model);
         spinner.setPreferredSize(new Dimension(60, 50));
         spinner.setMaximumSize(new Dimension(60, 50));
@@ -94,7 +97,7 @@ public class SearchTrajetJPanel extends JPanel {
         spinner.setEditor(editor);
         date = model.getDate();
         spinner.addChangeListener(e -> date = model.getDate());
-        panelHeure.add(new JLabel(Props.departA));
+        panelHeure.add(new JLabel(Props.DEPART_A));
         panelHeure.add(spinner);
         panelHeure.setOpaque(false);
         optionPanel.add(panelHeure);
@@ -102,8 +105,8 @@ public class SearchTrajetJPanel extends JPanel {
 
     private void optionPanelLoad() {
         final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        distanceRadioButton = BuilderJComposant.createJRadioButton(Props.distance);
-        entempsRadioButton = BuilderJComposant.createJRadioButton(Props.temps);
+        distanceRadioButton = BuilderJComposant.createJRadioButton(Props.DISTANCE);
+        entempsRadioButton = BuilderJComposant.createJRadioButton(Props.TEMPS);
 
         final ButtonGroup groupe = new ButtonGroup();
         distanceRadioButton.setSelected(true);
@@ -112,7 +115,7 @@ public class SearchTrajetJPanel extends JPanel {
 
         typeDeplacementPanel.add(distanceRadioButton);
         typeDeplacementPanel.add(entempsRadioButton);
-        panelTypeTrajet.add(new JLabel(Props.typeTrajet));
+        panelTypeTrajet.add(new JLabel(Props.TYPE_TRAJET));
         panelTypeTrajet.add(typeDeplacementPanel);
         panelTypeTrajet.setOpaque(false);
         optionPanel.add(panelTypeTrajet);
@@ -120,12 +123,12 @@ public class SearchTrajetJPanel extends JPanel {
 
     private void sectionAPied() {
         final JPanel panelTypeTrajet = BuilderJComposant.createPanelBoxLayoutHorizontal();
-        sectionPied = BuilderJComposant.createJRadioButton(Props.non);
+        sectionPied = BuilderJComposant.createJRadioButton(Props.NON);
         sectionPied.addActionListener(e -> {
-            if (sectionPied.isSelected()) sectionPied.setText(Props.oui);
-            else sectionPied.setText(Props.non);
+            if (sectionPied.isSelected()) sectionPied.setText(Props.OUI);
+            else sectionPied.setText(Props.NON);
         });
-        panelTypeTrajet.add(new JLabel(Props.sectionAPied));
+        panelTypeTrajet.add(new JLabel(Props.SECTION_A_PIED));
         panelTypeTrajet.add(sectionPied);
         panelTypeTrajet.setOpaque(false);
         optionPanel.add(panelTypeTrajet);

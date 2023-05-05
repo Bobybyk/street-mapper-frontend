@@ -15,10 +15,9 @@ import java.util.Date;
 
 public class SearchHorairePanel extends JPanel {
 
-    private final FlatComboBox stationRecherche;
-
     private final JButton valideJbutton;
-    private final JPanel resultPanel, researchPanel;
+    private final JPanel resultPanel;
+    private final JPanel researchPanel;
     private Date date;
 
     SearchHorairePanel(Controller controler, ResearchPanel researchPanelB, FlatComboBox stationRecherche){
@@ -26,9 +25,8 @@ public class SearchHorairePanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.resultPanel = researchPanelB;
         this.researchPanel =  BuilderJComposant.createPanelBoxLayoutHorizontalRounded(new Dimension(565, 100));
-        this.stationRecherche = stationRecherche;
         stationRecherche.requestInitComboBox(controler, SuggestionStations.SuggestionKind.DEPART);
-        this.valideJbutton = BuilderJComposant.createJButton(Props.valider);
+        this.valideJbutton = BuilderJComposant.createJButton(Props.VALIDER);
         valideJbutton.setOpaque(true);
         researchPanel.setOpaque(true);
         researchPanel.add(stationRecherche);
@@ -39,7 +37,7 @@ public class SearchHorairePanel extends JPanel {
             resultPanel.removeAll();
             String station = stationRecherche.getTextField().getText();
             controler.sendRequestHoraire(station,  date);
-            resultPanel.add(new JLabel(Props.rechercheEnCours));
+            resultPanel.add(new JLabel(Props.RECHERCHE_EN_COURS));
             resultPanel.repaint();
             resultPanel.revalidate();
         });
@@ -59,7 +57,7 @@ public class SearchHorairePanel extends JPanel {
         JSpinner.DateEditor editor = new JSpinner.DateEditor(new JSpinner(model), "HH:mm");
         editor.getTextField().setEditable(false);
         editor.getTextField().setBackground(java.awt.Color.WHITE);
-        editor.getTextField().setHorizontalAlignment(JTextField.CENTER);
+        editor.getTextField().setHorizontalAlignment(SwingConstants.CENTER);
         final JSpinner spinner = new JSpinner(model);
         spinner.setPreferredSize(new Dimension(60, 50));
         spinner.setMaximumSize(new Dimension(60, 50));
@@ -67,7 +65,7 @@ public class SearchHorairePanel extends JPanel {
         spinner.setEditor(editor);
         date = model.getDate();
         spinner.addChangeListener(e -> date = model.getDate());
-        panelHeure.add(new JLabel(Props.horaireA));
+        panelHeure.add(new JLabel(Props.HORAIRE_A));
         panelHeure.add(spinner);
         panelHeure.setOpaque(false);
         panelHeure.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));

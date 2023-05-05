@@ -40,14 +40,17 @@ public class MapJPanel extends JPanel {
     private final JXMapViewer viewer;
     private final Set<WaypointStation> positionsTrajet;
     private final WaypointPainter<WaypointStation> waypointPainter;
-    private BufferedImage cursor_image;
-    private GeoPosition pos1, pos2;
-    private final FlatComboBox comboBoxdepart, comboBoxarrive;
+    private BufferedImage cursorImage;
+    private GeoPosition pos1;
+    private GeoPosition pos2;
+    private final FlatComboBox comboBoxdepart;
+    private final FlatComboBox comboBoxarrive;
     private final FlatJRadioButton trackerButton;
     private final FlatJButtonRound clearButton;
 
-    private final double paris_latitude = 48.8588548, paris_longitude = 2.347035;
-    private final int zoom = 6;
+    private final static double PARIS_LATITUDE = 48.8588548;
+    private final static double PARIS_LONGITUDE = 2.347035;
+    private final static int zoom = 6;
 
     public MapJPanel(FlatComboBox comboBoxdepart,FlatComboBox comboBoxarrive){
         this.viewer  = new JXMapViewer();
@@ -55,8 +58,8 @@ public class MapJPanel extends JPanel {
         this.waypointPainter = new WaypointPainter<>();
         this.comboBoxdepart = comboBoxdepart;
         this.comboBoxarrive = comboBoxarrive;
-        this.trackerButton = new FlatJRadioButton(Props.placerMarquer, Color.red, Color.BLACK);
-        this.clearButton = new FlatJButtonRound(15,Props.nettoyerMap);
+        this.trackerButton = new FlatJRadioButton(Props.PLACER_MARQUER, Color.red, Color.BLACK);
+        this.clearButton = new FlatJButtonRound(15,Props.NETTOYER_MAP);
 
         final Dimension d = new Dimension(800, 900);
         setPreferredSize(d);
@@ -113,13 +116,13 @@ public class MapJPanel extends JPanel {
                 if (trackerButton.isSelected()) {
                     if (pos1 == null) {
                         pos1 = viewer.convertPointToGeoPosition(mouseEvent.getPoint());
-                        addPoint(new GeoPosition(pos1.getLatitude(), pos1.getLongitude()), Props.poseA);
+                        addPoint(new GeoPosition(pos1.getLatitude(), pos1.getLongitude()), Props.POSE_A);
                         comboBoxdepart.setText(pos1.toString().replace("[", "(").replace("]", ")"));
                         update();
                     } else {
                         if (pos2 == null) {
                             pos2 = viewer.convertPointToGeoPosition(mouseEvent.getPoint());
-                            addPoint(new GeoPosition(pos2.getLatitude(), pos2.getLongitude()), Props.poseB);
+                            addPoint(new GeoPosition(pos2.getLatitude(), pos2.getLongitude()), Props.POSE_B);
                             comboBoxarrive.setText(pos2.toString().replace("[", "(").replace("]", ")"));
                             trackerButton.setSelected(false);
                             update();
@@ -149,7 +152,7 @@ public class MapJPanel extends JPanel {
      * Fonction de test d'affichage simple
      */
     private void testCursor(){
-        GeoPosition position = new GeoPosition(paris_latitude,paris_longitude);
+        GeoPosition position = new GeoPosition(PARIS_LATITUDE,PARIS_LONGITUDE);
         positionsTrajet.add(new WaypointStation(position, "Station de test"));
         waypointPainter.setWaypoints(positionsTrajet);
     }
@@ -160,7 +163,7 @@ public class MapJPanel extends JPanel {
     private void setupWayPointViewer() {
         waypointPainter.setRenderer((graphics2D, map, waypoint) -> {
             Point2D p = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-            graphics2D.drawImage(cursor_image,(int) p.getX()-25, (int)p.getY()-50, this);
+            graphics2D.drawImage(cursorImage,(int) p.getX()-25, (int)p.getY()-50, this);
             graphics2D.setFont(BuilderJComposant.lemontRegularFont(20));
             graphics2D.setColor(Color.black);
             graphics2D.drawString(waypoint.getNameStation(), (int) p.getX()-30, (int)p.getY()-80);
@@ -173,7 +176,7 @@ public class MapJPanel extends JPanel {
      */
     private void setupMapViewer() {
 
-        GeoPosition position = new GeoPosition(paris_latitude, paris_longitude);
+        GeoPosition position = new GeoPosition(PARIS_LATITUDE, PARIS_LONGITUDE);
         DefaultTileFactory tileFactory = new DefaultTileFactory(new OSMTileFactoryInfo());
         viewer.setTileFactory(tileFactory);
         viewer.setZoom(zoom);
@@ -225,8 +228,8 @@ public class MapJPanel extends JPanel {
 
     private void loadImage() {
         try {
-            URL url = App.class.getResource(Props.cursorImage);
-            if (url != null) cursor_image = ImageIO.read(new File(url.getFile()));
+            URL url = App.class.getResource(Props.CURSOR_IMAGE);
+            if (url != null) cursorImage = ImageIO.read(new File(url.getFile()));
         }catch (IOException e) {
             Debug.print(DebugList.ERROR,"Fichier introuvable");
         }

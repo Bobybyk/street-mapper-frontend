@@ -12,19 +12,20 @@ import javax.swing.*;
 
 public class RootJPanel extends JPanel {
 
-    private final JPanel verticalRootJPanel, rootJPanel;
+    private final JPanel verticalRootJPanel;
+    private final JPanel attRootJPanel;
     private final MenuSelectionJPanel selectionJPanel;
     private static MapJPanel map = null;
 
     public RootJPanel(Controller controller, ResearchPanel panel, FlatComboBox startBox, FlatComboBox arrivalBox) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        rootJPanel = new JPanel();
+        attRootJPanel = new JPanel();
         map = (new MapJPanel(startBox, arrivalBox));
         verticalRootJPanel = new JPanel();
         verticalRootJPanel.setLayout(new BoxLayout(verticalRootJPanel, BoxLayout.Y_AXIS));
-        rootJPanel.add(new SearchTrajetJPanel(controller, panel, startBox, arrivalBox));
+        attRootJPanel.add(new SearchTrajetJPanel(controller, panel, startBox, arrivalBox));
         selectionJPanel = new MenuSelectionJPanel(controller,this, panel, startBox, arrivalBox);
-        verticalRootJPanel.add(rootJPanel);
+        verticalRootJPanel.add(attRootJPanel);
         verticalRootJPanel.add(selectionJPanel);
         add(verticalRootJPanel);
         add(map);
@@ -35,8 +36,8 @@ public class RootJPanel extends JPanel {
     }
 
     public void updateRootPanel(JComponent rootJPanel) {
-        this.rootJPanel.removeAll();
-        this.rootJPanel.add(rootJPanel);
+        this.attRootJPanel.removeAll();
+        this.attRootJPanel.add(rootJPanel);
         repaint();
         updateUI();
     }

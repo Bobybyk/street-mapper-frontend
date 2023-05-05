@@ -22,7 +22,10 @@ public class DebugList {
      */
     public static final int SETTINGS = 3;
     /**
-     * information sur le réseau
+     * information sur le réseauLOGGER.info
      */
     public static final int NETWORK = 4;
+
+    private DebugList(){}
+
 }

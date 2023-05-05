@@ -25,7 +25,7 @@ public class FlatJScrollPane extends JScrollPane {
 
     }
 
-    private class FlatJScrollBarUI extends BasicScrollBarUI {
+    private static class FlatJScrollBarUI extends BasicScrollBarUI {
 
 
         @Override
