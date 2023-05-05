@@ -236,7 +236,7 @@ public class Client implements Runnable, Observer {
     public synchronized void setNextRequest(String request, String dataIndex) {
         this.nextRequestToSend = request;
         this.nextExpectedDataIndex = dataIndex;
-        this.notify();
+        this.notifyAll();
         Debug.print(DebugList.INFO, "Nouvelle requête enregistrée : " + request);
     }
 

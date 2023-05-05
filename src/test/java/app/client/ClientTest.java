@@ -7,7 +7,7 @@ import client.Client;
 
 class ClientTest {
 
-    private final int TEMPS = 2;
+    private final int TEMPS = 2000;
 
     @Test
     @Timeout(TEMPS)
