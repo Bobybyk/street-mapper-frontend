@@ -37,15 +37,10 @@ public class App {
 
     static {
         try (InputStream stream = App.class.getResourceAsStream("/config/network.json")) {
-            // Création d'un objet JsonReader
             JsonReader jsonReader = Json.createReader(stream);
-            // Récupération de l'objet racine JSON
             JsonObject jsonObject = jsonReader.readObject();
-
-            // Récupération des champs du fichier JSON
             HOST = jsonObject.getString("host");
             PORT = jsonObject.getInt("port");
-
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }

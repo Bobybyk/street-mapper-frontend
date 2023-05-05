@@ -37,7 +37,7 @@ public class Debug {
         debugTypes.put("NETWORK", DebugList.NETWORK);
     }
 
-    private Debug(){}
+    Debug(){}
 
     public static Map<Integer, Boolean> getDebugTypeStatus() {
         return DEBUG_TYPE_STATUS;
